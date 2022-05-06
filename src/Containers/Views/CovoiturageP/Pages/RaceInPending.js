@@ -128,7 +128,6 @@ const RaceInPending: () => Node = ({navigation,route}) => {
         </TouchableOpacity>
          <MapView
              showsUserLocation={true}
-             provider={PROVIDER_GOOGLE}
              showsMyLocationButton={true}
              mapType="standard"
              followsUserLocation={true}

@@ -143,7 +143,7 @@ const Index: () => Node = ({navigation, route}) => {
   ];
   return (
     <SafeAreaView style={backgroundStyle}>
-      <View style={[Generalstyle.miniCard]}>
+      <View style={[Generalstyle.miniCard,{marginTop:30},]}>
         <Text
           style={[Generalstyle.miniText, Generalstyle.alignSelf, Colors.Green]}>
           {Fr.ChooseSys}

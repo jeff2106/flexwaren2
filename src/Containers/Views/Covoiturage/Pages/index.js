@@ -412,7 +412,6 @@ function getLatLngInput2(text){
     }
      <MapView
          showsUserLocation={true}
-         provider={PROVIDER_GOOGLE}
          showsMyLocationButton={true}
          mapType="standard"
          followsUserLocation={true}

@@ -126,18 +126,19 @@ const DetailSecurite: () => Node = ({navigation, route}) => {
               </View>
             <View>
                 	<View>
-                  <TextInput value={numberOne} onChangeText={(val) => setnumberOne(val)} placeholder="Numero de confiance 1"/>
+                  <TextInput value={numberOne} style={{height:50}} onChangeText={(val) => setnumberOne(val)} placeholder="Numero de confiance 1"/>
                 	</View>
                 	<View style={{borderBottomWidth:1,borderColor:'black'}}/>
                 	<View>
-                	<TextInput value={numberTwo} onChangeText={(val) => setnumberTwo(val)} placeholder="Numero de confiance 2"/>
+                	<TextInput value={numberTwo} style={{height:50}} onChangeText={(val) => setnumberTwo(val)} placeholder="Numero de confiance 2"/>
                 	</View>
                 	<View style={{borderBottomWidth:1,borderColor:'black'}}/>
 
                 	<View>
-                	<TextInput value={numberThree} onChangeText={(val) => setnumberThree(val)} placeholder="Numero de confiance 3"/>
+                	<TextInput value={numberThree} style={{height:50}} onChangeText={(val) => setnumberThree(val)} placeholder="Numero de confiance 3"/>
                 	</View>
             </View>
+            <Text/>
             <TouchableOpacity onPress={() => savePrivacy()} style={[{alignSelf:'center',height:50,width:'80%',justifyContent:'center',alignItems:'center',borderRadius:100,marginTop:20},Generalstyle.shadow,Colors.GreenLignt_BG]}>
             	<Text style={{color:'white',fontWeight:'bold'}}>Sauvegarder</Text>
             </TouchableOpacity>

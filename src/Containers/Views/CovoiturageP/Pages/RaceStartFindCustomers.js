@@ -185,7 +185,6 @@ if(detailsCurrentOrders == ""){
         </TouchableOpacity>
          <MapView
              showsUserLocation={true}
-             provider={PROVIDER_GOOGLE}
              showsMyLocationButton={true}
              mapType="standard"
              followsUserLocation={true}

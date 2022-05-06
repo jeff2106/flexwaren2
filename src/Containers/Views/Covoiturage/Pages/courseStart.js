@@ -174,7 +174,6 @@ const CourseStart: () => Node = ({ navigation, route }) => {
      
       <MapView
         showsUserLocation={true}
-        provider={PROVIDER_GOOGLE}
         showsMyLocationButton={true}
         mapType='standard'
         followsUserLocation={true}

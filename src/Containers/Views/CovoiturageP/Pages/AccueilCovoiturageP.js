@@ -204,10 +204,11 @@ channel.bind('ordersAdd', function(data) {
     </TouchableOpacity>
      <MapView
          showsUserLocation={true}
-         provider={PROVIDER_GOOGLE}
          showsMyLocationButton={true}
          followsUserLocation={true}
+         mapType="standard"
          initialRegion={curentPosition}
+         style={styles.map}
        
      >
      <MapViewDirections
@@ -221,7 +222,7 @@ channel.bind('ordersAdd', function(data) {
     
      <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={{flexDirection:'row',position:'absolute',top:20,alignSelf:'center',backgroundColor:'white',width:'40%',alignItems:'center',height:50,justifyContent:'center',borderRadius:30}}>
         <Image source={Iconsimg.sys_moneyPiece} />
-        <Text style={{fontWeight:'bold',fontSize:20,marginLeft:10,color:'black'}}>{Amount?.solde} XOF</Text>
+        <Text style={{fontWeight:'bold',fontSize:15,marginLeft:10,color:'black'}}>{Amount?.solde} XOF</Text>
      </TouchableOpacity>
 
 

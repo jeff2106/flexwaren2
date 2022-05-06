@@ -9,43 +9,22 @@
 import React from 'react';
 import type {Node} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
-  Dimensions,
   TouchableOpacity,
   Image,
-  Modal,
-  Pressable,
-  ImageBackground,
-  TextInput
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icons from 'react-native-vector-icons/AntDesign';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withDelay,
-  withRepeat,
-  withTiming,
-  interpolate,
-} from "react-native-reanimated";
 import Geolocation from '@react-native-community/geolocation';
 //My Src Import
 import Colors from '../../../Utils/Colors.js';
 import Iconsimg from '../../../Utils/Img';
-import Fr from '../../../Utils/Fr';
 import Generalstyle from '../../../Utils/GeneralStyle';
-import HeaderCov from '../../../Components/headerCov';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 //Get Reel Dimension of Screen[]
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 //End
 
@@ -55,11 +34,7 @@ const windowHeight = Dimensions.get('window').height;
 const RaceCourseStart: () => Node = ({navigation,route}) => {
 
   const { CustomersAvailableData,u_data,timestamp,Amount } = route.params;
-  const [modalVisible, setModalVisible] = React.useState(false);
-  const [notification, setNotification] = React.useState(false);
-  const [isCommand, setIsCommand] = React.useState(true);
   const [displayD3, setdisplayD3] = React.useState(false);
-  const [widthLoad, setwidthLoad] = React.useState(100);
   const origin = {latitude: 37.78825, longitude: -122.4324};
   const destination = {latitude: 37.771707, longitude: -122.4053769};
   const GOOGLE_MAPS_APIKEY = 'AIzaSyDSbg654fWaJihkk3FIk52Je8viclmsYCU';
@@ -103,7 +78,6 @@ React.useEffect(() => {
         </TouchableOpacity>
          <MapView
              showsUserLocation={true}
-             provider={PROVIDER_GOOGLE}
              showsMyLocationButton={true}
              mapType="standard"
              followsUserLocation={true}

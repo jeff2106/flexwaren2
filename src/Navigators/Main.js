@@ -262,9 +262,6 @@ function sendNotif(data){
             } catch (e) {
                console.log("SignUp");
             }
-
-            setUserToken(null);
-            setIsLoading(false);
             dispatch({ type: "LOGOUT" });
          },
          signUp: async (userData, password) => {
