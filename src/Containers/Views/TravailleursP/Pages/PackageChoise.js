@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
-import Constants from 'expo-constants';
 
 // You can import from local files
 import AssetExample from './components/AssetExample';

@@ -140,6 +140,7 @@ const NmberVerif1: () => Node = ({ navigation, route }) => {
                <TextInput
                   value={number}
                   maxLength={14}
+                  
                   keyboardType={"number-pad"}
                   onChangeText={(val) => setnumber(val)}
                   style={[
@@ -149,6 +150,7 @@ const NmberVerif1: () => Node = ({ navigation, route }) => {
                         width: windowWidth / 1.5,
                         fontWeight: "bold",
                         paddingLeft: 10,
+                        height:50,
                      },
                   ]}
                />

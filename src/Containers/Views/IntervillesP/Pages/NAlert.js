@@ -256,6 +256,7 @@ const NAlert: () => Node = ({navigation, route}) => {
                 borderRadius: 20,
                 fontSize: 20,
                 width: windowWidth / 1.1,
+                height:50,
                 fontWeight: 'bold',
                 paddingLeft: 10
                 ,color:'black'
@@ -276,6 +277,7 @@ const NAlert: () => Node = ({navigation, route}) => {
                 borderRadius: 20,
                 fontSize: 20,
                 width: windowWidth / 1.1,
+                height:50,
                 fontWeight: 'bold'
                 ,color:'black',
                 paddingLeft: 10,
@@ -332,6 +334,7 @@ const NAlert: () => Node = ({navigation, route}) => {
                 borderRadius: 20,
                 fontSize: 20,
                 width: windowWidth / 1.1,
+                height:50,
                 fontWeight: 'bold',
                 paddingLeft: 10,
               },
@@ -352,6 +355,7 @@ const NAlert: () => Node = ({navigation, route}) => {
                 borderRadius: 20,
                 fontSize: 20,
                 width: windowWidth / 1.1,
+                height:50,
                 fontWeight: 'bold'
                 ,color:'black',
                 paddingLeft: 10,

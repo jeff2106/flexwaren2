@@ -28,7 +28,7 @@ import Colors from '../Utils/Colors.js';
 import Iconsimg from '../Utils/Img';
 import Fr from '../Utils/Fr';
 import Generalstyle from '../Utils/GeneralStyle';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AuthContext } from '../Components/context';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
@@ -143,7 +143,6 @@ const Index: () => Node = ({navigation, route}) => {
   ];
   return (
     <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={'#3DB24B'} />
       <View style={[Generalstyle.miniCard]}>
         <Text
           style={[Generalstyle.miniText, Generalstyle.alignSelf, Colors.Green]}>

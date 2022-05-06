@@ -35,7 +35,7 @@ import Animated, {
   interpolate,
 } from "react-native-reanimated";
 import Geolocation from '@react-native-community/geolocation';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 //My Src Import
@@ -206,10 +206,8 @@ channel.bind('ordersAdd', function(data) {
          showsUserLocation={true}
          provider={PROVIDER_GOOGLE}
          showsMyLocationButton={true}
-         mapType="standard"
          followsUserLocation={true}
          initialRegion={curentPosition}
-       style={styles.map}
        
      >
      <MapViewDirections

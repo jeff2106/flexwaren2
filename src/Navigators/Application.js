@@ -25,7 +25,6 @@ const ApplicationNavigator = () => {
             component={MainNavigator}
             options={{
               animationEnabled: false,
-              header:false
             }}
           />
         </Stack.Navigator>

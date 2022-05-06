@@ -65,7 +65,7 @@ const PolitiqueConf: () => Node = ({navigation}) => {
     <View style={{borderWidth:1,margin:20,opacity:0.2,marginTop:windowHeight/10}}/>
     <View style={{marginLeft:20,flexDirection:'row',alignItems:'center'}}>
       <CheckBox value={isSelected} onValueChange={(val) => setIsSelected(val)}/>
-      <Text style={[{fontSize:15,color:"black"},Generalstyle.bold]}>J'accepte</Text>
+      <Text style={[{fontSize:15,color:"black",marginLeft:10},Generalstyle.bold]}>J'accepte</Text>
     </View>
     <View style={{borderWidth:1,marginLeft:20,marginRight:20,opacity:0.2,marginTop:windowHeight/40}}/>
     {

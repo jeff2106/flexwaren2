@@ -27,7 +27,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icons from 'react-native-vector-icons/AntDesign';
 import ImagePicker from 'react-native-image-crop-picker';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 //My Src Import
 import Colors from '../../../Utils/Colors.js';
