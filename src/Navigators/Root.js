@@ -14,6 +14,8 @@
  }
  
  export function navigateAndReset(routes = [], index = 0) {
+  console.log('navigateAndReset')
+
    navigationRef.current?.dispatch(
      CommonActions.reset({
        index,
@@ -23,6 +25,7 @@
  }
  
  export function navigateAndSimpleReset(name, index = 0) {
+   console.log('navigateAndSimpleReset')
    navigationRef.current?.dispatch(
      CommonActions.reset({
        index,
@@ -32,6 +35,8 @@
  }
  
  export function replace(name, params) {
+  console.log('navigateAndSimpleReset')
+
    navigationRef.current?.dispatch(StackActions.replace(name, params))
  }
  

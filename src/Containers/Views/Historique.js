@@ -2,6 +2,7 @@ import React, { useCallback, useRef } from 'react';
 import { StyleSheet, TouchableOpacity, View,Dimensions,Text,Image , ActivityIndicator} from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Geolocation from "@react-native-community/geolocation";
+import {navigateAndReset , navigateAndSimpleReset} from '../../Navigators/utils'
 
 import Icon from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -65,7 +66,7 @@ export default function App({navigation,route}) {
             });
         }, e => setError(e.message));
         return () => Geolocation.clearWatch(watchId);
-    }, [position]);
+    }, []);
 
   function Historique(){
   var formdata = new FormData();
@@ -94,7 +95,7 @@ export default function App({navigation,route}) {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.navigate('Index')} style={{margin:20}}>
+      <TouchableOpacity onPress={() => navigateAndSimpleReset('Index')} style={{margin:20}}>
               <Icon size={30} color={Colors.GreenLignt?.color} name="arrowleft" />
       </TouchableOpacity>
       <Text style={[Generalstyle.bold,{fontSize:20},Generalstyle.alignSelf,Colors.GreenLignt]}>Mes commandes</Text>
@@ -139,7 +140,6 @@ export default function App({navigation,route}) {
           <View style={{ flex: 1,borderWidth:2,backgroundColor:"#B0E9B3",borderColor:Colors.GreenLignt_BG.backgroundColor, borderRadius:20,paddingVertical:10,paddingHorizontal:10}}>
           <View style={{height:130,zIndex:4,borderRadius:10,overflow:'hidden'}}>
               <MapView
-                   provider={PROVIDER_GOOGLE}
                    mapType="standard"
                    scrollEnabled={false}
                    initialRegion={{

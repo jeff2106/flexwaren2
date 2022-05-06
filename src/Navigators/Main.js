@@ -8,7 +8,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import PushNotification from "react-native-push-notification";
 import Pusher from 'pusher-js/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import navigationRef from '../Navigators/utils'
 //Views
 //Screen Import//
 import Menu from '../Containers/Components/Menu'
@@ -314,7 +314,7 @@ function sendNotif(data){
       )
    }
     return (
-      <AuthContext.Provider value={authContext}>
+      <AuthContext.Provider value={authContext} ref={navigationRef}>
         {loginState?.userToken === null ? <MainNavigatorAuth /> : 
         <Drawer.Navigator 
         drawerContent={props => <Menu data={u_dataV} {...props} />}

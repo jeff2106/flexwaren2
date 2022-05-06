@@ -34,6 +34,7 @@ import Fr from '../Utils/Fr';
 import Iconsimg from '../Utils/Img';
 import Generalstyle from '../Utils/GeneralStyle';
 import { AuthContext } from './context';
+import {navigateAndReset , navigateAndSimpleReset} from '../../Navigators/utils'
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -65,19 +66,19 @@ const Menu: () => Node = (props) => {
           <Text/>
           <Text style={[styles.bold,styles.alignSelf,styles.MenuProfilStyle,styles.fontSizeTitle,styles.marginBottom]}>{u_data?.u_data?.fullName}</Text>
           <Text style={[styles.bold,styles.alignSelf,styles.MenuProfilStyle,styles.marginBottom]}>(+225) {u_data?.u_data?.number}</Text>
-          <TouchableOpacity onPress={() => props.navigation.navigate('Index',{u_dataV: JSON.stringify(u_data),timestamp:new Date().getTime()})} style={styles.containItemNavigation}>
+          <TouchableOpacity onPress={() => navigateAndSimpleReset('Index',{u_dataV: JSON.stringify(u_data),timestamp:new Date().getTime()})} style={styles.containItemNavigation}>
               <Icon size={30} color="black" name="home" /><Text style={[styles.MenuProfilStyle,styles.textEquilibryMargin]}>Accueil</Text>
           </TouchableOpacity>
           {
            u_data?.u_data?.accountType == Fr.C &&
-            <TouchableOpacity onPress={() => props.navigation.navigate('Dashboard',{u_dataV: u_data,timestamp:new Date().getTime()})} style={styles.containItemNavigation}>
+            <TouchableOpacity onPress={() => navigateAndSimpleReset('Dashboard',{u_dataV: u_data,timestamp:new Date().getTime()})} style={styles.containItemNavigation}>
               <Icon size={30} color="black" name="view-dashboard-outline" /><Text style={[styles.MenuProfilStyle,styles.textEquilibryMargin]}>Tableau de bord</Text>
             </TouchableOpacity>
           }
           
           {
            u_data?.u_data?.accountType == 5  &&
-            <TouchableOpacity onPress={() => props.navigation.navigate('PaymentMethode',{u_dataV: u_data,timestamp:new Date().getTime()})} style={styles.containItemNavigation}>
+            <TouchableOpacity onPress={() => navigateAndSimpleReset('PaymentMethode',{u_dataV: u_data,timestamp:new Date().getTime()})} style={styles.containItemNavigation}>
               <Icon size={30} color="black" name="cash" /><Text style={[styles.MenuProfilStyle,styles.textEquilibryMargin]}>Mode de paiement</Text>
             </TouchableOpacity>
           }
@@ -89,7 +90,7 @@ const Menu: () => Node = (props) => {
           }
           {
            u_data?.u_data?.accountType != Fr.C &&
-          <TouchableOpacity onPress={() => navigation.navigate('Historique',{u_dataV: u_data,timestamp:new Date().getTime()})} style={styles.containItemNavigation}>
+          <TouchableOpacity onPress={() => props.navigation.navigate('Historique',{u_dataV: u_data,timestamp:new Date().getTime()})} style={styles.containItemNavigation}>
               <Icon size={30} color="black" name="history" /><Text style={[styles.MenuProfilStyle,styles.textEquilibryMargin]}>Historique des commandes</Text>
           </TouchableOpacity>
         }

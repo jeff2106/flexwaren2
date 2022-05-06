@@ -30,8 +30,7 @@ import Fr from '../Utils/Fr';
 import Generalstyle from '../Utils/GeneralStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AuthContext } from '../Components/context';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-
+import { NavigationContainer, CommonActions } from '@react-navigation/native';
 
 //Get Reel Dimension of Screen[]
 const windowWidth = Dimensions.get('window').width;
