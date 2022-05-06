@@ -2,13 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { View, Image } from 'react-native'
 import { useTheme } from '@/Hooks'
-
+import Iconsimg from '../Containers/Utils/Img'
 const Brand = ({ height, width, mode }) => {
   const { Layout, Images } = useTheme()
 
   return (
     <View style={{ height, width }}>
-      <Image style={Layout.fullSize} source={Images.logo} resizeMode={mode} />
+      <Image style={Layout.fullSize} source={Iconsimg.logoflex} resizeMode={mode} />
     </View>
   )
 }

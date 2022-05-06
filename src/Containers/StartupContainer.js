@@ -17,7 +17,7 @@ const StartupContainer = () => {
         resolve(true)
       }, 2000),
     )
-    await setDefaultTheme({ theme: 'default', darkMode: null })
+    await setDefaultTheme({ theme: 'default', darkMode: true })
     navigateAndSimpleReset('Main')
   }
 
@@ -29,7 +29,7 @@ const StartupContainer = () => {
     <View style={[Layout.fill, Layout.colCenter]}>
       <Brand />
       <ActivityIndicator size={'large'} style={[Gutters.largeVMargin]} />
-      <Text style={Fonts.textCenter}>{t('welcome')}</Text>
+      <Text style={Fonts.textCenter}>Bienvenue sur flex Waren , patientez nous actualisons les données</Text>
     </View>
   )
 }
