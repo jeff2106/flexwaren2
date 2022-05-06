@@ -508,7 +508,7 @@ function getLatLngInput2(text){
         <View>
           
               <Image source={Iconsimg.sys_Localisation}  style={{resizeMode:'contain',width:30,height:30,alignSelf:'center',position:'absolute',top:windowHeight/2.5,zIndex:2}}/>
-              <Image source={require('../sys_pulseFecthing.gif')}  style={{resizeMode:'contain',width:1000,alignSelf:'center',position:'absolute',top:windowHeight/5,zIndex:1}}/>
+              <Image source={require('../sys_pulseFecthing.gif')}  style={{resizeMode:'contain',width:1000,alignSelf:'center',position:'absolute',top:windowHeight/4,zIndex:1}}/>
           
 
             <View style={[{position:'absolute',height:windowHeight/4.5,width:windowWidth/1.04,alignSelf:'center', bottom:-windowWidth*1.74,backgroundColor:'white',borderRadius:12,padding:20}]}>
@@ -522,7 +522,7 @@ function getLatLngInput2(text){
             <TouchableOpacity onPress={() => Annuler()} style={[Generalstyle.shadow,{width:40,height:40,marginTop:20, borderRadius:100,alignSelf:'center',alignItems:'center',justifyContent:'center'}]}>
                 <Icons name="close" size={20} style={[Colors.red,]} />
             </TouchableOpacity>
-            
+            <Text/>
             <Text style={{fontSize:20,color:'black',alignSelf:'center',marginTop:4}}>Annuler la commande</Text>
           </View>
 
