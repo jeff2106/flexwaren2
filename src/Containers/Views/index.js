@@ -202,7 +202,7 @@ const Index: () => Node = ({navigation, route}) => {
                     } else {
                       setModalVisible(!modalVisible);
                     }
-                    if (hours > 3 && hours < 8) {
+                    if (hours > 4 && hours < 8) {
                       navigation.navigate(`${item.firstView}`,{u_data: u_data?.u_data,timestamp: new Date().getTime(),Amount: Amount});
                     } else {
                       setModalVisible(!modalVisible);

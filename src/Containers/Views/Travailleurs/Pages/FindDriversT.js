@@ -71,6 +71,7 @@ const FindDriversT: () => Node = ({navigation, route}) => {
               borderBottomLeftRadius: 20,
               borderBottomRightRadius: 20,
               padding: 10,
+
             },
           ]}>
           <Text
@@ -91,6 +92,7 @@ const FindDriversT: () => Node = ({navigation, route}) => {
                 borderRadius: 10,
                 marginTop: 10,
                 padding: 5,
+                height:50
               },
             ]}>
             <TextInput
