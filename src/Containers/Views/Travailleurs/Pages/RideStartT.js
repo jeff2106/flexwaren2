@@ -87,7 +87,6 @@ const RideStartT: () => Node = ({navigation, route}) => {
     },[]);
   return (
     <SafeAreaView style={{flex: 1}}>
-      <StatusBar barStyle={'#3DB24B'} />
       <View style={{flex: 1}}>
         <Header  title={'Travailleurs'}/>
         <Text style={{marginTop:10,textAlign:'center',color:'#1E8723',fontWeight:'bold'}}>{DetailsRaces?.whereAreYou} - {DetailsRaces?.whereAreYouGoing}</Text>

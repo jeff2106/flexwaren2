@@ -234,6 +234,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
                         textAlign: "center",
                         margin: 2,
                         fontWeight: "bold",
+                        height:50
                      },
                   ]}
                />
@@ -252,6 +253,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
                         textAlign: "center",
                         margin: 2,
                         fontWeight: "bold",
+                        height:50
                      },
                   ]}
                />
@@ -270,6 +272,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
                         textAlign: "center",
                         margin: 2,
                         fontWeight: "bold",
+                        height:50
                      },
                   ]}
                />
@@ -288,6 +291,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
                         textAlign: "center",
                         margin: 2,
                         fontWeight: "bold",
+                        height:50
                      },
                   ]}
                />

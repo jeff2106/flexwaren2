@@ -58,7 +58,7 @@ const FindDrivers: () => Node = ({navigation, route}) => {
   const freQV = [];
   return (
     <SafeAreaView>
-      <StatusBar barStyle={'#3DB24B'} />
+      
       <View>
         <Header  />
         <View

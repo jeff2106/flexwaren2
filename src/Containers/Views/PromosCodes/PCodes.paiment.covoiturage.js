@@ -86,7 +86,6 @@ const PCodesCovoiturages: () => Node = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <StatusBar barStyle={'#3DB24B'} />
       <View style={{flex: 1}}>
         <Header title='Cov' />
         <Text style={{width:'100%',color:'black',backgroundColor:'white'}}  />

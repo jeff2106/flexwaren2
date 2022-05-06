@@ -140,6 +140,7 @@ const NmberVerifL1: () => Node = ({ navigation, route }) => {
                          fontSize: 15,
                         width: windowWidth / 1.5,
                         fontWeight: "bold",
+                        height:50,
                         paddingLeft: 10,
                      },
                   ]}

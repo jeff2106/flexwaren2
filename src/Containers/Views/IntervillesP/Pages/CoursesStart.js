@@ -40,13 +40,7 @@ const windowHeight = Dimensions.get('window').height;
 const CoursesStart: () => Node = ({navigation, route}) => {
 const {DDetails,timestamp,u_data} = route.params;
 
-const isDarkMode = useColorScheme() === '#3DB24B';
 
-const backgroundStyle = {
-backgroundColor: '#3DB24B',
-width: windowWidth,
-height: windowHeight,
-};
 const [modalVisible, setModalVisible] = React.useState(false);
 
 return (

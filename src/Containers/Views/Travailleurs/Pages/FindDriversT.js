@@ -59,7 +59,7 @@ const FindDriversT: () => Node = ({navigation, route}) => {
   
   return (
     <SafeAreaView>
-      <StatusBar barStyle={'#3DB24B'} />
+    
       <View>
         <Header title={'Travailleurs'} />
         <View

@@ -87,7 +87,6 @@ const Paiement: () => Node = ({navigation, route}) => {
   /* === Notifications ====*/
   return (
     <SafeAreaView style={{flex: 1}}>
-      <StatusBar barStyle={'#3DB24B'} />
       <View style={{flex: 1,backgroundColor:'white'}}>
         <Header />
         <WebView  
