@@ -163,7 +163,7 @@ const CourseStart: () => Node = ({ navigation, route }) => {
     
      navigation.navigate("AccueilCovoiturage",{u_data:u_data,timestamp:timestamp});
       setTimeout(() => {
-        alert("Votre course à pris fin , merci d'avoir utliiser FlexWarren");
+       
       },2000)
     }
   
