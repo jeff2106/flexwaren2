@@ -283,6 +283,7 @@ Pusher.logToConsole = false;
                 borderRadius: 10,
                 marginTop: 10,
                 padding: 5,
+                height:50
               },
             ]}>
             <Icon name="search" size={20} style={[Colors.Gray]} />
