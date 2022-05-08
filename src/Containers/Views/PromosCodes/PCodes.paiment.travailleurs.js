@@ -93,7 +93,7 @@ const PCodesTravailleurs: () => Node = ({navigation, route}) => {
 
     var channel = pusher.subscribe('Travailleurs');
     channel.bind('AbonnementTravailleurs', function(data) {
-      
+
       //alert(JSON.stringify(data));
       if(data?.iDDrivers ==  u_data?.id){
       setModalVisible3(!modalVisible3);
@@ -102,16 +102,16 @@ const PCodesTravailleurs: () => Node = ({navigation, route}) => {
     });
   return (
     <SafeAreaView style={{flex: 1}}>
-      
+
       <View style={{flex: 1,backgroundColor: 'white'}}>
         <Header title = {'Travailleurs'}/>
-        <WebView  
-        style={{flex: 1}} 
-        source={{ uri:`http://prumad.com/API/cinetpay-promo-travailleurs.php?amout=2000&idUser=${u_data?.id}&methodPayment=MobileMoney&timestamp=${timestamp}&dateStart=${StartAbonnement}&dateEnd=${EndAbonnement}` }} />
+        <WebView
+        style={{flex: 1}}
+        source={{ uri:`https://prumad.com/API/cinetpay-promo-travailleurs.php?amout=500&idUser=${u_data?.id}&methodPayment=MobileMoney&timestamp=${timestamp}&dateStart=${StartAbonnement}&dateEnd=${EndAbonnement}` }} />
         <Text/>
         <Text/>
 
-        <TouchableOpacity 
+        <TouchableOpacity
         onPress={() => {
           navigation.navigate('CoursesT',{
           u_data: u_data , WAY: '',WAYG: '',timestamp: new Date().getTime()
@@ -167,7 +167,7 @@ const PCodesTravailleurs: () => Node = ({navigation, route}) => {
               <Text style={{color:'white'}}>{Fr.BackAccueil}</Text>
             </TouchableOpacity>
           </View>
-          
+
         </View>
       </Modal>
     </SafeAreaView>

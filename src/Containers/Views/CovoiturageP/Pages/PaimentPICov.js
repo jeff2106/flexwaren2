@@ -49,7 +49,7 @@ const windowHeight = Dimensions.get('window').height;
 
 const PaimentPICov: () => Node = ({navigation, route}) => {
   //Data of Color
-  const isDarkMode = useColorScheme() === '#3DB24B';  
+  const isDarkMode = useColorScheme() === '#3DB24B';
   const {title, methodName,u_data , timestamp, PackagePrice} = route.params;
 
   const backgroundStyle = {
@@ -91,7 +91,7 @@ const PaimentPICov: () => Node = ({navigation, route}) => {
 
     var channel = pusher.subscribe('Covoiturage');
     channel.bind('AbonnementCovoiturage', function(data) {
-      
+
       //alert(JSON.stringify(data));
       if(data?.iDDrivers ==  u_data?.id){
       setModalVisible3(!modalVisible3);
@@ -110,12 +110,12 @@ const PaimentPICov: () => Node = ({navigation, route}) => {
       <StatusBar barStyle={'#3DB24B'} />
       <View style={{flex: 1}}>
         <Header title='Cov' />
-        <WebView  
-        style={{flex: 1,backgroundColor:'white'}} 
-        source={{ uri:`http://prumad.com/API/cinetpay-abonnementCovoiturage.php?amout=${PackagePrice?.price.replaceAll('.', '')}&idUser=${u_data?.id}&methodPayment=MobileMoney&timestamp=${timestamp}j&dateStart=${StartAbonnement}&dateEnd=${EndAbonnement}` }} />
+        <WebView
+        style={{flex: 1,backgroundColor:'white'}}
+        source={{ uri:`https://prumad.com/API/cinetpay-abonnementCovoiturage.php?amout=${PackagePrice?.price.replaceAll('.', '')}&idUser=${u_data?.id}&methodPayment=MobileMoney&timestamp=${timestamp}j&dateStart=${StartAbonnement}&dateEnd=${EndAbonnement}` }} />
         <Text/>
 
-        <TouchableOpacity 
+        <TouchableOpacity
             onPress={() => {
             navigation.navigate('Index',{
             u_data: u_data ,timestamp: new Date().getTime()
@@ -171,7 +171,7 @@ const PaimentPICov: () => Node = ({navigation, route}) => {
               <Text style={{color:'white'}}>{Fr.BackAccueil}</Text>
             </TouchableOpacity>
           </View>
-          
+
         </View>
       </Modal>
     </SafeAreaView>

@@ -3,7 +3,7 @@
  * https://github.com/facebook/react-native
  *
  * @format
- * @flow strict-local 
+ * @flow strict-local
  */
 
 import React,{ useState } from 'react';
@@ -47,7 +47,7 @@ const Menu: () => Node = (props) => {
 
 
   return (
-      
+
         <View style={styles.Container}>
           <Text/>
             <Image
@@ -71,11 +71,11 @@ const Menu: () => Node = (props) => {
           </TouchableOpacity>
           {
            u_data?.u_data?.accountType == Fr.C &&
-            <TouchableOpacity onPress={() => navigateAndSimpleReset('Dashboard',{u_dataV: u_data,timestamp:new Date().getTime()})} style={styles.containItemNavigation}>
+            <TouchableOpacity onPress={() => navigation.navigate('Dashboard',{u_dataV: u_data,timestamp:new Date().getTime()})} style={styles.containItemNavigation}>
               <Icon size={30} color="black" name="view-dashboard-outline" /><Text style={[styles.MenuProfilStyle,styles.textEquilibryMargin]}>Tableau de bord</Text>
             </TouchableOpacity>
           }
-          
+
           {
            u_data?.u_data?.accountType == 5  &&
             <TouchableOpacity onPress={() => navigateAndSimpleReset('PaymentMethode',{u_dataV: u_data,timestamp:new Date().getTime()})} style={styles.containItemNavigation}>
@@ -97,9 +97,9 @@ const Menu: () => Node = (props) => {
           <View style={{position:'absolute',bottom:10,width:windowWidth/1.5}}>
               <Text style={{color:'black',fontWeight:'bold',textAlign:'left',fontSize:15,marginLeft:10}}>Service d'assistance</Text>
               <Text/>
-              
+
               <Text style={{color:'black',fontWeight:'bold',textAlign:'left',fontSize:15,marginLeft:10}}>A propos de nous</Text>
-              
+
               <Text/>
               <Text/>
               <Text onPress={() => signOut()} style={{color:'red',fontWeight:'bold',textAlign:'center',fontSize:20}}>Deconnexion</Text>
@@ -110,7 +110,7 @@ const Menu: () => Node = (props) => {
 };
 
 const styles = StyleSheet.create({
-  
+
   Container: {
     paddingTop: 10,
     flex:1

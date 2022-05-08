@@ -52,8 +52,7 @@ const Index: () => Node = ({navigation, route}) => {
   const isDarkMode = useColorScheme() === '#3DB24B';
   const backgroundStyle = {
     backgroundColor: '#3DB24B',
-    width: windowWidth,
-    height: windowHeight,
+    flex:1
   };
   const { u_dataV , timestamp } = route.params;
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -86,7 +85,7 @@ const Index: () => Node = ({navigation, route}) => {
         .then(response => response.json())
         .then(result =>{ setAmount(result); console.log(result);})
         .catch(error => console.log('error', error));
-     
+
   }
 
   },[timestamp])
@@ -141,7 +140,18 @@ const Index: () => Node = ({navigation, route}) => {
     },
   ];
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <SafeAreaView style={[backgroundStyle]}>
+      <StatusBar
+          barStyle="dark-content"
+          // dark-content, light-content and default
+          hidden={false}
+          //To hide statusBar
+          backgroundColor="green"
+          //Background color of statusBar
+          translucent={true}
+          //allowing light, but not detailed shapes
+          networkActivityIndicatorVisible={true}
+      />
       <View style={[Generalstyle.miniCard,{marginTop:30},]}>
         <Text
           style={[Generalstyle.miniText, Generalstyle.alignSelf, Colors.Green]}>
@@ -151,29 +161,26 @@ const Index: () => Node = ({navigation, route}) => {
         onPress={() => signOut()}
           style={[{fontSize:12}, Generalstyle.alignSelf, Colors.Green]}>
           Espace de {u_data?.u_data?.accountType}
-        </Text> 
-        
+        </Text>
+
         {u_data?.u_data?.accountType == 'Conducteur' &&
           btn2.map((item, index) => (
             <View key={index}>
               <TouchableOpacity
                 style={[Generalstyle.miniCardBtn]}
                 onPress={() => {
-                      
+
                       if (item.text == 'Travailleurs') {
-                        
-                    
-                      if (hours > 15 && hours < 23) {
+
+
+                      if (hours > 15 && hours < 21) {
+                        navigation.navigate(`${item.firstView}`,{u_data: u_data?.u_data,timestamp: new Date().getTime(),Amount: Amount});
+                      } else if (hours > 4 && hours < 8) {
                         navigation.navigate(`${item.firstView}`,{u_data: u_data?.u_data,timestamp: new Date().getTime(),Amount: Amount});
                       } else {
                         setModalVisible(!modalVisible);
                       }
-                      if (hours > 4 && hours < 8) {
-                        navigation.navigate(`${item.firstView}`,{u_data: u_data?.u_data,timestamp: new Date().getTime(),Amount: Amount});
-                      } else {
-                        setModalVisible(!modalVisible);
-                      }
-                      
+
                     }
 
                   if (item.text != 'Travailleurs') {
@@ -194,20 +201,17 @@ const Index: () => Node = ({navigation, route}) => {
               <TouchableOpacity
                 style={[Generalstyle.miniCardBtn]}
                  onPress={() => {
-                  if (item.text == 'Travailleurs') {
-                      
-                  
-                    if (hours > 15 && hours < 23) {
+                  if (item.text === 'Travailleurs') {
+
+
+                    if (hours > 15 && hours < 21) {
                       navigation.navigate(`${item.firstView}`,{u_data: u_data?.u_data,timestamp: new Date().getTime(),Amount: Amount});
-                    } else {
+                    } else if(hours > 4 && hours < 8) {
+                      navigation.navigate(`${item.firstView}`,{u_data: u_data?.u_data,timestamp: new Date().getTime(),Amount: Amount});
+                    }else {
                       setModalVisible(!modalVisible);
                     }
-                    if (hours > 4 && hours < 8) {
-                      navigation.navigate(`${item.firstView}`,{u_data: u_data?.u_data,timestamp: new Date().getTime(),Amount: Amount});
-                    } else {
-                      setModalVisible(!modalVisible);
-                    }
-                    
+
                   }
                   if (item.text != 'Travailleurs') {
                     navigation.navigate(`${item.firstView}`,{u_data: u_data?.u_data,timestamp: new Date().getTime(),Amount: Amount});

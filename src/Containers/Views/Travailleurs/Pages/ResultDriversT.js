@@ -32,6 +32,7 @@ import Icon from 'react-native-vector-icons/Octicons';
 import Icons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Pusher from 'pusher-js/react-native';
+import PushNotification from "react-native-push-notification";
 
 //My Src Import
 import Colors from '../../../Utils/Colors.js';
@@ -109,13 +110,13 @@ const ResultDriversT: () => Node = ({navigation, route}) => {
     var datafilter = alertData?.filter(item => item?.whereAreYouGoing == Title.toLowerCase() && item.state != "End" && item?.date >= Today);
     setAfterFilterDataReturn(datafilter);
   }
-  
+
 
   React.useEffect(() => {
     setRefreshing(!refreshing)
     getAlert()
     filterData(Title);
-    
+
   }, [Title, timestamp]);
   //end
 const onRefresh = () => {
@@ -200,7 +201,7 @@ function sendNotif(){
       soundName: "default", // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
       repeatType: null, // (optional) Repeating interval. Check 'Repeating Notifications' section for more info.
     });
-  
+
 }
   Pusher.logToConsole = false;
 
@@ -210,10 +211,10 @@ function sendNotif(){
 
   var channel = pusher.subscribe('Travailleurs');
   channel.bind('CourseStartTravailleurs', function(data) {
-      
-      
+
+
       CourseStart(data?.idRaces);
-    
+
 
   });
 
@@ -266,6 +267,7 @@ function sendNotif(){
               Colors.White_BG,
               {
                 borderRadius: 10,
+                  height:50,
                 marginTop: 10,
                 padding: 5,
               },
@@ -288,7 +290,7 @@ function sendNotif(){
             {Fr.NotDriver}
           </Text>
         )}
-        
+
         <FlatList
           data={AfterFilterDataReturn}
           keyExtractor={item => item.id.toString()}
@@ -320,7 +322,7 @@ function sendNotif(){
               style={{position: 'absolute', right: 20, top: 20}}>
               <Icons name="close" size={25} style={[Colors.Dark]} />
             </TouchableOpacity>
-           
+
             <Image
               source={{uri: `data:image/jpeg;base64,${datamodalVisible?.DriverData?.photoProfil}`}}
               style={[
@@ -369,7 +371,7 @@ function sendNotif(){
             <Text style={{fontWeight: 'bold',color:'black'}}>
               {Fr.Depart} : {datamodalVisible?.date}
             </Text>
-            
+
             <Text style={{fontWeight: 'bold',color:'black'}}>
               {Fr.Matricule} : {datamodalVisible?.DriverData?.numberMatricles.toUpperCase()}
             </Text>
@@ -455,11 +457,11 @@ function sendNotif(){
                           console.log(result);
                           setModalVisible(!modalVisible);
                           setModalVisible2(!modalVisible2);
-                         
+
                         }
                       })
                       .catch(error => console.log('error', error));
-                    
+
                   }}
                   style={[
                     Generalstyle.shadow,
@@ -505,7 +507,7 @@ function sendNotif(){
                 </Text>
               </TouchableOpacity>
               }
-              
+
             </View>
           </View>
         </View>

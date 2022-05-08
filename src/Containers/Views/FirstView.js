@@ -60,64 +60,74 @@ const FirstView: () => Node = ({navigation}) => {
 
   const [modalVisible, setModalVisible] = React.useState(false);
   const [notification, setNotification] = React.useState(false);
-  
 
-  
+
+
 /* === Notifications ====*/
   return (
-    <ImageBackground
-      style={[
-        {resizeMode: 'contain', height: windowHeight},
-        Colors.darkGreen_BG,
-      ]}
-      source={Iconsimg.backGroundImageAppp}>
-      <Image source={Iconsimg.sys_imgFlex} style={{resizeMode:'contain',height:200,width:200,alignSelf:'center'}}/>
-      <View style={{position: 'absolute', bottom: '7%', left: 0, right: 0}}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('PolitiqueConf')}
-          style={[
-            {
-              height: windowHeight / 15,
-              width: '90%',
-              alignSelf: 'center',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginBottom: 25,
-              borderRadius: 20,
-            },
-            Colors.GreenLignt_BG,
-          ]}>
-          <Text
-            style={[
-              {fontWeight: 'bold', textTransform: 'uppercase', color: 'white'},
-            ]}>
-            {Fr.Ins}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() =>  /* NmberVerifL1 */ navigation.navigate('NmberVerifL1')}
-          style={[
-            {
-              height: windowHeight / 15,
-              width: '90%',
-              alignSelf: 'center',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 20,
-              marginBottom: 50,
-            },
-            Colors.White_BG,
-          ]}>
-          <Text
-            style={[
-              Colors.GreenLignt,
-              {fontWeight: 'bold', textTransform: 'uppercase'},
-            ]}>
-            {Fr.LogTxt}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </ImageBackground>
+
+      <SafeAreaView style={{flex:1,backgroundColor: '#3DB24B'}}>
+          <StatusBar
+              animated={true}
+              backgroundColor="red"
+              barStyle={"dark-content"}
+              showHideTransition={false}
+              hidden={false} />
+          <ImageBackground
+              style={[
+                  {resizeMode: 'contain', height: windowHeight},
+                  Colors.darkGreen_BG,
+              ]}
+              source={Iconsimg.backGroundImageAppp}>
+              <Image source={Iconsimg.sys_imgFlex} style={{resizeMode:'contain',height:200,width:200,alignSelf:'center'}}/>
+              <View style={{position: 'absolute', bottom: '7%', left: 0, right: 0}}>
+                  <TouchableOpacity
+                      onPress={() => navigation.navigate('PolitiqueConf')}
+                      style={[
+                          {
+                              height: windowHeight / 15,
+                              width: '90%',
+                              alignSelf: 'center',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              marginBottom: 25,
+                              borderRadius: 20,
+                          },
+                          Colors.GreenLignt_BG,
+                      ]}>
+                      <Text
+                          style={[
+                              {fontWeight: 'bold', textTransform: 'uppercase', color: 'white'},
+                          ]}>
+                          {Fr.Ins}
+                      </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                      onPress={() =>  /* NmberVerifL1 */ navigation.navigate('NmberVerifL1')}
+                      style={[
+                          {
+                              height: windowHeight / 15,
+                              width: '90%',
+                              alignSelf: 'center',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              borderRadius: 20,
+                              marginBottom: 50,
+                          },
+                          Colors.White_BG,
+                      ]}>
+                      <Text
+                          style={[
+                              Colors.GreenLignt,
+                              {fontWeight: 'bold', textTransform: 'uppercase'},
+                          ]}>
+                          {Fr.LogTxt}
+                      </Text>
+                  </TouchableOpacity>
+              </View>
+          </ImageBackground>
+      </SafeAreaView>
+
   );
 };
 

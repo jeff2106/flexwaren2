@@ -39,7 +39,7 @@ const windowHeight = Dimensions.get("window").height;
 //End
 
 const NmberVerifL1: () => Node = ({ navigation, route }) => {
-   
+
    const [modalVisible, setModalVisible] = React.useState(false);
    const [number, setnumber] = React.useState("");
 
@@ -150,8 +150,7 @@ const NmberVerifL1: () => Node = ({ navigation, route }) => {
                style={{
                   textAlign: "center",
                   color: "#3DB24B",
-                  marginTop: 20,
-                  marginBottom: 20
+                  margin: 20
                }}
             >
                {Fr.CT}
@@ -187,8 +186,8 @@ const NmberVerifL1: () => Node = ({ navigation, route }) => {
                      {Fr.next}
                   </Text>
                </TouchableOpacity>
-            </View> 
-            
+            </View>
+
          </ScrollView>
       </View>
    );

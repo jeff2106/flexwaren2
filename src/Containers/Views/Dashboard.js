@@ -17,7 +17,7 @@ import {
   useColorScheme,
   View,
   Dimensions,
-  TouchableOpacity, 
+  TouchableOpacity,
   Image,
   Modal,
   Pressable,
@@ -67,8 +67,8 @@ React.useEffect(() => {
         .then(response => response.json())
         .then(result =>{ setAmount(result); console.log(result);})
         .catch(error => console.log('error', error));
-     
- 
+
+
     var requestOptions2 = {
         method: 'GET',
         redirect: 'follow'
@@ -89,11 +89,11 @@ React.useEffect(() => {
         .then(response3 => response3.json())
         .then(result3 =>{ setRateAccepted(result3); console.log(result3);})
         .catch(error3 => console.log('error3', error3));
-     
-  
+
+
 
   },[])
-  //console.log(Colors.GreenLignt?.color) 
+
   return (
     <ScrollView style={{flex:1}}>
       <TouchableOpacity onPress={() => navigation.navigate('Index')} style={{margin:20}}>
@@ -152,12 +152,12 @@ React.useEffect(() => {
               <View style={{width:'33.33%',borderRightWidth:1,justifyContent:'center',alignItems:'center',height:100}}>
                   <FontAwesome size={30} color={Colors.GreenLignt?.color} name="star" />
                   <Text>{RateAccepted?.number * 5 / 100}%</Text>
-                  <Text>Accepté</Text>
+                  <Text>Notes</Text>
               </View>
               <View style={{width:'33.33%',borderRightWidth:1,justifyContent:'center',alignItems:'center',height:100}}>
                   <FontAwesome size={30} color={Colors.GreenLignt?.color} name="close" />
                   <Text>{RideAccepted?.numberclose}</Text>
-                  <Text>Accepté</Text>
+                  <Text>Refusé</Text>
               </View>
           </View>
           <View style={{alignSelf:'center',height:20,width:'120%',marginTop:5,marginBottom:5,backgroundColor:'gray'}}/>
@@ -180,10 +180,10 @@ React.useEffect(() => {
 
 
 
-              
-              
+
+
       </View>
-      
+
     </ScrollView>
   );
 };

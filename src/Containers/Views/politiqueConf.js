@@ -22,7 +22,8 @@ import {
   Modal,
   Pressable,
   ImageBackground,
-  TextInput
+  TextInput,
+  Platform
 } from 'react-native';
 
 //My Src Import
@@ -51,12 +52,20 @@ const PolitiqueConf: () => Node = ({navigation}) => {
   const [notification, setNotification] = React.useState(false);
   const [isSelected, setIsSelected] = React.useState(false);
 
-  
+  const MyStatusBar = ({backgroundColor, ...props}) => (
+      <View style={[styles.statusBar, { backgroundColor }]}>
+        <SafeAreaView>
+          <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+        </SafeAreaView>
+      </View>
+  );
 
-  
+
+
 /* === Notifications ====*/
   return (
-    <>
+    <SafeAreaView style={{flex:1 }}>
+      <MyStatusBar backgroundColor="#5E8D48" barStyle="light-content" />
     <View style={[{margin:20,flexDirection:'row',marginTop:50}]}>
       <Image style={[{resizeMode:'contain',width:50,height:50,marginTop:10}]} source={Iconsimg.sys_write_cndit} />
       <Text  style={[{width:windowWidth/1.4,fontSize:18,lineHeight:30,color:"black",textAlign:'center'},Generalstyle.bold]}>Acceptez les conditions générales de Flex Waren et consultez la déclaration de confidentialité</Text>
@@ -69,17 +78,37 @@ const PolitiqueConf: () => Node = ({navigation}) => {
     </View>
     <View style={{borderWidth:1,marginLeft:20,marginRight:20,opacity:0.2,marginTop:windowHeight/40}}/>
     {
-      !isSelected ? 
+      !isSelected ?
       <View style={[!isSelected ? Colors.Gray_BG : Colors.GreenLignt_BG ,{position:'absolute',bottom:20,width:'70%',alignItems:'center',justifyContent:'center',height:40,alignSelf:'center',borderRadius:40}]}>
         <Text style={{color:'white',fontWeight:'bold',fontSize:15}}> Suivant </Text>
-    </View> : 
+    </View> :
     <TouchableOpacity  onPress={() => navigation.navigate('CreatUserI')} style={[!isSelected ? Colors.Gray_BG : Colors.GreenLignt_BG ,{position:'absolute',bottom:20,width:'70%',alignItems:'center',justifyContent:'center',height:40,alignSelf:'center',borderRadius:40}]}>
         <Text style={{color:'white',fontWeight:'bold',fontSize:15}}> Suivant </Text>
     </TouchableOpacity>
     }
-    
-    </>
+
+    </SafeAreaView>
   );
 };
+
+const STATUSBAR_HEIGHT = StatusBar.currentHeight;
+const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  statusBar: {
+    height: STATUSBAR_HEIGHT,
+  },
+  appBar: {
+    backgroundColor:'#79B45D',
+    height: APPBAR_HEIGHT,
+  },
+  content: {
+    flex: 1,
+    backgroundColor: '#33373B',
+  },
+});
 
 export default PolitiqueConf;

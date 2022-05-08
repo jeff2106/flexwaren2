@@ -54,8 +54,8 @@ const PCodesCovoiturages: () => Node = ({navigation, route}) => {
 
   const today = new Date();
     const yyyy = today.getFullYear();
-    let mmD = today.getMonth() +1; 
-    let mmT = today.getMonth() +2; 
+    let mmD = today.getMonth() +1;
+    let mmT = today.getMonth() +2;
 
     let dd = today.getDate();
 
@@ -89,19 +89,19 @@ const PCodesCovoiturages: () => Node = ({navigation, route}) => {
       <View style={{flex: 1}}>
         <Header title='Cov' />
         <Text style={{width:'100%',color:'black',backgroundColor:'white'}}  />
-        <TextInput 
-          style={{width:'100%',color:'black',backgroundColor:'white',paddingLeft:20}} 
-          placeholder="Mettez le montant ici ... 100" 
+        <TextInput
+          style={{width:'100%',color:'black',backgroundColor:'white',paddingLeft:20}}
+          placeholder="Mettez le montant ici ... 100"
           keyboardType={"number-pad"}
-          onChangeText={(val) => setPrice(val)} 
+          onChangeText={(val) => setPrice(val)}
 
         />
-        <WebView  
-        style={{flex: 1,backgroundColor:'white'}} 
-        source={{ uri:`http://prumad.com/API/cinetpay-promo-covoiturages.php?amout=${Price}&idUser=${u_data?.id}&methodPayment=MobileMoney&timestamp=${timestamp}j&dateStart=${StartAbonnement}&dateEnd=${EndAbonnement}` }} />
+        <WebView
+        style={{flex: 1,backgroundColor:'white'}}
+        source={{ uri:`https://prumad.com/API/cinetpay-promo-covoiturages.php?amout=${Price}&idUser=${u_data?.id}&methodPayment=MobileMoney&timestamp=${timestamp}j&dateStart=${StartAbonnement}&dateEnd=${EndAbonnement}` }} />
         <Text/>
 
-        <TouchableOpacity 
+        <TouchableOpacity
             onPress={() => {
             navigation.navigate('Index',{
             u_data: u_data ,timestamp: new Date().getTime()
@@ -157,7 +157,7 @@ const PCodesCovoiturages: () => Node = ({navigation, route}) => {
               <Text style={{color:'white'}}>{Fr.BackAccueil}</Text>
             </TouchableOpacity>
           </View>
-          
+
         </View>
       </Modal>
     </SafeAreaView>

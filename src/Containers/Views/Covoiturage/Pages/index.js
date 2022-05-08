@@ -9,22 +9,26 @@
 import React from 'react';
 import type {Node} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  Dimensions,
-  TouchableOpacity,
-  Image,
-  Modal,
-  Pressable,
-  ImageBackground,
-  TextInput,
-  Alert
-} from 'react-native';
+    SafeAreaView,
+    ScrollView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    useColorScheme,
+    View,
+    Dimensions,
+    TouchableOpacity,
+    Image,
+    Modal,
+    Pressable,
+    ImageBackground,
+    Button,
+    TextInput,
+    KeyboardAvoidingView,
+    Keyboard,
+    Alert, Platform,
+    TouchableWithoutFeedback
+} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icons from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
@@ -104,11 +108,11 @@ const AccueilCovoiturage: () => Node = ({navigation,route}) => {
      longitudeDelta: 0.1220142817690068,
    };
    const [curentPosition, setCurentPosition] = React.useState(initialState);
-  
-  
+
+
   //Avoir la position de l'utilisateur
   React.useEffect(() => {
-    
+
     Geolocation.getCurrentPosition((info) => {
           const { longitude, latitude } = info.coords;
           setCurentPosition({
@@ -116,7 +120,7 @@ const AccueilCovoiturage: () => Node = ({navigation,route}) => {
             latitude,
             longitude,
           });
-        });    
+        });
   }, [curentPosition?.latitude]);
   //End
 
@@ -146,7 +150,7 @@ if( LatLongLocationSelected?.lat && LatLongLocationSelected2?.lat ){
     );
   let PriceDisplay;
   const ConvertKM = geolib.convertDistance(KilometersCheck, 'km');
-  ConvertKM > 1 ? (PriceDisplay = ConvertKM * 180) : (PriceDisplay = ConvertKM * 0.18);
+  ConvertKM > 1 ? (PriceDisplay = ConvertKM * 210) : (PriceDisplay = ConvertKM * 0.210);
   KilometersSplit = ConvertKM?.toString()?.split('.')[0];
   PriceSplit = PriceDisplay?.toString()?.split('.')[0];
 }else{
@@ -155,7 +159,7 @@ if( LatLongLocationSelected?.lat && LatLongLocationSelected2?.lat ){
 }
 
 function CreateOrders(){
-  
+
   if(LatLongLocationSelected?.lat && LatLongLocationSelected2?.lat){
 
     const  Kilometers =  geolib.getDistance(
@@ -165,11 +169,11 @@ function CreateOrders(){
    let price;
       const kT = geolib.convertDistance(Kilometers, 'km');
 
-      kT > 1 ? (price = kT * 203) : (price = kT * 0.20);
+      kT > 1 ? (price = kT * 210) : (price = kT * 0.210);
 
     let KTSPLIT = kT?.toString()?.split('.')[0];
     let PRICESPLIT = price?.toString()?.split('.')[0];
-    
+
     setPrice({price: PRICESPLIT, Km: KTSPLIT });
     var formdata = new FormData();
     formdata.append("uidCustomers", u_data?.id);
@@ -221,7 +225,7 @@ React.useEffect(() => {
     channel.bind('covreservation', function(data) {
 
       if(data?.PassagerID == u_data?.id && data?.status == 202){
-        
+
         var formdata = new FormData();
 
         var requestOptions = {
@@ -231,7 +235,7 @@ React.useEffect(() => {
 
         fetch(`https://prumad.com/API/index2.php?OrdersAccepte=${data?.idRace}`, requestOptions)
           .then(response => response.json())
-          .then(result => { 
+          .then(result => {
             console.log('=====> lastID: ',data?.idRace);
             navigation.navigate('FetchDriversCovoiturage',{
               curentPositionNext: curentPosition,
@@ -239,13 +243,13 @@ React.useEffect(() => {
               u_data:u_data,
               timestamp:timestamp
             });
-            
+
           })
           .catch(error => console.log('error', error));
 
           setIsCommand(!isCommand);
         }
-      
+
       });
 },[]);
 
@@ -262,7 +266,7 @@ function Annuler(){
   .then(response => response.json())
   .then(result => {console.log(result);})
   .catch(error => console.log('error', error));
-  setIsCommand(!isCommand)       
+  setIsCommand(!isCommand)
 }
 //End
 
@@ -281,7 +285,7 @@ React.useEffect(() => {
       setTimeOutOrders(30);
     }
   }else{
-    
+
   }
 },[TimeOutOrders]);
 
@@ -362,7 +366,7 @@ function getLatLngInput2(text){
     fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${text}&key=${GOOGLE_MAPS_APIKEY}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        
+
         setLatLongLocationSelected2(result?.result?.geometry?.location);
       })
       .catch(error => console.log('error', error));
@@ -370,179 +374,367 @@ function getLatLngInput2(text){
 //End
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={[{position:'absolute',top:10,zIndex:4}]} onPress={() => navigation.openDrawer()}> 
-        <Icon name="menu" size={30} style={[Colors.Dark]} />
-    </TouchableOpacity>
-    {
-      isActive1 == false &&
-       whereAreYou !=  "" && 
-      <ScrollView style={{position:'absolute',top:0,right:0,left:0,zIndex:3,height: 120,overflow:'scroll',zIndex:3}}>
-      {
 
-        locationPosition?.length > 0 &&
-        locationPosition?.map((item,index) => 
-          <TouchableOpacity onPress={() => {setisActive1(true);setwhereAreYou(item);}} key={index} style={{borderBottomWidth:1,height:50,alignItems:'center',flexDirection:'row',backgroundColor:'white',zIndex:5}}>
-            <SimpleLineIcons name="location-pin" size={15} style={[Colors.GreenLignt,{zIndex:6}]} />
-            <Text style={{fontWeight:'bold',color:'black',marginLeft:10}}>{item?.description}</Text>
-        </TouchableOpacity>
-        )
-        
-     }
-    </ScrollView>
-    }
+    <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+    >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.inner}>
+                <TouchableOpacity style={[{position:'absolute',top:10,zIndex:4}]} onPress={() => navigation.openDrawer()}>
+                    <Icon name="menu" size={30} style={[Colors.Dark]} />
+                </TouchableOpacity>
+                {
+                    isActive1 == false &&
+                    whereAreYou !=  "" &&
+                    <ScrollView style={{position:'absolute',top:0,right:0,left:0,zIndex:3,height: 120,overflow:'scroll'}}>
+                        {
 
-    {
-      isActive2 == false &&
-       whereYouGo !=  "" &&
-      <ScrollView style={{position:'absolute',top:0,right:0,left:0,backgroundColor:'white',zIndex:3,height:120  ,overflow:'scroll'}}>
-      {
+                            locationPosition?.length > 0 &&
+                            locationPosition?.map((item,index) =>
+                                <TouchableOpacity onPress={() => {setisActive1(true);setwhereAreYou(item);}} key={index} style={{borderBottomWidth:1,height:50,alignItems:'center',flexDirection:'row',backgroundColor:'white',zIndex:5}}>
+                                    <SimpleLineIcons name="location-pin" size={15} style={[Colors.GreenLignt,{zIndex:6}]} />
+                                    <Text style={{fontWeight:'bold',color:'black',marginLeft:10}}>{item?.description}</Text>
+                                </TouchableOpacity>
+                            )
 
-        locationPosition2?.length > 0 &&
-        locationPosition2?.map((item,index) => 
-          <TouchableOpacity onPress={() => {setisActive2(true);setwhereYouGo(item);}} key={index} style={{borderBottomWidth:1,height:50,marginRight:10,marginLeft:10,alignItems:'center',flexDirection:'row'}}>
-            <SimpleLineIcons name="location-pin" size={15} style={[Colors.GreenLignt]} />
-            <Text style={{fontWeight:'bold',color:'black',marginLeft:10}}>{item?.description}</Text>
-        </TouchableOpacity>
-        )
-        
-     }
+                        }
+                    </ScrollView>
+                }
+                {
+                    isActive2 == false &&
+                    whereYouGo !=  "" &&
+                    <ScrollView style={{position:'absolute',top:0,right:0,left:0,backgroundColor:'white',zIndex:3,height:120  ,overflow:'scroll'}}>
+                        {
 
-    </ScrollView>
-    }
-     <MapView
-         showsUserLocation={true}
-         showsMyLocationButton={true}
-         mapType="standard"
-         followsUserLocation={true}
-         initialRegion={curentPosition}
-       style={styles.map}
-       
-     >
-     <MapViewDirections
-      strokeWidth={3}
-      strokeColor={Colors.GreenLignt.color}
-      origin={origin}
-      destination={destination}
-      apikey={"AIzaSyDSbg654fWaJihkk3FIk52Je8viclmsYCU"}
-    />
-     </MapView>
-     
-    
-    {
-      isCommand && 
-      <View>
-      <TouchableOpacity style={[{position:'absolute',top:10, right:1000 ,borderRadius:100,width:50,height:50,justifyContent:'center',alignItems:'center'},Colors.darkGreen_BG]} onPress={() => navigation.openDrawer()}> 
-          <Icon name="navigation" size={30} style={[Colors.White,{transform:[{rotate:'20deg'}]}]} />
-      </TouchableOpacity>
-      <View style={[{position:'absolute',height:windowHeight/2.5,width:windowWidth, bottom:0,backgroundColor:'white',borderRadius:12,padding:20}]}>
-        <View style={[{height:windowHeight/12,}]}>
-            <Text style={[Colors.GreenLignt,Generalstyle.bold]}>Ou êtes-vous ?</Text>
+                            locationPosition2?.length > 0 &&
+                            locationPosition2?.map((item,index) =>
+                                <TouchableOpacity onPress={() => {setisActive2(true);setwhereYouGo(item);}} key={index} style={{borderBottomWidth:1,height:50,marginRight:10,marginLeft:10,alignItems:'center',flexDirection:'row'}}>
+                                    <SimpleLineIcons name="location-pin" size={15} style={[Colors.GreenLignt]} />
+                                    <Text style={{fontWeight:'bold',color:'black',marginLeft:10}}>{item?.description}</Text>
+                                </TouchableOpacity>
+                            )
 
-            <TextInput 
-              value={!whereAreYou?.description ? whereAreYou : whereAreYou?.description} 
-              onFocus={(e) => {
-                setwhereAreYou("");
-                setLatLongLocationSelected("");
-                setListView1(true);
-                setisActive1(false);
-              }} 
-              onBlur={() => {
-                setListView1(false);
-              }} 
-              onChangeText={(val) => 
-                setwhereAreYou(val)
-              }
-              style={{height:40,color:'black'}} 
-              placeholder={"......"} />
+                        }
 
-            <View style={{borderWidth:0.5,opacity:0.2}}/>
-        </View>
-        <View style={[{height:windowHeight/12}]}>
-            <Text style={[Colors.GreenLignt,Generalstyle.bold]}>Ou allez-vous ?</Text>
-            <TextInput
-              value={!whereYouGo?.description ? whereYouGo : whereYouGo?.description} 
-              onFocus={(e) => {
-                setwhereYouGo("");
-                setLatLongLocationSelected2("");
-                setListView2(true);
-                setisActive2(false);
-              }} 
-              onBlur={() => {
-                setListView2(false);
-                setisActive2(false);
-              }}
-              onChangeText={(val) => 
-                setwhereYouGo(val)} 
-              style={{height:40,color:'black'}} 
-              placeholder={"......"} 
-              />
-            <View style={{borderWidth:0.5,opacity:0.2}}/>
-        </View>
-        <View style={[{height:windowHeight/10,alignSelf:'center',width:200,alignItems:'center', justifyContent:'center',borderRadius:12,margin:10, flexDirection:'row'},Generalstyle.shadow]}>
-            <Text style={{textAlign:'center',marginRight:10,fontWeight:'bold',color:'black'}}> {PriceSplit } XOF </Text>
-            <Image style={[{resizeMode:'contain',width:100,alignSelf:'center'}]} source={Iconsimg.sysRaceCovImg}/>
-            <Icons name="infocirlce" size={20} style={[Colors.Dark,{position:'absolute',top:3,right:10,opacity:0.5}]} />
-        </View>
-        <View style={[{height:windowHeight/15}]}>
-           
-            <TouchableOpacity onPress={() => {
-              CreateOrders();
-              }} 
-            style={[{alignSelf:'center',width:'80%',height:'100%',borderRadius:30,justifyContent:'center',alignItems:'center'},Colors.GreenLignt_BG]}>
-              <Text style={[{color:'white'},Generalstyle.bold]} >COMMANDER</Text>
-            </TouchableOpacity>
-        </View>
+                    </ScrollView>
+                }
+                <MapView
+                    showsUserLocation={true}
+                    showsMyLocationButton={true}
+                    mapType="standard"
+                    followsUserLocation={true}
+                    initialRegion={curentPosition}
+                    style={styles.map}
 
-      </View>
-      
-      </View>
-    }
+                >
+                    <MapViewDirections
+                        strokeWidth={3}
+                        strokeColor={Colors.GreenLignt.color}
+                        origin={origin}
+                        destination={destination}
+                        apikey={"AIzaSyDSbg654fWaJihkk3FIk52Je8viclmsYCU"}
+                    />
+                </MapView>
+                {
+                    isCommand &&
+                    <View style={{flex:1}}>
+                        <TouchableOpacity style={[{position:'absolute',top:10, right:1000 ,borderRadius:100,width:50,height:50,justifyContent:'center',alignItems:'center'},Colors.darkGreen_BG]} onPress={() => navigation.openDrawer()}>
+                            <Icon name="navigation" size={30} style={[Colors.White,{transform:[{rotate:'20deg'}]}]} />
+                        </TouchableOpacity>
+                        <View style={[{position:'absolute',height:windowHeight/2.5,width:windowWidth, bottom:0,backgroundColor:'white',borderRadius:12,padding:20}]}>
+                            <View style={[{height:windowHeight/12,}]}>
+                                <Text style={[Colors.GreenLignt,Generalstyle.bold]}>Ou êtes-vous ?</Text>
 
-    {
-      !isCommand && 
+                                <TextInput
+                                    value={!whereAreYou?.description ? whereAreYou : whereAreYou?.description}
+                                    onFocus={(e) => {
+                                        setwhereAreYou("");
+                                        setLatLongLocationSelected("");
+                                        setListView1(true);
+                                        setisActive1(false);
+                                    }}
+                                    onBlur={() => {
+                                        setListView1(false);
+                                    }}
+                                    onChangeText={(val) =>
+                                        setwhereAreYou(val)
+                                    }
+                                    style={{height:40,color:'black'}}
+                                    placeholder={"......"} />
 
-      <View style={{flex:1,backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
+                                <View style={{borderWidth:0.5,opacity:0.2}}/>
+                            </View>
+                            <View style={[{height:windowHeight/12}]}>
+                                <Text style={[Colors.GreenLignt,Generalstyle.bold]}>Ou allez-vous ?</Text>
+                                <TextInput
+                                    value={!whereYouGo?.description ? whereYouGo : whereYouGo?.description}
+                                    onFocus={(e) => {
+                                        setwhereYouGo("");
+                                        setLatLongLocationSelected2("");
+                                        setListView2(true);
+                                        setisActive2(false);
+                                    }}
+                                    onBlur={() => {
+                                        setListView2(false);
+                                        setisActive2(false);
+                                    }}
+                                    onChangeText={(val) =>
+                                        setwhereYouGo(val)}
+                                    style={{height:40,color:'black'}}
+                                    placeholder={"......"}
+                                />
+                                <View style={{borderWidth:0.5,opacity:0.2}}/>
+                            </View>
+                            <View style={[{height:windowHeight/10,alignSelf:'center',width:200,alignItems:'center', justifyContent:'center',borderRadius:12,margin:10, flexDirection:'row'},Generalstyle.shadow]}>
+                                <Text style={{textAlign:'center',marginRight:10,fontWeight:'bold',color:'black'}}> {PriceSplit } XOF </Text>
+                                <Image style={[{resizeMode:'contain',width:100,alignSelf:'center'}]} source={Iconsimg.sysRaceCovImg}/>
+                                <Icons name="infocirlce" size={20} style={[Colors.Dark,{position:'absolute',top:3,right:10,opacity:0.5}]} />
+                            </View>
+                            <View style={[{height:windowHeight/15}]}>
+
+                                <TouchableOpacity onPress={() => {
+                                    CreateOrders();
+                                }}
+                                                  style={[{alignSelf:'center',width:'80%',height:'100%',borderRadius:30,justifyContent:'center',alignItems:'center'},Colors.GreenLignt_BG]}>
+                                    <Text style={[{color:'white'},Generalstyle.bold]} >COMMANDER</Text>
+                                </TouchableOpacity>
+                            </View>
+
+                        </View>
+
+                    </View>
+                }
+
+                {
+                    !isCommand &&
+
+                    <View style={{flex:1,backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
 
 
-        <View>
-          
-              <Image source={Iconsimg.sys_Localisation}  style={{resizeMode:'contain',width:30,height:30,alignSelf:'center',position:'absolute',top:windowHeight/2.5,zIndex:2}}/>
-              <Image source={require('../sys_pulseFecthing.gif')}  style={{resizeMode:'contain',width:1000,alignSelf:'center',position:'absolute',top:windowHeight/4,zIndex:1}}/>
-          
+                        <View>
 
-            <View style={[{position:'absolute',height:windowHeight/4.5,width:windowWidth/1.04,alignSelf:'center', bottom:-windowWidth*1.74,backgroundColor:'white',borderRadius:12,padding:20}]}>
-            <TouchableOpacity style={{justifyContent:'space-between',flexDirection:'row'}}>
-              <Text style={{color:'black'}}>Recherche de vehicule</Text>
-              <Text style={{color:'black'}}>{TimeOutOrders}s</Text>
+                            <Image source={Iconsimg.sys_Localisation}  style={{resizeMode:'contain',width:30,height:30,alignSelf:'center',position:'absolute',top:windowHeight/2.5,zIndex:2}}/>
+                            <Image source={require('../sys_pulseFecthing.gif')}  style={{resizeMode:'contain',width:1000,alignSelf:'center',position:'absolute',top:windowHeight/4,zIndex:1}}/>
 
-            </TouchableOpacity>
-          <View style={{borderWidth:0.5,opacity:0.2,marginTop:20}}/>
-          <View>
-            <TouchableOpacity onPress={() => Annuler()} style={[Generalstyle.shadow,{width:40,height:40,marginTop:20, borderRadius:100,alignSelf:'center',alignItems:'center',justifyContent:'center'}]}>
-                <Icons name="close" size={20} style={[Colors.red,]} />
-            </TouchableOpacity>
-            <Text/>
-            <Text style={{fontSize:20,color:'black',alignSelf:'center',marginTop:4}}>Annuler la commande</Text>
-          </View>
 
-          </View>
-        </View>
+                            <View style={[{position:'absolute',height:windowHeight/4.5,width:windowWidth/1.04,alignSelf:'center', bottom:-windowWidth*1.74,backgroundColor:'white',borderRadius:12,padding:20}]}>
+                                <TouchableOpacity style={{justifyContent:'space-between',flexDirection:'row'}}>
+                                    <Text style={{color:'black'}}>Recherche de vehicule</Text>
+                                    <Text style={{color:'black'}}>{TimeOutOrders}s</Text>
 
-      </View>
-    }
-    
-    
-   </View>
+                                </TouchableOpacity>
+                                <View style={{borderWidth:0.5,opacity:0.2,marginTop:20}}/>
+                                <View>
+                                    <TouchableOpacity onPress={() => Annuler()} style={[Generalstyle.shadow,{width:40,height:40,marginTop:20, borderRadius:100,alignSelf:'center',alignItems:'center',justifyContent:'center'}]}>
+                                        <Icons name="close" size={20} style={[Colors.red,]} />
+                                    </TouchableOpacity>
+                                    <Text/>
+                                    <Text style={{fontSize:20,color:'black',alignSelf:'center',marginTop:4}}>Annuler la commande</Text>
+                                </View>
+
+                            </View>
+                        </View>
+
+                    </View>
+                }
+            </View>
+        </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
+
 const styles = StyleSheet.create({
- container: {
-   ...StyleSheet.absoluteFillObject,
-   justifyContent: 'flex-end'
- },
- map: {
-   ...StyleSheet.absoluteFillObject
- },
+    containers: {
+        ...StyleSheet.absoluteFillObject,
+        justifyContent: 'flex-end'
+    },
+    map: {
+        ...StyleSheet.absoluteFillObject
+    },
+    container: {
+        flex: 1
+    },
+    inner: {
+        flex:1
+    }
 });
 export default AccueilCovoiturage;
+
+/*
+
+const styles = StyleSheet.create({
+
+});
+
+<KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : 500} style={{flex:1}}>
+          <View style={[styles.container,{
+                  flex: 1
+
+          }]}>
+              <TouchableOpacity style={[{position:'absolute',top:10,zIndex:4}]} onPress={() => navigation.openDrawer()}>
+                  <Icon name="menu" size={30} style={[Colors.Dark]} />
+              </TouchableOpacity>
+              {
+                  isActive1 == false &&
+                  whereAreYou !=  "" &&
+                  <ScrollView style={{position:'absolute',top:0,right:0,left:0,zIndex:3,height: 120,overflow:'scroll'}}>
+                      {
+
+                          locationPosition?.length > 0 &&
+                          locationPosition?.map((item,index) =>
+                              <TouchableOpacity onPress={() => {setisActive1(true);setwhereAreYou(item);}} key={index} style={{borderBottomWidth:1,height:50,alignItems:'center',flexDirection:'row',backgroundColor:'white',zIndex:5}}>
+                                  <SimpleLineIcons name="location-pin" size={15} style={[Colors.GreenLignt,{zIndex:6}]} />
+                                  <Text style={{fontWeight:'bold',color:'black',marginLeft:10}}>{item?.description}</Text>
+                              </TouchableOpacity>
+                          )
+
+                      }
+                  </ScrollView>
+              }
+
+              {
+                  isActive2 == false &&
+                  whereYouGo !=  "" &&
+                  <ScrollView style={{position:'absolute',top:0,right:0,left:0,backgroundColor:'white',zIndex:3,height:120  ,overflow:'scroll'}}>
+                      {
+
+                          locationPosition2?.length > 0 &&
+                          locationPosition2?.map((item,index) =>
+                              <TouchableOpacity onPress={() => {setisActive2(true);setwhereYouGo(item);}} key={index} style={{borderBottomWidth:1,height:50,marginRight:10,marginLeft:10,alignItems:'center',flexDirection:'row'}}>
+                                  <SimpleLineIcons name="location-pin" size={15} style={[Colors.GreenLignt]} />
+                                  <Text style={{fontWeight:'bold',color:'black',marginLeft:10}}>{item?.description}</Text>
+                              </TouchableOpacity>
+                          )
+
+                      }
+
+                  </ScrollView>
+              }
+              <MapView
+                  showsUserLocation={true}
+                  showsMyLocationButton={true}
+                  mapType="standard"
+                  followsUserLocation={true}
+                  initialRegion={curentPosition}
+                  style={styles.map}
+
+              >
+                  <MapViewDirections
+                      strokeWidth={3}
+                      strokeColor={Colors.GreenLignt.color}
+                      origin={origin}
+                      destination={destination}
+                      apikey={"AIzaSyDSbg654fWaJihkk3FIk52Je8viclmsYCU"}
+                  />
+              </MapView>
+
+
+              {
+                  isCommand &&
+                  <View>
+                      <TouchableOpacity style={[{position:'absolute',top:10, right:1000 ,borderRadius:100,width:50,height:50,justifyContent:'center',alignItems:'center'},Colors.darkGreen_BG]} onPress={() => navigation.openDrawer()}>
+                          <Icon name="navigation" size={30} style={[Colors.White,{transform:[{rotate:'20deg'}]}]} />
+                      </TouchableOpacity>
+                      <View style={[{position:'absolute',height:windowHeight/2.5,width:windowWidth, bottom:0,backgroundColor:'white',borderRadius:12,padding:20}]}>
+                          <View style={[{height:windowHeight/12,}]}>
+                              <Text style={[Colors.GreenLignt,Generalstyle.bold]}>Ou êtes-vous ?</Text>
+
+                              <TextInput
+                                  value={!whereAreYou?.description ? whereAreYou : whereAreYou?.description}
+                                  onFocus={(e) => {
+                                      setwhereAreYou("");
+                                      setLatLongLocationSelected("");
+                                      setListView1(true);
+                                      setisActive1(false);
+                                  }}
+                                  onBlur={() => {
+                                      setListView1(false);
+                                  }}
+                                  onChangeText={(val) =>
+                                      setwhereAreYou(val)
+                                  }
+                                  style={{height:40,color:'black'}}
+                                  placeholder={"......"} />
+
+                              <View style={{borderWidth:0.5,opacity:0.2}}/>
+                          </View>
+                          <View style={[{height:windowHeight/12}]}>
+                              <Text style={[Colors.GreenLignt,Generalstyle.bold]}>Ou allez-vous ?</Text>
+                              <TextInput
+                                  value={!whereYouGo?.description ? whereYouGo : whereYouGo?.description}
+                                  onFocus={(e) => {
+                                      setwhereYouGo("");
+                                      setLatLongLocationSelected2("");
+                                      setListView2(true);
+                                      setisActive2(false);
+                                  }}
+                                  onBlur={() => {
+                                      setListView2(false);
+                                      setisActive2(false);
+                                  }}
+                                  onChangeText={(val) =>
+                                      setwhereYouGo(val)}
+                                  style={{height:40,color:'black'}}
+                                  placeholder={"......"}
+                              />
+                              <View style={{borderWidth:0.5,opacity:0.2}}/>
+                          </View>
+                          <View style={[{height:windowHeight/10,alignSelf:'center',width:200,alignItems:'center', justifyContent:'center',borderRadius:12,margin:10, flexDirection:'row'},Generalstyle.shadow]}>
+                              <Text style={{textAlign:'center',marginRight:10,fontWeight:'bold',color:'black'}}> {PriceSplit } XOF </Text>
+                              <Image style={[{resizeMode:'contain',width:100,alignSelf:'center'}]} source={Iconsimg.sysRaceCovImg}/>
+                              <Icons name="infocirlce" size={20} style={[Colors.Dark,{position:'absolute',top:3,right:10,opacity:0.5}]} />
+                          </View>
+                          <View style={[{height:windowHeight/15}]}>
+
+                              <TouchableOpacity onPress={() => {
+                                  CreateOrders();
+                              }}
+                                                style={[{alignSelf:'center',width:'80%',height:'100%',borderRadius:30,justifyContent:'center',alignItems:'center'},Colors.GreenLignt_BG]}>
+                                  <Text style={[{color:'white'},Generalstyle.bold]} >COMMANDER</Text>
+                              </TouchableOpacity>
+                          </View>
+
+                      </View>
+
+                  </View>
+              }
+
+              {
+                  !isCommand &&
+
+                  <View style={{flex:1,backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
+
+
+                      <View>
+
+                          <Image source={Iconsimg.sys_Localisation}  style={{resizeMode:'contain',width:30,height:30,alignSelf:'center',position:'absolute',top:windowHeight/2.5,zIndex:2}}/>
+                          <Image source={require('../sys_pulseFecthing.gif')}  style={{resizeMode:'contain',width:1000,alignSelf:'center',position:'absolute',top:windowHeight/4,zIndex:1}}/>
+
+
+                          <View style={[{position:'absolute',height:windowHeight/4.5,width:windowWidth/1.04,alignSelf:'center', bottom:-windowWidth*1.74,backgroundColor:'white',borderRadius:12,padding:20}]}>
+                              <TouchableOpacity style={{justifyContent:'space-between',flexDirection:'row'}}>
+                                  <Text style={{color:'black'}}>Recherche de vehicule</Text>
+                                  <Text style={{color:'black'}}>{TimeOutOrders}s</Text>
+
+                              </TouchableOpacity>
+                              <View style={{borderWidth:0.5,opacity:0.2,marginTop:20}}/>
+                              <View>
+                                  <TouchableOpacity onPress={() => Annuler()} style={[Generalstyle.shadow,{width:40,height:40,marginTop:20, borderRadius:100,alignSelf:'center',alignItems:'center',justifyContent:'center'}]}>
+                                      <Icons name="close" size={20} style={[Colors.red,]} />
+                                  </TouchableOpacity>
+                                  <Text/>
+                                  <Text style={{fontSize:20,color:'black',alignSelf:'center',marginTop:4}}>Annuler la commande</Text>
+                              </View>
+
+                          </View>
+                      </View>
+
+                  </View>
+              }
+
+
+          </View>
+      </KeyboardAvoidingView>
+
+ */

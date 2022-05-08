@@ -130,7 +130,7 @@ PushNotification.configure({
         soundName: "default", // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
         repeatType: null, // (optional) Repeating interval. Check 'Repeating Notifications' section for more info.
       });
-    
+
   }
 
   Pusher.logToConsole = false;
@@ -146,7 +146,7 @@ PushNotification.configure({
       sendNotif();
 
     }
-      
+
 
   });
     /* ======= END ====== */
@@ -205,6 +205,7 @@ PushNotification.configure({
             if (value !== null) {
                if(value == 1){
                 setModalVisible(!modalVisible)
+                   console.log('OUI')
                }
             }else{
               console.log("Nothing inside");
@@ -225,7 +226,7 @@ PushNotification.configure({
             flexDirection:'row',
           },
         ]}>
-        <TouchableOpacity onPress={() => navigation.openDrawer()}> 
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
         <Icon name="menu" size={20} style={[Colors.White,{marginRight:windowHeight/7,marginLeft:10}]} />
         </TouchableOpacity>
         <View>
@@ -255,7 +256,7 @@ PushNotification.configure({
 
         <ScrollView style={{flex:1}}>
       {
-        isLoading == false && 
+        isLoading == false &&
         Drivers?.length < 1 &&
         <View style={{justifyContent:'center',alignItems:'center',marginTop:40}}>
           <Image source={Iconsimg.sys_emptyAlert} style={[Generalstyle.DefaultImg,{
@@ -269,10 +270,10 @@ PushNotification.configure({
                   <Text style={[Generalstyle.bold,Colors.White]}>Créer une alerte</Text>
             </TouchableOpacity>
           }
-          
+
         </View>
       }
-        
+
       {
         isLoading && <ActivityIndicator size="large"/>
       }
@@ -295,14 +296,14 @@ PushNotification.configure({
           bottom:0
       },Colors.darkGreen_BG]}>
       {
-                MyAbonnment?.messages == "Vous n'avez pas d'abonnement" && 
+                MyAbonnment?.messages == "Vous n'avez pas d'abonnement" &&
                 <TouchableOpacity onPress={() => navigation.navigate('IndexPT',{u_data : u_data,AbonnementPrice:MyAbonnment?.price,timestamp: new Date().getTime()})} style={[Colors.GreenLignt_BG,{width:'50%',justifyContent:'center',alignItems:'center',height:50,borderRadius:20}]}>
                         <Text style={[Generalstyle.bold,Colors.White]}>Créer une alerte</Text>
                 </TouchableOpacity>
               }
 
               {
-                MyAbonnment?.status != 404 && 
+                MyAbonnment?.status != 404 &&
                 <TouchableOpacity onPress={() => navigation.navigate(MyAbonnment?.dateEnd > todays ? 'NAlertT' : 'IndexPT' ,{u_data : u_data,AbonnementPrice:MyAbonnment?.price, timestamp: new Date().getTime()})} style={[Colors.GreenLignt_BG,{width:'50%',justifyContent:'center',alignItems:'center',height:50,borderRadius:20}]}>
                         <Text style={[Generalstyle.bold,Colors.White]}>Créer une alerte</Text>
                 </TouchableOpacity>
@@ -324,14 +325,14 @@ PushNotification.configure({
                <Text/>
                <Text style={[Generalstyle.textAlign_center]}>
                   Pour votre première recharge vous aurez un bonus,
-                  qui vous fait payer 2000 XOF et vous recevrez le pack de 12000 XOF
-                  automatiquement, supercool n'est-ce pas ?.Ce bonus n'est valable qu'à 
+                  qui vous fait payer 500 XOF et vous recevrez le pack de 12000 XOF
+                  automatiquement, supercool n'est-ce pas ?.Ce bonus n'est valable qu'à
                   l'instant, cliquez vite ci-dessous pour en profiter !!!
                </Text>
                <Text/>
                <Text/>
-              
-               
+
+
              </View>
              <View style={[{flexDirection:'row',height:200}]}>
                   <TouchableOpacity

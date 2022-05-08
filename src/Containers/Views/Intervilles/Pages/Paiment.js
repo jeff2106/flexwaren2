@@ -40,7 +40,7 @@ import Generalstyle from '../../../Utils/GeneralStyle';
 import Header from '../../../Components/Header';
 import CardDrivers from '../../../Components/CardDrivers';
 import Drivers from '../../../DemoData/DriversData.js';
-import Pusher from 'pusher-js/react-native'; 
+import Pusher from 'pusher-js/react-native';
 
 import Footer from '../../../Components/Footer';
 //Get Reel Dimension of Screen[]
@@ -62,12 +62,12 @@ const Paiement: () => Node = ({navigation, route}) => {
   const [modalVisible3, setModalVisible3] = React.useState(false);
   const [paymentIsOk, setPaymentIsOk] = React.useState(false);
 
-  
+
   const [AfterFilterDataReturn, setAfterFilterDataReturn] = React.useState();
   const [Warn, setWarn] = React.useState();
   const [Reservation, setReservation] = React.useState();
   //End
-  
+
   Pusher.logToConsole = false;
 
   var pusher = new Pusher('e4ad133537d71dc9e689', {
@@ -76,26 +76,26 @@ const Paiement: () => Node = ({navigation, route}) => {
 
   var channel = pusher.subscribe('Intervilles');
   channel.bind('PaymentInterville', function(data) {
-    
+
     //alert(JSON.stringify(data));
     if(data?.iDCustomers ==  u_data?.id){
     setModalVisible3(!modalVisible3);
     }
 
   });
-  
+
   /* === Notifications ====*/
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={{flex: 1,backgroundColor:'white'}}>
         <Header />
-        <WebView  
+        <WebView
         style={{flex: 1}}
-        source={{ uri:`http://prumad.com/API/cinetpay-PaymentInterville.php?amout=${data2?.price}&idUser=${u_data?.id}&idRace=${data2?.id}&idDrives=${data2?.DriverData?.id}&methodPayment=MobileMoney&state=succes&raceType=PackagePrice&timestamp=${timestamp}` }} />
+        source={{ uri:`https://prumad.com/API/cinetpay-PaymentInterville.php?amout=${data2?.price}&idUser=${u_data?.id}&idRace=${data2?.id}&idDrives=${data2?.DriverData?.id}&methodPayment=MobileMoney&state=succes&raceType=PackagePrice&timestamp=${timestamp}` }} />
         <Text/>
         <Text/>
 
-        <TouchableOpacity 
+        <TouchableOpacity
             onPress={() => {
               navigation.navigate('ResultDrivers',{
               u_data: u_data , WAY: '',WAYG: '',timestamp: new Date().getTime()
@@ -143,7 +143,7 @@ const Paiement: () => Node = ({navigation, route}) => {
               {Fr.RRS}
             </Text>
             <TouchableOpacity onPress={() => {
-          
+
           navigation.navigate('ResultDrivers',{
           u_data: u_data , WAY: '',WAYG: '',timestamp: new Date().getTime()
           })
@@ -151,7 +151,7 @@ const Paiement: () => Node = ({navigation, route}) => {
               <Text style={{color:'white'}}>{Fr.BackAccueil}</Text>
             </TouchableOpacity>
           </View>
-          
+
         </View>
       </Modal>
     </SafeAreaView>
