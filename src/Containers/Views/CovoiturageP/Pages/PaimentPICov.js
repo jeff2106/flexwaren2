@@ -107,7 +107,6 @@ const PaimentPICov: () => Node = ({navigation, route}) => {
   //end
   return (
     <SafeAreaView style={{flex: 1}}>
-      <StatusBar barStyle={'#3DB24B'} />
       <View style={{flex: 1}}>
         <Header title='Cov' />
         <WebView

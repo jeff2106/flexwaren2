@@ -67,12 +67,7 @@ const FirstView: () => Node = ({navigation}) => {
   return (
 
       <SafeAreaView style={{flex:1,backgroundColor: '#3DB24B'}}>
-          <StatusBar
-              animated={true}
-              backgroundColor="red"
-              barStyle={"dark-content"}
-              showHideTransition={false}
-              hidden={false} />
+
           <ImageBackground
               style={[
                   {resizeMode: 'contain', height: windowHeight},

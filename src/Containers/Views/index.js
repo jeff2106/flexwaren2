@@ -31,6 +31,7 @@ import Generalstyle from '../Utils/GeneralStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AuthContext } from '../Components/context';
 import { NavigationContainer, CommonActions } from '@react-navigation/native';
+ import CustomAppStatusBar from '@/Components/AppBar'
 
 //Get Reel Dimension of Screen[]
 const windowWidth = Dimensions.get('window').width;
@@ -116,7 +117,7 @@ const Index: () => Node = ({navigation, route}) => {
     },
   ];
 
-    const btn2= [
+  const btn2= [
     {
       id: 1,
       routes: 'Courses',
@@ -145,6 +146,7 @@ const Index: () => Node = ({navigation, route}) => {
           barStyle="dark-content"
           // dark-content, light-content and default
           hidden={false}
+          visible={true}
           //To hide statusBar
           backgroundColor="green"
           //Background color of statusBar
@@ -152,6 +154,7 @@ const Index: () => Node = ({navigation, route}) => {
           //allowing light, but not detailed shapes
           networkActivityIndicatorVisible={true}
       />
+
       <View style={[Generalstyle.miniCard,{marginTop:30},]}>
         <Text
           style={[Generalstyle.miniText, Generalstyle.alignSelf, Colors.Green]}>

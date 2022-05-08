@@ -54,7 +54,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
    console.log(number);
 
      const { signIn, signUp,signOut } = React.useContext(AuthContext);
-     
+
       const loginHandle =  (datas,password) => {
          const code = `${number1}${number2}${number3}${number4}`;
          if (code == verification) {
@@ -69,7 +69,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
           myHeaders.append("Accept", "application/json");
           myHeaders.append("Content-Type", "application/json");
           myHeaders.append("Access-Control-Allow-Origin", "*");
-          myHeaders.append("Authorization", "Bearer 91VxhCMAHjg6PBKl189IqiZ4QTENvWxiUxmn5HqB");
+          myHeaders.append("Authorization", "Bearer iuTt5G4VV9zLKrZqfqpakr8GDhv2OPsIkFU1N42j");
 
           var raw = JSON.stringify({
             "receivers": [
@@ -120,7 +120,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
            .catch(error => console.log('error', error));
       }
       React.useEffect(() => {
-               
+
                 if (count > 0) {
                setTimeout(() => {
                   setcount(count - 1);
@@ -133,7 +133,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
 
             }
          }
-              
+
       },[count])
 
       React.useEffect(() => {
@@ -223,7 +223,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
                   numberOfLine={1}
                   maxLength={1}
                   keyboardType={"number-pad"}
-                  
+
                   onChangeText={(val) => setnumber1(val)}
                   style={[
                      {
@@ -242,7 +242,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
                <TextInput
                   maxLength={1}
                   keyboardType={"number-pad"}
-                  
+
                   onChangeText={(val) => setnumber2(val)}
                   style={[
                      {
@@ -261,7 +261,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
                <TextInput
                   maxLength={1}
                   keyboardType={"number-pad"}
-                  
+
                   onChangeText={(val) => setnumber3(val)}
                   style={[
                      {
@@ -280,7 +280,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
                <TextInput
                   maxLength={1}
                   keyboardType={"number-pad"}
-                  
+
                   onChangeText={(val) => setnumber4(val)}
                   style={[
                      {
@@ -332,7 +332,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
                   </TouchableOpacity>
             </View>
          </ScrollView>
-         
+
       </View>
    );
 };

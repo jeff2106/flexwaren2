@@ -93,7 +93,7 @@ const AccueilCovoiturageP: () => Node = ({navigation,route}) => {
 
 
   React.useEffect(() => {
-    
+
     Geolocation.getCurrentPosition((info) => {
           const { longitude, latitude } = info.coords;
           setCurentPosition({
@@ -102,18 +102,18 @@ const AccueilCovoiturageP: () => Node = ({navigation,route}) => {
             longitude,
           });
         });
-    
-    
+
+
   }, [curentPosition?.latitude]);
 
 
 
- 
+
 
 Geolocation.watchPosition((position) => {
     var lastPosition = JSON.stringify(position);
   });
-  
+
   React.useEffect(() => {
 
     if(Online){
@@ -143,11 +143,11 @@ Geolocation.watchPosition((position) => {
         .catch(error => console.log('error', error));
     }
    },[Online,CourseEmie,])
-      
-      
+
+
 
   React.useEffect(() => {
-    
+
     if(CustomersAvailableData?.length > 0){
 
       if(CustomersAvailableData?.length > CountCustomers){
@@ -168,7 +168,7 @@ Geolocation.watchPosition((position) => {
 
       }
     }
-   
+
   },[CustomersAvailableData,widthLoad]);
 
   React.useEffect(() => {
@@ -194,12 +194,12 @@ channel.bind('ordersAdd', function(data) {
 });
 
 //Voir si l'utilisateur viens de s'inscrire//
-   
+
 
 /* === Notifications ====*/
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={[{position:'absolute',top:10,zIndex:4}]} onPress={() => navigation.openDrawer()}> 
+      <TouchableOpacity style={[{position:'absolute',top:10,zIndex:4}]} onPress={() => navigation.openDrawer()}>
         <Icon name="menu" size={30} style={[Colors.Dark]} />
     </TouchableOpacity>
      <MapView
@@ -209,7 +209,7 @@ channel.bind('ordersAdd', function(data) {
          mapType="standard"
          initialRegion={curentPosition}
          style={styles.map}
-       
+
      >
      <MapViewDirections
       strokeWidth={3}
@@ -219,8 +219,8 @@ channel.bind('ordersAdd', function(data) {
       apikey={GOOGLE_MAPS_APIKEY}
     />
      </MapView>
-    
-     <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={{flexDirection:'row',position:'absolute',top:20,alignSelf:'center',backgroundColor:'white',width:'40%',alignItems:'center',height:50,justifyContent:'center',borderRadius:30}}>
+
+     <TouchableOpacity onPress={() => navigation.navigate('PackChooseCov',{u_data:u_data , timestamp: new Date().getTime()})} style={{flexDirection:'row',position:'absolute',top:20,alignSelf:'center',backgroundColor:'white',width:'40%',alignItems:'center',height:50,justifyContent:'center',borderRadius:30}}>
         <Image source={Iconsimg.sys_moneyPiece} />
         <Text style={{fontWeight:'bold',fontSize:15,marginLeft:10,color:'black'}}>{Amount?.solde} XOF</Text>
      </TouchableOpacity>
@@ -231,18 +231,18 @@ channel.bind('ordersAdd', function(data) {
       <TouchableOpacity onPress={() => setOnline(!Online)} style={{flexDirection:'row',position:'absolute',bottom:80,alignSelf:'center',backgroundColor:'white',width:'22%',alignItems:'center',height:80,justifyContent:'center',borderRadius:100}}>
         <Text style={{fontWeight:'bold',fontSize:20,color:'red'}}>STOP</Text>
       </TouchableOpacity>
-    } 
+    }
     {
-      !Online && 
+      !Online &&
       <TouchableOpacity onPress={() => setOnline(!Online)} style={{position:'absolute',bottom:80,alignSelf:'center',backgroundColor:Colors.GreenLignt_BG.backgroundColor,width:'22%',alignItems:'center',height:80,justifyContent:'center',borderRadius:100}}>
         <Text style={{fontWeight:'bold',fontSize:20,color:'white'}}>C'EST</Text>
         <Text style={{fontWeight:'bold',fontSize:20,color:'white'}}>PARTI</Text>
 
       </TouchableOpacity>
-    } 
+    }
     {
       //Bottom default
-      !CustomersAvailable && 
+      !CustomersAvailable &&
       <View style={{position:'absolute',
       bottom:0,
       alignSelf:'center',
@@ -253,22 +253,22 @@ channel.bind('ordersAdd', function(data) {
       justifyContent:'center',
       borderTopRightRadius:30,
       borderTopLeftRadius:30}}>
-        { Online ? 
+        { Online ?
         <View>
         <Text onPress={() => setCustomersAvailable(!CustomersAvailable)} style={{fontWeight:'bold',fontSize:20,marginLeft:10,color: Colors.GreenLignt.color}}>Vous êtes en ligne</Text>
         <Text style={{fontSize:10,textAlign:'center',color:'gray'}}>Recherche de client ...</Text>
         </View> :
         <View>
         <Text  style={{fontWeight:'bold',fontSize:20,marginLeft:10,color: 'red'}}>Vous êtes  hors ligne</Text>
-        
+
         </View>
         }
-        
+
      </View>
     }
     {
       //Les requete sont diplay
-      CustomersAvailable && 
+      CustomersAvailable &&
       <View style={{position:'absolute',
       bottom:0,
       alignSelf:'center',
@@ -290,7 +290,7 @@ channel.bind('ordersAdd', function(data) {
         <Text style={{fontWeight:'bold',fontSize:14,marginLeft:30,color:'black'}}>Point de départ</Text>
         <Text style={{fontWeight:'bold',fontSize:20,marginLeft:30,color: 'black'}}>{CustomersAvailableData?.length > 0 ? CustomersAvailableData[CountCustomers]?.whereYouAre : "Vous n'avez pas d'alerte disponible"}</Text>
         <Text/>
-        {CustomersAvailableData?.length > 0 ? 
+        {CustomersAvailableData?.length > 0 ?
         <TouchableOpacity onPress={() => {
             navigation.navigate('RaceStartFindCustomers',{
                     CustomersAvailableData:CustomersAvailableData[CountCustomers],
@@ -308,7 +308,7 @@ channel.bind('ordersAdd', function(data) {
                   <Text style={{marginRight:10,color:'white'}}>APPUYEZ POUR ACCEPTER</Text>
                   <View style={{backgroundColor: "#053706",width:40,height:40,borderRadius:100,justifyContent:'center',alignItems:'center'}}><Text style={{color:'white'}}>{widthLoad}</Text></View>
               </View>
-        </TouchableOpacity> : 
+        </TouchableOpacity> :
         <TouchableOpacity onPress={() => {
           setCustomersAvailable(!CustomersAvailable);
           }} style={{alignSelf:'center',margin:20}}>
@@ -318,10 +318,10 @@ channel.bind('ordersAdd', function(data) {
               </View>
         </TouchableOpacity>
       }
-        
+
       </View>
     }
-    
+
     </View>
   );
 };

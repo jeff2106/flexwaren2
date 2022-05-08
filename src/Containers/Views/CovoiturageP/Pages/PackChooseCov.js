@@ -49,7 +49,7 @@ const PackChooseCov: () => Node = ({navigation, route}) => {
     height: windowHeight,
   };
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [count, setcount] = React.useState(120);  
+  const [count, setcount] = React.useState(120);
   const {u_data , timestamp}=route.params;
 
 
@@ -184,7 +184,7 @@ const PackChooseCov: () => Node = ({navigation, route}) => {
                   {item.name}
                 </Text>
                 </View>
-                
+
               </View>
               <View style={{ width: windowWidth / 2.3 }}>
                 <Text
@@ -223,15 +223,12 @@ const PackChooseCov: () => Node = ({navigation, route}) => {
                <Text style={[Generalstyle.bold,Generalstyle.SIZE_20,Colors.Dark]}>Bienvenue sur Flex Waren</Text>
                <Text/>
                <Text style={[Generalstyle.textAlign_center]}>
-                Pour votre première recharge vous aurez un bonus,
-                qui vous fait avoir le double de vôtre montant de rechargement
-                automatiquement si vous faites 10000 XOF vous recevez 20000 XOF, supercool n'est-ce pas ?.Ce bonus n'est valable qu'à 
-                l'instant, cliquez vite ci-dessous pour en profiter !!!
+                Pour votre première recharge vous aurez un bonus , qui vous donne droit à la la somme payé x10 , supercool n'est ce pas ?. Ce bonus n'est valable qu'à l'instant, cliquez vite ci-dessous pour en profiter !!!
              </Text>
                <Text/>
                <Text/>
-              
-               
+
+
              </View>
              <View style={[{flexDirection:'row',height:200}]}>
                   <TouchableOpacity

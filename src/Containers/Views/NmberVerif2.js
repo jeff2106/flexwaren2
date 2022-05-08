@@ -41,7 +41,7 @@ import { AuthContext } from '../Components/context';
 //End
 
 const NmberVerif2: () => Node = ({ navigation, route }) => {
-   
+
    const [modalVisible, setModalVisible] = React.useState(false);
    const [count, setcount] = React.useState(120);
    const [totalDecompte, settotalDecompte] = React.useState(0);
@@ -53,11 +53,11 @@ const NmberVerif2: () => Node = ({ navigation, route }) => {
      const {data, verification,number} = route.params;
      const { signIn, signUp,signOut } = React.useContext(AuthContext);
      console.log(verification);
-      
+
 
 
       React.useEffect(() => {
-         
+
           if (count > 0) {
          setTimeout(() => {
             setcount(count - 1);
@@ -70,10 +70,10 @@ const NmberVerif2: () => Node = ({ navigation, route }) => {
 
       }
    }
-        
+
       },[count])
       console.log(number);
-      
+
       function codeIsValidate() {
          const code = `${number1}${number2}${number3}${number4}`;
          if (code == verification) {
@@ -92,7 +92,7 @@ const NmberVerif2: () => Node = ({ navigation, route }) => {
           myHeaders.append("Accept", "application/json");
           myHeaders.append("Content-Type", "application/json");
           myHeaders.append("Access-Control-Allow-Origin", "*");
-          myHeaders.append("Authorization", "Bearer 91VxhCMAHjg6PBKl189IqiZ4QTENvWxiUxmn5HqB");
+          myHeaders.append("Authorization", "Bearer iuTt5G4VV9zLKrZqfqpakr8GDhv2OPsIkFU1N42j");
 
           var raw = JSON.stringify({
             "receivers": [
@@ -220,7 +220,7 @@ const NmberVerif2: () => Node = ({ navigation, route }) => {
                         numberOfLine={1}
                         maxLength={1}
                         keyboardType={"number-pad"}
-                        
+
                         onChangeText={(val) => setnumber1(val)}
                         style={[
                            {
@@ -238,7 +238,7 @@ const NmberVerif2: () => Node = ({ navigation, route }) => {
                      <TextInput
                         maxLength={1}
                         keyboardType={"number-pad"}
-                        
+
                         onChangeText={(val) => setnumber2(val)}
                         style={[
                            {
@@ -256,7 +256,7 @@ const NmberVerif2: () => Node = ({ navigation, route }) => {
                      <TextInput
                         maxLength={1}
                         keyboardType={"number-pad"}
-                        
+
                         onChangeText={(val) => setnumber3(val)}
                         style={[
                            {
@@ -274,7 +274,7 @@ const NmberVerif2: () => Node = ({ navigation, route }) => {
                      <TextInput
                         maxLength={1}
                         keyboardType={"number-pad"}
-                        
+
                         onChangeText={(val) => setnumber4(val)}
                         style={[
                            {
