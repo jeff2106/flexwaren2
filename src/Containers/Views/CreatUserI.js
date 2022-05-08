@@ -45,7 +45,7 @@ const FirstView: () => Node = ({ navigation, route }) => {
    const [fullName, setfullName] = React.useState("");
    const [email, setemail] = React.useState("");
    const [password, setpassword] = React.useState("");
-   const [birthDay, setbirthDay] = React.useState("");
+   const [birthDay, setbirthDay] = React.useState();
    const [ville, setville] = React.useState("");
    const [region, setregion] = React.useState("");
 
@@ -261,7 +261,6 @@ const FirstView: () => Node = ({ navigation, route }) => {
                {fullName == "" ||
                email == "" ||
                password == "" ||
-               birthDay == "" ||
                region == "" ||
                ville == "" ? (
                   <TouchableOpacity
@@ -291,7 +290,7 @@ const FirstView: () => Node = ({ navigation, route }) => {
                               fullName,
                               email,
                               password,
-                              birthDay,
+                              birthDay ?? "nean",
                               region,
                               ville,
                            ],
