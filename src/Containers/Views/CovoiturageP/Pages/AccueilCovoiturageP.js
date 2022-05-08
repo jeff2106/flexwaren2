@@ -220,7 +220,7 @@ channel.bind('ordersAdd', function(data) {
     />
      </MapView>
 
-     <TouchableOpacity onPress={() => navigation.navigate('PackChooseCov',{u_data:u_data , timestamp: new Date().getTime()})} style={{flexDirection:'row',position:'absolute',top:20,alignSelf:'center',backgroundColor:'white',width:'40%',alignItems:'center',height:50,justifyContent:'center',borderRadius:30}}>
+     <TouchableOpacity  style={{flexDirection:'row',position:'absolute',top:20,alignSelf:'center',backgroundColor:'white',width:'40%',alignItems:'center',height:50,justifyContent:'center',borderRadius:30}}>
         <Image source={Iconsimg.sys_moneyPiece} />
         <Text style={{fontWeight:'bold',fontSize:15,marginLeft:10,color:'black'}}>{Amount?.solde} XOF</Text>
      </TouchableOpacity>
@@ -298,7 +298,6 @@ channel.bind('ordersAdd', function(data) {
                     timestamp:timestamp,
                     Amount:Amount,
                     curentPositionNext:curentPosition,
-                    Amount:Amount
                   });
           setCustomersAvailableData();
           setCustomersAvailable(!CustomersAvailable);
