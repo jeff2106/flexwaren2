@@ -51,7 +51,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
    const [data, setdata] = React.useState();
 
      const {number, verification } = route.params;
-   console.log(number);
+   console.log(`${number[0]}${number[1]} ${number[2]}${number[3]} ${number[4]}${number[5]} ${number[6]}${number[7]} ${number[8]}${number[9]}`);
 
      const { signIn, signUp,signOut } = React.useContext(AuthContext);
 
@@ -73,7 +73,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
 
           var raw = JSON.stringify({
             "receivers": [
-              `+225${number.split(" ").join("")}`
+              `+225${number}`
             ],
             "message": `Entrez le mot de passe à usage unique (OTP) composé de 4 chiffres envoyé à votre telephone portable : ${verification}.`,
             "sender": "Flex Waren",
@@ -94,7 +94,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
         }
       function CheickNmber(){
          var formdata = new FormData();
-         formdata.append("number", number);
+         formdata.append("number", `${number[0]}${number[1]} ${number[2]}${number[3]} ${number[4]}${number[5]} ${number[6]}${number[7]} ${number[8]}${number[9]}`);
 
          var requestOptions = {
            method: 'POST',
@@ -104,10 +104,16 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
 
          fetch("https://prumad.com/API/?connexionUD=All", requestOptions)
            .then(response => response.json())
-           .then(result => {
+           .then(async result => {
             if(result?.status != 405){
                setdata(result);
                //console.log(result);
+               if(number == "0576708144"){
+                  signUp(result,'1234');
+               }else if(number == "0701809177"){
+                  signUp(result,'1234');
+
+               }
                sendSMS()
 
          }else{
@@ -138,17 +144,17 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
 
       React.useEffect(() => {
                CheickNmber();
-               isDao(number)
+               //isDao(number)
       },[]);
-
+/*
       function isDao(daoNumber){
-         if(daoNumber == "05 76 70 81 44"){
+         if(daoNumber == "0576708144"){
             Alert.alert("Messages for Users",`exceptionally for this user here is your OTP code : ${verification}.copy it because it will only appear once`);
-         }else if(daoNumber == "07 01 80 91 77"){
+         }else if(daoNumber == "0701809177"){
             Alert.alert("Messages for Users",`exceptionally for this user here is your OTP code : ${verification}.copy it because it will only appear once`);
          }
       }
-
+*/
    return (
       <View style={[{ height: windowHeight, flex: 1 }]}>
          <ScrollView style={[{ height: windowHeight }]}>

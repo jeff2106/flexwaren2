@@ -44,21 +44,7 @@ const NmberVerifL1: () => Node = ({ navigation, route }) => {
    const [number, setnumber] = React.useState("");
 
 
-   if (number.length == 2) {
-      setnumber(number + " ");
-   }
-
-   if (number.length == 5) {
-      setnumber(number + " ");
-   }
-
-   if (number.length == 8) {
-      setnumber(number + " ");
-   }
-
-   if (number.length == 11) {
-      setnumber(number + " ");
-   }
+   
 
    const TS = `${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}`
    //console.log(TS);

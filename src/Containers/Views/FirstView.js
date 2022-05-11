@@ -25,6 +25,7 @@ import {
   TextInput,
 } from 'react-native';
 
+
 //My Src Import
 import Colors from '../Utils/Colors.js';
 import Iconsimg from '../Utils/Img';
@@ -66,7 +67,7 @@ const FirstView: () => Node = ({navigation}) => {
 /* === Notifications ====*/
   return (
 
-      <SafeAreaView style={{flex:1,backgroundColor: '#3DB24B'}}>
+      <SafeAreaView style={{flex:1}}>
 
           <ImageBackground
               style={[

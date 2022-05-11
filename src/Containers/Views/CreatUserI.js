@@ -49,14 +49,6 @@ const FirstView: () => Node = ({ navigation, route }) => {
    const [ville, setville] = React.useState("");
    const [region, setregion] = React.useState("");
 
-   if (birthDay.length == 2) {
-      setbirthDay(birthDay + "-");
-   }
-
-   if (birthDay.length == 5) {
-      setbirthDay(birthDay + "-");
-   }
-
    return (
       <View style={[{ height: windowHeight, flex: 1 }]}>
          <ScrollView style={[{ height: windowHeight }]}>
@@ -183,33 +175,7 @@ const FirstView: () => Node = ({ navigation, route }) => {
             >
                {Fr.IP}
             </Text>
-            <View style={{ margin: 5 }}>
-               <Text
-                  style={{ marginLeft: 10, color: "#3DB24B", marginBottom: 20 }}
-               >
-                  {Fr.DD}
-               </Text>
-               <TextInput
-                  onChangeText={(val) => setbirthDay(val)}
-                  value={birthDay}
-                  keyboardType={"number-pad"}
-                  maxLength={10}
-                  placeholder="Ex : 21-06-2000"
-                  style={[
-                     {
-                        alignSelf: "center",
-                        backgroundColor: "white",
-                        borderRadius: 20, 
-                        color:'black',
-                        fontSize: 15,
-                        width: windowWidth / 1.1,
-                        height:50,
-                        fontWeight: "bold",
-                        paddingLeft: 10,
-                     },
-                  ]}
-               />
-            </View>
+            
             <View style={{ margin: 5 }}>
                <Text
                   style={{ marginLeft: 10, color: "#3DB24B", marginBottom: 20 }}
@@ -257,6 +223,8 @@ const FirstView: () => Node = ({ navigation, route }) => {
                />
             </View>
             <View style={{ height: 10 }} />
+            <View style={{ height: 10 }} />
+
             <View>
                {fullName == "" ||
                email == "" ||
