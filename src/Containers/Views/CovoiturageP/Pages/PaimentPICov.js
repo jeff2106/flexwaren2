@@ -110,6 +110,7 @@ const PaimentPICov: () => Node = ({navigation, route}) => {
           <TextInput 
           placeholder='Montant ici ...' 
           onChangeText={(e) => setPrice(e) } 
+          keyboardType="number-pad"
           value={Price} 
           style={{paddingLeft:20,height:50,width:"100%"}} 
           onBlur={() => {
