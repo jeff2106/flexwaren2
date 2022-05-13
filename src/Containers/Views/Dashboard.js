@@ -21,7 +21,8 @@ import {
   Image,
   Modal,
   Pressable,
-  TextInput
+  TextInput,
+  Linking
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -162,13 +163,18 @@ React.useEffect(() => {
           </View>
           <View style={{alignSelf:'center',height:20,width:'120%',marginTop:5,marginBottom:5,backgroundColor:'gray'}}/>
               <Text/>
-              <TouchableOpacity style={{flexDirection:'row',justifyContent:'space-between'}}>
+              <TouchableOpacity onPress={() => {
+                  Linking.openURL('https://prumad.com')
+                }}
+                 style={{flexDirection:'row',justifyContent:'space-between'}}>
                   <MaterialCommunityIcons name="headphones-settings" color={Colors.GreenLignt?.color} size={25}/>
                   <Text style={{textAlign:'right',color:'black'}}>Service d'assistance </Text>
                   <MaterialCommunityIcons name="chevron-right" color={Colors.GreenLignt?.color} size={30}/>
               </TouchableOpacity>
               <Text/>
-              <TouchableOpacity style={{flexDirection:'row',justifyContent:'space-between'}}>
+              <TouchableOpacity onPress={() => {
+                  Linking.openURL('tel:1234567890')
+                }} style={{flexDirection:'row',justifyContent:'space-between'}}>
                   <FontAwesome5 name="users-cog" color={Colors.GreenLignt?.color} size={25}/>
                   <Text style={{textAlign:'right',color:'black'}}>A props de nous </Text>
                   <MaterialCommunityIcons name="chevron-right" color={Colors.GreenLignt?.color} size={30}/>

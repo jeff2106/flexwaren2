@@ -87,7 +87,7 @@ const AccueilCovoiturageP: () => Node = ({navigation,route}) => {
 
 
   if(Amount?.solde < 200){
-    navigation.navigate('PackChooseCov',{u_data:u_data,timestamp : new Date().getTime()
+    navigation.navigate('PaimentPICov',{u_data:u_data,timestamp : new Date().getTime()
     })
   }
 

@@ -50,7 +50,7 @@ const windowHeight = Dimensions.get('window').height;
 const PaimentPICov: () => Node = ({navigation, route}) => {
   //Data of Color
   const isDarkMode = useColorScheme() === '#3DB24B';
-  const {title, methodName,u_data , timestamp, PackagePrice} = route.params;
+  const {title,u_data , timestamp, PackagePrice} = route.params;
 
   const backgroundStyle = {
     backgroundColor: '#3DB24B',
@@ -59,13 +59,10 @@ const PaimentPICov: () => Node = ({navigation, route}) => {
 
   //List Of my variable declared
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [modalVisible2, setModalVisible2] = React.useState(false);
+
   const [modalVisible3, setModalVisible3] = React.useState(false);
-  const [datamodalVisible, setDataModalVisible] = React.useState();
-  const [AfterFilterDataReturn, setAfterFilterDataReturn] = React.useState();
-  const [Warn, setWarn] = React.useState();
-  const [Reservation, setReservation] = React.useState();
-  const [Title, setTitle] = React.useState(title);
+
+  const [Price, setPrice] = React.useState();
   //End
 
   const today = new Date();
@@ -106,12 +103,25 @@ const PaimentPICov: () => Node = ({navigation, route}) => {
   }
   //end
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1,backgroundColor:'white'}}>
       <View style={{flex: 1}}>
         <Header title='Cov' />
+        <View>
+          <TextInput 
+          placeholder='Montant ici ...' 
+          onChangeText={(e) => setPrice(e) } 
+          value={Price} 
+          style={{paddingLeft:20,height:50,width:"100%"}} 
+          onBlur={() => {
+            if(Price < 5000){
+              setPrice("5000");
+              Alert.alert("Message","Le montant ne peux être inferieur à 5000")
+            }
+          }}/>
+        </View>
         <WebView
         style={{flex: 1,backgroundColor:'white'}}
-        source={{ uri:`https://prumad.com/API/cinetpay-abonnementCovoiturage.php?amout=${PackagePrice?.price.replaceAll('.', '')}&idUser=${u_data?.id}&methodPayment=MobileMoney&timestamp=${timestamp}j&dateStart=${StartAbonnement}&dateEnd=${EndAbonnement}` }} />
+        source={{ uri:`https://prumad.com/API/cinetpay-abonnementCovoiturage.php?amout=${Price}&idUser=${u_data?.id}&methodPayment=MobileMoney&timestamp=${timestamp}j&dateStart=${StartAbonnement}&dateEnd=${EndAbonnement}` }} />
         <Text/>
 
         <TouchableOpacity

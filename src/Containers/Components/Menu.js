@@ -95,10 +95,14 @@ const Menu: () => Node = (props) => {
           </TouchableOpacity>
         }
           <View style={{position:'absolute',bottom:10,width:windowWidth/1.5}}>
-              <Text style={{color:'black',fontWeight:'bold',textAlign:'left',fontSize:15,marginLeft:10}}>Service d'assistance</Text>
+              <Text   onPress={() => {
+                  Linking.openURL('tel:1234567890')
+                }} style={{color:'black',fontWeight:'bold',textAlign:'left',fontSize:15,marginLeft:10}}>Service d'assistance</Text>
               <Text/>
 
-              <Text style={{color:'black',fontWeight:'bold',textAlign:'left',fontSize:15,marginLeft:10}}>A propos de nous</Text>
+              <Text onPress={() => {
+                  Linking.openURL('https://prumad.com')
+                }} style={{color:'black',fontWeight:'bold',textAlign:'left',fontSize:15,marginLeft:10}}>A propos de nous</Text>
 
               <Text/>
               <Text/>

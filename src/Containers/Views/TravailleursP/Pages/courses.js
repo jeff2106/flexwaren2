@@ -198,23 +198,6 @@ PushNotification.configure({
     },[timestamp]);
 
 
-    //Voir si l'utilisateur viens de s'inscrire//
-    React.useEffect(async () => {
-      try {
-            const value = await AsyncStorage.getItem("@isNewsTav");
-            if (value !== null) {
-               if(value == 1){
-                setModalVisible(!modalVisible)
-                   console.log('OUI')
-               }
-            }else{
-              console.log("Nothing inside");
-            }
-         } catch (e) {
-            console.log("Nothing inside");
-      }
-    },[]);
-
   return (
     <View style={[{height: windowHeight, flex: 1}]}>
       <View
@@ -310,52 +293,6 @@ PushNotification.configure({
               }
       </View>
       }
-      <Modal
-           animationType="slide"
-           transparent={true}
-           visible={modalVisible}
-           onRequestClose={() => {
-             Alert.alert("Messages","Vous venez de perdre la promo !");
-             setModalVisible(!modalVisible);
-           }}
-         >
-           <View style={Generalstyle.centeredView}>
-             <View style={Generalstyle.modalView}>
-               <Text style={[Generalstyle.bold,Generalstyle.SIZE_20,Colors.Dark]}>Bienvenue sur Flex Waren</Text>
-               <Text/>
-               <Text style={[Generalstyle.textAlign_center]}>
-                  Pour votre première recharge vous aurez un bonus,
-                  qui vous fait payer 500 XOF et vous recevrez le pack de 12000 XOF
-                  automatiquement, supercool n'est-ce pas ?.Ce bonus n'est valable qu'à
-                  l'instant, cliquez vite ci-dessous pour en profiter !!!
-               </Text>
-               <Text/>
-               <Text/>
-
-
-             </View>
-             <View style={[{flexDirection:'row',height:200}]}>
-                  <TouchableOpacity
-                     style={[Colors.GreenLignt_BG,{width:100,height:100,marginHorizontal:10,borderRadius:10},Generalstyle.HEIGHT_15,Generalstyle.JSC_ALI_C]}
-                     onPress={() => {
-                      setModalVisible(!modalVisible);
-                      AsyncStorage.removeItem("@isNewsTav");
-                      navigation.navigate('PCodesTravailleurs',{u_data:u_data , timestamp: new Date().getTime()})
-                    }}
-                      >
-                     <Text style={Generalstyle.textStyle}>Profiter</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                     style={[Colors.BG_red,{width:100,height:100,marginHorizontal:10,borderRadius:10},Generalstyle.HEIGHT_15,Generalstyle.JSC_ALI_C]}
-                     onPress={() => {
-                      setModalVisible(!modalVisible);
-                      AsyncStorage.removeItem("@isNewsTav");
-                      }}>
-                     <Text style={Generalstyle.textStyle}>Fermer</Text>
-                  </TouchableOpacity>
-              </View>
-           </View>
-         </Modal>
     </View>
   );
 };

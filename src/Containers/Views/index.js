@@ -21,6 +21,7 @@ import {
   Image,
   Modal,
   Pressable,
+  ActivityIndicator
 } from 'react-native';
 
 //My Src Import
@@ -59,7 +60,7 @@ const Index: () => Node = ({navigation, route}) => {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [MyAbonnment, setMyAbonnment] = React.useState();
   const [u_data, setdata] = React.useState(u_dataV);
-  const [Amount, setAmount] = React.useState();
+  const [Amount, setAmount] = React.useState("");
 
 
 
@@ -140,6 +141,9 @@ const Index: () => Node = ({navigation, route}) => {
       img: Iconsimg.icon_travailleur,
     },
   ];
+  if(Amount == ""){
+    return <View style={{flex:1,justifyContent:'center',alignItems:'center'}}><ActivityIndicator size={"large"} /></View>
+  }
   return (
     <SafeAreaView style={[backgroundStyle]}>
       <StatusBar
