@@ -77,7 +77,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
             ],
             "message": `Entrez le mot de passe à usage unique (OTP) composé de 4 chiffres envoyé à votre telephone portable : ${verification}.`,
             "sender": "Flex Waren",
-            "sandbox": 1
+            "sandbox": 0
           });
 
           var requestOptions = {
