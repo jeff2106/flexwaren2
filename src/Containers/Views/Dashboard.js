@@ -173,7 +173,7 @@ React.useEffect(() => {
               </TouchableOpacity>
               <Text/>
               <TouchableOpacity onPress={() => {
-                  Linking.openURL('tel:1234567890')
+                  Linking.openURL('tel:0757595959')
                 }} style={{flexDirection:'row',justifyContent:'space-between'}}>
                   <FontAwesome5 name="users-cog" color={Colors.GreenLignt?.color} size={25}/>
                   <Text style={{textAlign:'right',color:'black'}}>A props de nous </Text>

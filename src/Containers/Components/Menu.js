@@ -96,7 +96,7 @@ const Menu: () => Node = (props) => {
         }
           <View style={{position:'absolute',bottom:10,width:windowWidth/1.5}}>
               <Text   onPress={() => {
-                  Linking.openURL('tel:1234567890')
+                  Linking.openURL('tel:0757595959')
                 }} style={{color:'black',fontWeight:'bold',textAlign:'left',fontSize:15,marginLeft:10}}>Service d'assistance</Text>
               <Text/>
 
