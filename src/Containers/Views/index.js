@@ -141,7 +141,7 @@ const Index: () => Node = ({navigation, route}) => {
       img: Iconsimg.icon_travailleur,
     },
   ];
-  if(Amount == ""){
+  if(u_data?.u_data?.accountType == Fr.C && Amount == ""){
     return <View style={{flex:1,justifyContent:'center',alignItems:'center'}}><ActivityIndicator size={"large"} /></View>
   }
   return (

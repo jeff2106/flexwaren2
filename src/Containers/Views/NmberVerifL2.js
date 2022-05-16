@@ -77,7 +77,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
             ],
             "message": `Entrez le mot de passe à usage unique (OTP) composé de 4 chiffres envoyé à votre telephone portable : ${verification}.`,
             "sender": "Flex Waren",
-            "sandbox": 0
+            "sandbox": 1
           });
 
           var requestOptions = {
@@ -105,6 +105,7 @@ const NmberVerifL2: () => Node = ({ navigation, route }) => {
          fetch("https://prumad.com/API/?connexionUD=All", requestOptions)
            .then(response => response.json())
            .then(async result => {
+              console.log(result)
             if(result?.status != 405){
                setdata(result);
                //console.log(result);

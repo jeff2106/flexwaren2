@@ -76,7 +76,7 @@ export default function App({navigation,route}) {
     redirect: 'follow'
   };
 
-  fetch(`http://prumad.com/API/index2.php?getHistoryCourse=${u_dataV?.u_data?.id}`, requestOptions)
+  fetch(`https://prumad.com/API/index2.php?getHistoryCourse=${u_dataV?.u_data?.id}`, requestOptions)
     .then(response => response.json())
     .then(result => {console.log(result);setMyHistorique(result)})
     .catch(error => console.log('error', error));
