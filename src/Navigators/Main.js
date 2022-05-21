@@ -1,6 +1,6 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import {View, Text, Image, ActivityIndicator, Platform} from 'react-native'
+import {View, Text, Image, ActivityIndicator, Platform,Alert} from 'react-native'
 import { ExampleContainer } from '@/Containers'
 import { useSelector } from 'react-redux'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -13,6 +13,7 @@ import navigationRef from '../Navigators/utils'
 //Screen Import//
 import Menu from '../Containers/Components/Menu'
 import MainNavigatorAuth from './Main_Auth'
+import {requestMultiple, PERMISSIONS,openSettings} from 'react-native-permissions';
 
 //Screen Import//
 import { AuthContext } from '../Containers/Components/context';
@@ -313,6 +314,22 @@ function sendNotif(data){
       </View>
       )
    }
+
+   requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then((statuses) => {
+     if(statuses[PERMISSIONS.IOS.CAMERA] == "blocked" ){
+      Alert.alert('Messages ', 'Vous devez autoriser l\' accès à la camera ', [
+        
+        {
+          text: 'Activer',
+          onPress: () => {
+            openSettings().catch(() => console.warn('cannot open settings'));
+
+          },
+        },
+      ])
+     }
+    console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+  }).catch(() => console.log("non"));
     return (
       <AuthContext.Provider value={authContext} ref={navigationRef}>
         {loginState?.userToken === null ? <MainNavigatorAuth /> : 

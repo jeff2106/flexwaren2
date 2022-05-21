@@ -24,7 +24,8 @@ import {
   ImageBackground,
   TextInput,
 } from 'react-native';
-
+import ImagePicker from "react-native-image-crop-picker";
+import ImgToBase64 from 'react-native-image-base64-png';
 
 //My Src Import
 import Colors from '../Utils/Colors.js';
@@ -33,6 +34,8 @@ import Fr from '../Utils/Fr';
 import Generalstyle from '../Utils/GeneralStyle';
 import Pusher from 'pusher-js/react-native';
 import PushNotification from "react-native-push-notification";
+import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
+
 
 
 
@@ -61,7 +64,6 @@ const FirstView: () => Node = ({navigation}) => {
 
   const [modalVisible, setModalVisible] = React.useState(false);
   const [notification, setNotification] = React.useState(false);
-
 
 
 /* === Notifications ====*/
@@ -99,7 +101,7 @@ const FirstView: () => Node = ({navigation}) => {
                       </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                      onPress={() =>  /* NmberVerifL1 */ navigation.navigate('NmberVerifL1')}
+                      onPress={() =>  /* NmberVerifL1 */OpenCam()}
                       style={[
                           {
                               height: windowHeight / 15,
