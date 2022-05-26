@@ -257,9 +257,10 @@ function sendNotif(data){
             dispatch({ type: "LOGIN", id: userData, token: userToken });
             console.log("Login");
          },
-         signOut: async () => {
+         signOut: async (data) => {
             try {
                const value = await AsyncStorage.removeItem("@u_data");
+                                    AsyncStorage.setItem("AlreadyLog",JSON.stringify(data))
             } catch (e) {
                console.log("SignUp");
             }
@@ -298,7 +299,7 @@ function sendNotif(data){
               setU_data([]);
               dispatch({ type: "LOGOUT" });
             }
-         } catch (e) {
+         } catch (e) { 
             console.log(e);
          }
 

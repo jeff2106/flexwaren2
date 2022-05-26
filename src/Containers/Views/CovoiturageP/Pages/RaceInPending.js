@@ -94,7 +94,7 @@ const RaceInPending: () => Node = ({navigation,route}) => {
         });
 
     
-  }, [curentPosition?.latitude]);
+  });
 
   function CourseEnd(){
 
@@ -112,7 +112,7 @@ const RaceInPending: () => Node = ({navigation,route}) => {
       .then(result => {
         console.log(result);
         alert("Votre course viens de s'achever !!!");
-        navigation.navigate("AccueilCovoiturageP",{
+        navigation.navigate("Index",{
           u_data:u_data,
           timestamp:timestamp,
           Amount:Amount});
@@ -165,7 +165,7 @@ const RaceInPending: () => Node = ({navigation,route}) => {
          <View style={{flexDirection:'row',position:'absolute',top:20,alignSelf:'center',backgroundColor:'white',width:'40%',padding:20,alignItems:'center',height:'auto',justifyContent:'space-evenly',borderRadius:30}}>
             <Image source={Iconsimg.sys_Localisation} style={{width:30,resizeMode:'contain',height:30}}/>
             <View>
-                  <Text style={{fontSize:15,color:"black",width:40,overflow:'hidden'}}>{CustomersAvailableData?.whereYouGoing}</Text>
+                  <Text style={{fontSize:15,color:"black",width:'auto',overflow:'hidden'}}>{CustomersAvailableData?.whereYouGoing.split(' ')[0]}</Text>
                   <Text style={{fontSize:15,color:"black",textAlign:'center'}}>....</Text>
             </View>
          </View>

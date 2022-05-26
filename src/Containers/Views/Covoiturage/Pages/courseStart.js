@@ -855,6 +855,7 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+    flex:1
   },
 });
 export default CourseStart;

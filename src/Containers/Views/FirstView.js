@@ -23,9 +23,12 @@ import {
   Pressable,
   ImageBackground,
   TextInput,
+  Alert
 } from 'react-native';
 import ImagePicker from "react-native-image-crop-picker";
 import ImgToBase64 from 'react-native-image-base64-png';
+import NotificationSounds, { playSampleSound } from  'react-native-notification-sounds';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //My Src Import
 import Colors from '../Utils/Colors.js';
@@ -35,8 +38,8 @@ import Generalstyle from '../Utils/GeneralStyle';
 import Pusher from 'pusher-js/react-native';
 import PushNotification from "react-native-push-notification";
 import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
-
-
+import PushNotificationIOS from '../js';
+import { AuthContext } from '../Components/context';
 
 
 
@@ -47,7 +50,6 @@ const windowHeight = Dimensions.get('window').height;
 //End
 
 
-
 /* === Notifications ====*/
 
 
@@ -55,6 +57,7 @@ const windowHeight = Dimensions.get('window').height;
 
 const FirstView: () => Node = ({navigation}) => {
   const isDarkMode = useColorScheme() === '#3DB24B';
+  const { signIn, signUp,signOut } = React.useContext(AuthContext);
 
   const backgroundStyle = {
     backgroundColor: '#3DB24B',
@@ -63,10 +66,25 @@ const FirstView: () => Node = ({navigation}) => {
   };
 
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [notification, setNotification] = React.useState(false);
+  const [hasAlreadyConnectState, sethasAlreadyConnectState] = React.useState("");
 
 
 /* === Notifications ====*/
+async function hasAlreadyConnect(){
+    try {
+        const value =  await AsyncStorage.getItem("AlreadyLog");
+
+        sethasAlreadyConnectState(JSON.parse(value))
+        //console.log('ok',value)
+     } catch (e) { 
+        console.log(e);
+     }
+}
+
+React.useEffect(() => {
+    hasAlreadyConnect()
+},[])
+
   return (
 
       <SafeAreaView style={{flex:1}}>
@@ -101,7 +119,8 @@ const FirstView: () => Node = ({navigation}) => {
                       </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                      onPress={() =>  /* NmberVerifL1 */OpenCam()}
+                      onPress={() =>  /* NmberVerifL1 sendLocalNotificationWithSound() */  { hasAlreadyConnectState?.status !== 200 ? navigation.navigate('NmberVerifL1') :  setModalVisible(true)}}
+                      
                       style={[
                           {
                               height: windowHeight / 15,
@@ -124,9 +143,95 @@ const FirstView: () => Node = ({navigation}) => {
                   </TouchableOpacity>
               </View>
           </ImageBackground>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+            }}
+        >
+            <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.centeredView}/>
+            <View style={styles.modalView}>
+                <Text style={[styles.modalText,{color:Colors.darkGreen_BG.backgroundColor ,fontSize:20,fontWeight:'bold'}]}>Est-ce votre compte ?</Text>
+                <View>
+                    <View>
+                        <Image style={[styles?.rounder]} source={{uri: `data:image/jpeg;base64,${hasAlreadyConnectState?.u_data?.photoProfil}`}} />
+                    </View>
+                    <Text style={[styles.modalText,{color:Colors.darkGreen_BG.backgroundColor ,fontSize:20,fontWeight:'bold'}]}>{hasAlreadyConnectState?.u_data?.fullName}</Text>
+                </View>
+                <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => {setModalVisible(!modalVisible);signUp(hasAlreadyConnectState,"password")}}
+                >
+                <Text style={styles.textStyle}>Oui</Text>
+                </Pressable>
+                <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => {setModalVisible(!modalVisible);navigation.navigate('NmberVerifL1');}}
+                >
+                <Text style={styles.textStyle}>Non</Text>
+                </Pressable>
+            </View>
+        </Modal>
       </SafeAreaView>
 
   );
 };
+
+const styles = StyleSheet.create({
+    centeredView: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 22
+    },
+    modalView: {
+      backgroundColor: "white",
+      borderRadius: 20,
+      height: windowHeight /2,
+      padding: 35,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5
+    },
+    button: {
+      borderRadius: 20,
+      padding: 10,
+      elevation: 2,
+      width: '80%'
+    },
+    buttonOpen: {
+      backgroundColor: "#F194FF",
+    },
+    buttonClose: {
+      backgroundColor: Colors.darkGreen_BG.backgroundColor,
+      marginBottom:10
+    },
+    textStyle: {
+      color: "white",
+      fontWeight: "bold",
+      textAlign: "center"
+    },
+    modalText: {
+      marginBottom: 15,
+      textAlign: "center"
+    },
+    rounder:{
+        height:100,
+        width:100,
+        alignSelf:'center',
+        borderRadius:100,
+        margin:10
+    },
+
+  });
 
 export default FirstView;

@@ -22,7 +22,8 @@ import {
   Modal,
   Pressable,
   ImageBackground,
-  TextInput
+  TextInput,
+  Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icons from 'react-native-vector-icons/AntDesign';
@@ -36,6 +37,7 @@ import Animated, {
 } from "react-native-reanimated";
 import Geolocation from '@react-native-community/geolocation';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import PushNotificationIOS from '../../../js';
 
 
 //My Src Import
@@ -47,6 +49,7 @@ import HeaderCov from '../../../Components/headerCov';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Pusher from 'pusher-js/react-native';
+import NotificationSounds, { playSampleSound } from  'react-native-notification-sounds';
 
 //Get Reel Dimension of Screen[]
 const windowWidth = Dimensions.get('window').width;
@@ -67,12 +70,8 @@ const AccueilCovoiturageP: () => Node = ({navigation,route}) => {
   const [Online, setOnline] = React.useState(false);
   const [CourseEmie, setCourseEmie] = React.useState(true);
   const [TimeOutOrders,setTimeOutOrders] = React.useState(20);
-
-
+  const [AlertShow,setAlertShow] = React.useState(0);
   const [CountCustomers, setCountCustomers] = React.useState(0);
-
-
-
   const origin = {latitude: 37.78825, longitude: -122.4324};
   const destination = {latitude: 37.771707, longitude: -122.4053769};
   const GOOGLE_MAPS_APIKEY = 'AIzaSyDSbg654fWaJihkk3FIk52Je8viclmsYCU';
@@ -83,7 +82,6 @@ const AccueilCovoiturageP: () => Node = ({navigation,route}) => {
      longitudeDelta: 0.1220142817690068,
    };
    const [curentPosition, setCurentPosition] = React.useState(initialState);
-  const [MyAbonnment, setMyAbonnment] = React.useState();
 
 
   if(Amount?.solde < 200){
@@ -102,17 +100,8 @@ const AccueilCovoiturageP: () => Node = ({navigation,route}) => {
             longitude,
           });
         });
-
-
   }, [curentPosition?.latitude]);
 
-
-
-
-
-Geolocation.watchPosition((position) => {
-    var lastPosition = JSON.stringify(position);
-  });
 
   React.useEffect(() => {
 
@@ -144,7 +133,24 @@ Geolocation.watchPosition((position) => {
     }
    },[Online,CourseEmie,])
 
+   function PlaySound(){
+    NotificationSounds.getNotifications('ringtones').then(soundsList  => {
+      console.warn('SOUNDS', JSON.stringify(soundsList));
+      /*
+      Play the notification sound.
+      pass the complete sound object.
+      This function can be used for playing the sample sound
+      */
+      if(CourseEmie == false){
+        playSampleSound(soundsList[16]);
+      }
+      setCourseEmie(!CourseEmie);
 
+      // if you want to stop any playing sound just call:
+      // stopSampleSound();
+    });
+  
+  }
 
   React.useEffect(() => {
 
@@ -157,7 +163,8 @@ Geolocation.watchPosition((position) => {
           }, 2000);
           return () => clearInterval(interval);
         }else{
-          setCountCustomers(CountCustomers + 1);
+          setCountCustomers(prev => prev + 1);
+          console.log()
           setwidthLoad(100);
         }
       }else{
@@ -182,6 +189,303 @@ Geolocation.watchPosition((position) => {
   }
 },[TimeOutOrders]);
 
+
+/* === Notifications ====*/
+const [permissions, setPermissions] = React.useState({});
+
+React.useEffect(() => {
+  PushNotificationIOS.addEventListener('register', onRegistered);
+  PushNotificationIOS.addEventListener(
+    'registrationError',
+    onRegistrationError,
+  );
+  PushNotificationIOS.addEventListener('notification', onRemoteNotification);
+  PushNotificationIOS.addEventListener(
+    'localNotification',
+    onLocalNotification,
+  );
+
+  PushNotificationIOS.requestPermissions({
+    alert: true,
+    badge: true,
+    sound: true,
+    critical: true,
+  }).then(
+    (data) => {
+      console.log('PushNotificationIOS.requestPermissions', data);
+    },
+    (data) => {
+      console.log('PushNotificationIOS.requestPermissions failed', data);
+    },
+  );
+
+  return () => {
+    PushNotificationIOS.removeEventListener('register');
+    PushNotificationIOS.removeEventListener('registrationError');
+    PushNotificationIOS.removeEventListener('notification');
+    PushNotificationIOS.removeEventListener('localNotification');
+  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
+
+const sendNotification = () => {
+  DeviceEventEmitter.emit('remoteNotificationReceived', {
+    remote: true,
+    aps: {
+      alert: {title: 'title', subtitle: 'subtitle', body: 'body'},
+      badge: 1,
+      sound: 'default',
+      category: 'REACT_NATIVE',
+      'content-available': 1,
+      'mutable-content': 1,
+    },
+  });
+};
+
+const sendSilentNotification = () => {
+  DeviceEventEmitter.emit('remoteNotificationReceived', {
+    remote: true,
+    aps: {
+      category: 'REACT_NATIVE',
+      'content-available': 1,
+    },
+  });
+};
+
+if(AlertShow == 1){
+  setTimeout(() => {
+    setAlertShow(0)
+  },100)
+}
+const sendLocalNotification = (message) => {
+  if(AlertShow == 1){
+    PushNotificationIOS.presentLocalNotification({
+      alertTitle: 'Flex Waren',
+      alertBody: message,
+      applicationIconBadgeNumber: 1,
+    });
+  }
+};
+
+const sendLocalNotificationWithSound = () => {
+  PushNotificationIOS.addNotificationRequest({
+    id: 'notificationWithSound',
+    title: 'Sample Title',
+    subtitle: 'Sample Subtitle',
+    body: 'Sample local notification with custom sound',
+    sound: 'customSound.wav',
+    badge: 1,
+  });
+};
+
+const scheduleLocalNotification = () => {
+  PushNotificationIOS.scheduleLocalNotification({
+    alertBody: 'Test Local Notification',
+    fireDate: new Date(new Date().valueOf() + 2000).toISOString(),
+  });
+};
+
+const addNotificationRequest = () => {
+  PushNotificationIOS.addNotificationRequest({
+    id: 'test',
+    title: 'title',
+    subtitle: 'subtitle',
+    body: 'body',
+    category: 'test',
+    threadId: 'thread-id',
+    fireDate: new Date(new Date().valueOf() + 2000),
+    repeats: true,
+    userInfo: {
+      image: 'https://www.github.com/Naturalclar.png',
+    },
+  });
+};
+
+const addCriticalNotificationRequest = () => {
+  PushNotificationIOS.addNotificationRequest({
+    id: 'critical',
+    title: 'Critical Alert',
+    subtitle: 'subtitle',
+    body: 'This is a critical alert',
+    category: 'test',
+    threadId: 'thread-id',
+    isCritical: true,
+    fireDate: new Date(new Date().valueOf() + 2000),
+    repeats: true,
+  });
+};
+
+const addMultipleRequests = () => {
+  PushNotificationIOS.addNotificationRequest({
+    id: 'test-1',
+    title: 'First',
+    subtitle: 'subtitle',
+    body: 'First Notification out of 3',
+    category: 'test',
+    threadId: 'thread-id',
+    fireDate: new Date(new Date().valueOf() + 10000),
+    repeats: true,
+  });
+
+  PushNotificationIOS.addNotificationRequest({
+    id: 'test-2',
+    title: 'Second',
+    subtitle: 'subtitle',
+    body: 'Second Notification out of 3',
+    category: 'test',
+    threadId: 'thread-id',
+    fireDate: new Date(new Date().valueOf() + 12000),
+    repeats: true,
+  });
+
+  PushNotificationIOS.addNotificationRequest({
+    id: 'test-3',
+    title: 'Third',
+    subtitle: 'subtitle',
+    body: 'Third Notification out of 3',
+    category: 'test',
+    threadId: 'thread-id',
+    fireDate: new Date(new Date().valueOf() + 14000),
+    repeats: true,
+  });
+};
+
+const getPendingNotificationRequests = () => {
+  PushNotificationIOS.getPendingNotificationRequests((requests) => {
+    Alert.alert('Push Notification Received', JSON.stringify(requests), [
+      {
+        text: 'Dismiss',
+        onPress: null,
+      },
+    ]);
+  });
+};
+
+const setNotificationCategories = async () => {
+  PushNotificationIOS.setNotificationCategories([
+    {
+      id: 'test',
+      actions: [
+        {id: 'open', title: 'Open', options: {foreground: true}},
+        {
+          id: 'ignore',
+          title: 'Desruptive',
+          options: {foreground: true, destructive: true},
+        },
+        {
+          id: 'text',
+          title: 'Text Input',
+          options: {foreground: true},
+          textInput: {buttonTitle: 'Send'},
+        },
+      ],
+    },
+  ]);
+  Alert.alert(
+    'setNotificationCategories',
+    `Set notification category complete`,
+    [
+      {
+        text: 'Dismiss',
+        onPress: null,
+      },
+    ],
+  );
+};
+
+const onRegistered = (deviceToken) => {
+  /*
+  Alert.alert('Registered For Remote Push', `Device Token: ${deviceToken}`, [
+    {
+      text: 'Dismiss',
+      onPress: null,
+    },
+  ]);
+  */
+};
+
+const onRegistrationError = (error) => {
+  /*
+  Alert.alert(
+    'Failed To Register For Remote Push',
+    `Error (${error.code}): ${error.message}`,
+    [
+      {
+        text: 'Dismiss',
+        onPress: null,
+      },
+    ],
+  );
+  */
+};
+
+const onRemoteNotification = (notification) => {
+  const isClicked = notification.getData().userInteraction === 1;
+
+  const result = `
+    Title:  ${notification.getTitle()};\n
+    Subtitle:  ${notification.getSubtitle()};\n
+    Message: ${notification.getMessage()};\n
+    badge: ${notification.getBadgeCount()};\n
+    sound: ${notification.getSound()};\n
+    category: ${notification.getCategory()};\n
+    content-available: ${notification.getContentAvailable()};\n
+    Notification is clicked: ${String(isClicked)}.`;
+/*
+  if (notification.getTitle() == undefined) {
+    Alert.alert('Silent push notification Received', result, [
+      {
+        text: 'Send local push',
+        onPress: sendLocalNotification,
+      },
+    ]);
+  } else {
+    Alert.alert('Push Notification Received', result, [
+      {
+        text: 'Dismiss',
+        onPress: null,
+      },
+    ]);
+  }
+  */
+};
+
+const onLocalNotification = (notification) => {
+  const isClicked = notification.getData().userInteraction === 1;
+  /*
+  Alert.alert(
+    'Local Notification Received',
+    `Alert title:  ${notification.getTitle()},
+    Alert subtitle:  ${notification.getSubtitle()},
+    Alert message:  ${notification.getMessage()},
+    Badge: ${notification.getBadgeCount()},
+    Sound: ${notification.getSound()},
+    Thread Id:  ${notification.getThreadID()},
+    Action Id:  ${notification.getActionIdentifier()},
+    User Text:  ${notification.getUserText()},
+    Notification is clicked: ${String(isClicked)}.`,
+    [
+      {
+        text: 'Dismiss',
+        onPress: null,
+      },
+    ],
+  );
+
+
+  */
+};
+
+const showPermissions = () => {
+  PushNotificationIOS.checkPermissions((permissions) => {
+    setPermissions({permissions});
+  });
+};
+
+//
+
+
+
 Pusher.logToConsole = false;
 
 var pusher = new Pusher('e4ad133537d71dc9e689', {
@@ -189,8 +493,10 @@ var pusher = new Pusher('e4ad133537d71dc9e689', {
 });
 
 var channel = pusher.subscribe('ordersAdd');
-channel.bind('ordersAdd', function(data) {
-  setCourseEmie(!CourseEmie);
+channel.bind('ordersAdd', function() {
+    setCourseEmie(!CourseEmie);
+    setAlertShow(1)
+    sendLocalNotification('Une nouvelle course est disponibles')
 });
 
 //Voir si l'utilisateur viens de s'inscrire//
@@ -220,7 +526,7 @@ channel.bind('ordersAdd', function(data) {
     />
      </MapView>
 
-     <TouchableOpacity  style={{flexDirection:'row',position:'absolute',top:20,alignSelf:'center',backgroundColor:'white',width:'40%',alignItems:'center',height:50,justifyContent:'center',borderRadius:30}}>
+     <TouchableOpacity onPress={() => PlaySound()}  style={{flexDirection:'row',position:'absolute',top:20,alignSelf:'center',backgroundColor:'white',width:'40%',alignItems:'center',height:50,justifyContent:'center',borderRadius:30}}>
         <Image source={Iconsimg.sys_moneyPiece} />
         <Text style={{fontWeight:'bold',fontSize:15,marginLeft:10,color:'black'}}>{Amount?.solde} XOF</Text>
      </TouchableOpacity>
@@ -278,7 +584,7 @@ channel.bind('ordersAdd', function(data) {
       borderTopRightRadius:30,
       borderTopLeftRadius:30}}>
       <Text/>
-        <Text style={{fontSize:15,marginLeft:10,color: "black",alignSelf:'center',fontWeight:'bold'}}>{CustomersAvailableData[CountCustomers]?.price ?? 0} XOF - {CustomersAvailableData[CountCustomers]?.Km} KM</Text>
+        <Text style={{fontSize:15,marginLeft:10,color: "black",alignSelf:'center',fontWeight:'bold'}}>{typeof CustomersAvailableData[CountCustomers]?.price == 'undefined' ?  0 : CustomersAvailableData[CountCustomers]?.price} XOF - {typeof CustomersAvailableData[CountCustomers]?.Km == 'undefined' ?  0 : CustomersAvailableData[CountCustomers]?.Km} KM</Text>
         <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',alignSelf:'center'}}>
         <Image source={Iconsimg.sys_AcceptCustomers} />
         <Text style={{color:'black'}}> + {CustomersAvailableData?.length}</Text>

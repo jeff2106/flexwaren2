@@ -69,6 +69,7 @@
 		5299B6DB28250F2A00A12AFE /* Foundation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		5299B6DC28250F2A00A12AFE /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		5299B6DD28250F2A00A12AFE /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		52EAC283283AC10D007976D7 /* flexwaren.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = flexwaren.entitlements; path = flexwaren/flexwaren.entitlements; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = flexwaren/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8CE8F60935CC7F1EA8FB7E0E /* libPods-flexwaren.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-flexwaren.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		968A20F8BD0245E30FBD22A5 /* Pods-flexwaren.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flexwaren.release.xcconfig"; path = "Target Support Files/Pods-flexwaren/Pods-flexwaren.release.xcconfig"; sourceTree = "<group>"; };
@@ -138,6 +139,7 @@
 		13B07FAE1A68108700A75B9A /* flexwaren */ = {
 			isa = PBXGroup;
 			children = (
+				52EAC283283AC10D007976D7 /* flexwaren.entitlements */,
 				5299B6CD28250D1B00A12AFE /* Fonts */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -761,6 +763,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = flexwaren/flexwaren.entitlements;
 				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = WU7UZB29XL;
 				ENABLE_BITCODE = NO;
@@ -786,6 +789,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = flexwaren/flexwaren.entitlements;
 				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = WU7UZB29XL;
 				INFOPLIST_FILE = flexwaren/Info.plist;

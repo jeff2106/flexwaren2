@@ -22,6 +22,8 @@ target 'flexwaren' do
   pod 'Permission-PhotoLibraryAddOnly', :path => "#{permissions_path}/PhotoLibraryAddOnly"
   pod 'react-native-maps', :path => '../node_modules/react-native-maps'
   
+  pod 'react-native-notification-sounds', :path => '../node_modules/react-native-notification-sounds'
+
   target 'flexwarenTests' do
     inherit! :complete
     # Pods for testing

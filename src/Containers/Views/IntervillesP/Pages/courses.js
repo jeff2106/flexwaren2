@@ -25,6 +25,7 @@ import {
   TextInput,
   ActivityIndicator,
   RefreshControl,
+  Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icons from 'react-native-vector-icons/AntDesign';
@@ -33,6 +34,7 @@ import PushNotification from "react-native-push-notification";
 import Pusher from 'pusher-js/react-native';
 import CardDrivers2 from '../../../Components/CardDrivers2.js'
 import ActionSheet from '../../../Components/bottomsheet.js'
+import PushNotificationIOS from '../../../js';
 
 
 
@@ -111,70 +113,230 @@ const Courses: () => Node = ({navigation, route}) => {
   }
 
   /* ========= NOTIFICATIONS ====== */
-  React.useEffect(() => {
-  PushNotification.createChannel(
-      {
-        channelId: "Conducteur" , // (required)
-        channelName: "Conducteur" , // (required)
-        channelDescription: "A channel to categorise your notifications", // (optional) default: undefined.
-        playSound: true, // (optional) default: true
-        soundName: "default", // (optional) See `soundName` parameter of `localNotification` function
-        vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
-      },
-      (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
-    );
+  /* === Notifications ====*/
+const [permissions, setPermissions] = React.useState({});
 
-PushNotification.configure({
-  onRegister: function (token) {
-    console.log("TOKEN:", token);
-  },
+React.useEffect(() => {
+  PushNotificationIOS.addEventListener('register', onRegistered);
+  PushNotificationIOS.addEventListener(
+    'registrationError',
+    onRegistrationError,
+  );
+  PushNotificationIOS.addEventListener('notification', onRemoteNotification);
+  PushNotificationIOS.addEventListener(
+    'localNotification',
+    onLocalNotification,
+  );
 
-  onNotification: function (notification) {
-    console.log("NOTIFICATION:", notification);
-
-  },
-  permissions: {
+  PushNotificationIOS.requestPermissions({
     alert: true,
     badge: true,
     sound: true,
-  },
-  popInitialNotification: true,
-  requestPermissions: Platform.OS === 'ios',
-});
-},[])
-function sendNotif(){
-    PushNotification.localNotification({
-      /* Android Only Properties */
-      channelId: "Conducteur", // (required) channelId, if the channel doesn't exist, notification will not trigger.
-      showWhen: true, // (optional) default: true
-      autoCancel: false, // (optional) default: true
-      color: "green", // (optional) default: system default
-      vibrate: true, // (optional) default: true
-      vibration: 100, // vibration length in milliseconds, ignored if vibrate=false, default: 1000
-      groupSummary: false, // (optional) set this notification to be the group summary for a group of notifications, default: false
-      ongoing: false, // (optional) set whether this is an "ongoing" notification
-      priority: "high", // (optional) set notification priority, default: high
-      visibility: "private", // (optional) set notification visibility, default: private
-      ignoreInForeground: false, // (optional) if true, the notification will not be visible when the app is in the foreground (useful for parity with how iOS notifications appear). should be used in combine with `com.dieam.reactnativepushnotification.notification_foreground` setting
-      shortcutId: "shortcut-id", // (optional) If this notification is duplicative of a Launcher shortcut, sets the id of the shortcut, in case the Launcher wants to hide the shortcut, default undefined
-      timeoutAfter: 10000, // (optional) Specifies a duration in milliseconds after which this notification should be canceled, if it is not already canceled, default: null
+    critical: true,
+  }).then(
+    (data) => {
+      console.log('PushNotificationIOS.requestPermissions', data);
+    },
+    (data) => {
+      console.log('PushNotificationIOS.requestPermissions failed', data);
+    },
+  );
 
-      actions: ["OK" /*, "No" */], // (Android only) See the doc for notification actions to know more
-      invokeApp: true, // (optional) This enable click on actions to bring back the application to foreground or stay in background, default: true
+  return () => {
+    PushNotificationIOS.removeEventListener('register');
+    PushNotificationIOS.removeEventListener('registrationError');
+    PushNotificationIOS.removeEventListener('notification');
+    PushNotificationIOS.removeEventListener('localNotification');
+  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
-      /* iOS only properties */
-      subtitle: "My Notification Subtitle", // (optional) smaller title below notification title
+const sendNotification = () => {
+  DeviceEventEmitter.emit('remoteNotificationReceived', {
+    remote: true,
+    aps: {
+      alert: {title: 'title', subtitle: 'subtitle', body: 'body'},
+      badge: 1,
+      sound: 'default',
+      category: 'REACT_NATIVE',
+      'content-available': 1,
+      'mutable-content': 1,
+    },
+  });
+};
 
-      /* iOS and Android properties */
-      id: 0, // (optional) Valid unique 32 bit integer specified as string. default: Autogenerated Unique ID
-      title: "Flex Waren", // (optional)
-      message: "Vous avez une nouvelle reservation - Intervilles", // (required)
-      playSound: true, // (optional) default: true
-      soundName: "default", // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
-      repeatType: null, // (optional) Repeating interval. Check 'Repeating Notifications' section for more info.
-    });
+const sendSilentNotification = () => {
+  DeviceEventEmitter.emit('remoteNotificationReceived', {
+    remote: true,
+    aps: {
+      category: 'REACT_NATIVE',
+      'content-available': 1,
+    },
+  });
+};
+
+const sendLocalNotification = (message) => {
+  PushNotificationIOS.presentLocalNotification({
+    alertTitle: 'Flex Waren',
+    alertBody: message,
+    applicationIconBadgeNumber: 1,
+  });
+};
+
+const sendLocalNotificationWithSound = () => {
+  PushNotificationIOS.addNotificationRequest({
+    id: 'notificationWithSound',
+    title: 'Sample Title',
+    subtitle: 'Sample Subtitle',
+    body: 'Sample local notification with custom sound',
+    sound: 'customSound.wav',
+    badge: 1,
+  });
+};
+
+const scheduleLocalNotification = () => {
+  PushNotificationIOS.scheduleLocalNotification({
+    alertBody: 'Test Local Notification',
+    fireDate: new Date(new Date().valueOf() + 2000).toISOString(),
+  });
+};
+
+const addNotificationRequest = () => {
+  PushNotificationIOS.addNotificationRequest({
+    id: 'test',
+    title: 'title',
+    subtitle: 'subtitle',
+    body: 'body',
+    category: 'test',
+    threadId: 'thread-id',
+    fireDate: new Date(new Date().valueOf() + 2000),
+    repeats: true,
+    userInfo: {
+      image: 'https://www.github.com/Naturalclar.png',
+    },
+  });
+};
+
+const addCriticalNotificationRequest = () => {
+  PushNotificationIOS.addNotificationRequest({
+    id: 'critical',
+    title: 'Critical Alert',
+    subtitle: 'subtitle',
+    body: 'This is a critical alert',
+    category: 'test',
+    threadId: 'thread-id',
+    isCritical: true,
+    fireDate: new Date(new Date().valueOf() + 2000),
+    repeats: true,
+  });
+};
+
+const addMultipleRequests = () => {
+  PushNotificationIOS.addNotificationRequest({
+    id: 'test-1',
+    title: 'First',
+    subtitle: 'subtitle',
+    body: 'First Notification out of 3',
+    category: 'test',
+    threadId: 'thread-id',
+    fireDate: new Date(new Date().valueOf() + 10000),
+    repeats: true,
+  });
+
+  PushNotificationIOS.addNotificationRequest({
+    id: 'test-2',
+    title: 'Second',
+    subtitle: 'subtitle',
+    body: 'Second Notification out of 3',
+    category: 'test',
+    threadId: 'thread-id',
+    fireDate: new Date(new Date().valueOf() + 12000),
+    repeats: true,
+  });
+
+  PushNotificationIOS.addNotificationRequest({
+    id: 'test-3',
+    title: 'Third',
+    subtitle: 'subtitle',
+    body: 'Third Notification out of 3',
+    category: 'test',
+    threadId: 'thread-id',
+    fireDate: new Date(new Date().valueOf() + 14000),
+    repeats: true,
+  });
+};
+
+const getPendingNotificationRequests = () => {
+  PushNotificationIOS.getPendingNotificationRequests((requests) => {
+    
+  });
+};
+
+const setNotificationCategories = async () => {
+  PushNotificationIOS.setNotificationCategories([
+    {
+      id: 'test',
+      actions: [
+        {id: 'open', title: 'Open', options: {foreground: true}},
+        {
+          id: 'ignore',
+          title: 'Desruptive',
+          options: {foreground: true, destructive: true},
+        },
+        {
+          id: 'text',
+          title: 'Text Input',
+          options: {foreground: true},
+          textInput: {buttonTitle: 'Send'},
+        },
+      ],
+    },
+  ]);
+ 
+};
+
+const onRegistered = (deviceToken) => {
   
-}
+};
+
+const onRegistrationError = (error) => {
+
+};
+
+const onRemoteNotification = (notification) => {
+  const isClicked = notification.getData().userInteraction === 1;
+
+  const result = `
+    Title:  ${notification.getTitle()};\n
+    Subtitle:  ${notification.getSubtitle()};\n
+    Message: ${notification.getMessage()};\n
+    badge: ${notification.getBadgeCount()};\n
+    sound: ${notification.getSound()};\n
+    category: ${notification.getCategory()};\n
+    content-available: ${notification.getContentAvailable()};\n
+    Notification is clicked: ${String(isClicked)}.`;
+
+  if (notification.getTitle() == undefined) {
+    
+  } else {
+    
+  }
+};
+
+const onLocalNotification = (notification) => {
+  const isClicked = notification.getData().userInteraction === 1;
+
+
+};
+
+const showPermissions = () => {
+  PushNotificationIOS.checkPermissions((permissions) => {
+    setPermissions({permissions});
+  });
+};
+
+//
+
 
 Pusher.logToConsole = false;
 

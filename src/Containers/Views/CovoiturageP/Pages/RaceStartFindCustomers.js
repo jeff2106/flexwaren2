@@ -61,6 +61,7 @@ const RaceStartFindCustomers: () => Node = ({navigation,route}) => {
   const { CustomersAvailableData,u_data,timestamp,Amount,curentPositionNext} = route.params;
   
 
+
   const [modalVisible, setModalVisible] = React.useState(false);
   const [alwaysAvailable, setAlwaysAvailable] = React.useState(1);
   const [isCommand, setIsCommand] = React.useState(true);
@@ -81,32 +82,32 @@ const RaceStartFindCustomers: () => Node = ({navigation,route}) => {
    const [curentPosition, setCurentPosition] = React.useState(initialState);
 
 
-  React.useEffect(() => {
-    
-    
-    Geolocation.getCurrentPosition((info) => {
-          const { longitude, latitude } = info.coords;
-          setCurentPosition({
-            ...curentPosition,
-            latitude,
-            longitude,
-          });
-          //console.log(info?.coords?.latitude);
-          //console.log("======> reload position of Drivers");
-
-        });
-    
-  }, [curentPosition?.latitude]);
-
+  
+   React.useEffect(() => {
+      Geolocation.getCurrentPosition((info) => {
+        console.log('=====> First',info)
+          if(curentPosition?.latitude != info.coords.latitude){
+            console.log('=====> First',info)
+  
+            const { longitude, latitude } = info.coords;
+            setCurentPosition({
+              ...curentPosition,
+              latitude,
+              longitude,
+            });
+          }
+          
+         })
+  });
 
   React.useEffect(() => {
 
     var formdata = new FormData();
     formdata.append("available", "Non");
     formdata.append("uidDrivers",  u_data?.id);
-    formdata.append("uidLat", curentPositionNext.latitude);
+    formdata.append("uidLat", curentPosition.latitude);
     formdata.append("numberDrivers", u_data?.number);
-    formdata.append("uidLng", curentPositionNext?.longitude);
+    formdata.append("uidLng", curentPosition?.longitude);
     formdata.append("id", CustomersAvailableData?.id);
     formdata.append("state", "in progress");
 
@@ -189,8 +190,8 @@ if(detailsCurrentOrders == ""){
              mapType="standard"
              followsUserLocation={true}
              initialRegion={{
-                 latitude: curentPositionNext?.latitude,
-                 longitude: curentPositionNext?.longitude,
+                 latitude: curentPosition?.latitude,
+                 longitude: curentPosition?.longitude,
                  latitudeDelta: 0.000864195044303443,
                  longitudeDelta: 0.0000142817690068,
                }}
@@ -201,13 +202,14 @@ if(detailsCurrentOrders == ""){
          <MapViewDirections
           strokeWidth={3}
           strokeColor={Colors.GreenLignt.color}
-          origin={{ latitude: curentPosition?.whereYouAreLat , longitude: curentPosition?.whereYouAreLng }}
-          destination={{latitude: parseFloat(detailsCurrentOrders?.whereYouAreLat),longitude:parseFloat(detailsCurrentOrders?.whereYouAreLng)}}
+          origin={{ latitude: 37.785834 , longitude: -122.406417 }}
+          destination={{latitude: detailsCurrentOrders?.whereYouAreLat,longitude: detailsCurrentOrders?.whereYouAreLng }}
           apikey={"AIzaSyDSbg654fWaJihkk3FIk52Je8viclmsYCU"}
           onReady={result => {
             const number = result.duration.toString();
             const distance = result.distance.toString();
             setHourse(number.split('.')[0]);
+            console.log(number)
             setKilometers(distance);
           }}
         />
@@ -230,7 +232,7 @@ if(detailsCurrentOrders == ""){
          <View style={{flexDirection:'row',position:'absolute',top:20,alignSelf:'center',backgroundColor:'white',width:'40%',padding:20,alignItems:'center',height:'auto',justifyContent:'space-evenly',borderRadius:30}}>
             <Image source={Iconsimg.icon_customs} />
             <View>
-                  <Text style={{fontSize:15,marginLeft:10,color:'black',width:40,overflow:'hidden'}}>{detailsCurrentOrders?.whereYouAre}</Text>
+                  <Text style={{fontSize:15,marginLeft:10,color:'black',width:'auto',overflow:'hidden'}}>{detailsCurrentOrders?.whereYouAre.split(' ')[0]}</Text>
                   <Text style={{fontSize:15,marginLeft:10,textAlign:'center',color:'black'}}>...</Text>
             </View>
             
@@ -303,7 +305,7 @@ if(detailsCurrentOrders == ""){
               redirect: 'follow'
             };
 
-            fetch("http://prumad.com/API/index2.php?UpdateCourseStart", requestOptions)
+            fetch("https://prumad.com/API/index2.php?UpdateCourseStart", requestOptions)
               .then(response => response.json())
               .then(result => {
                console.log(result);

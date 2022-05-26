@@ -14,15 +14,10 @@ import {
     StatusBar,
     StyleSheet,
     Text,
-    useColorScheme,
     View,
     Dimensions,
     TouchableOpacity,
     Image,
-    Modal,
-    Pressable,
-    ImageBackground,
-    Button,
     TextInput,
     KeyboardAvoidingView,
     Keyboard,
@@ -32,14 +27,6 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icons from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withDelay,
-  withRepeat,
-  withTiming,
-  interpolate,
-} from "react-native-reanimated";
 import * as geolib from 'geolib';
 import Geolocation from '@react-native-community/geolocation';
 import { StackActions } from '@react-navigation/native';
@@ -85,8 +72,6 @@ const AccueilCovoiturage: () => Node = ({navigation,route}) => {
 
 
   const [lastID, setlastID] = React.useState();
-  const origin = {latitude: 37.78825, longitude: -122.4324};
-  const destination = {latitude: 37.771707, longitude: -122.4053769};
   const [TimeOutOrders,setTimeOutOrders] = React.useState(30);
   const GOOGLE_MAPS_APIKEY = 'AIzaSyDSbg654fWaJihkk3FIk52Je8viclmsYCU';
   const [error, setError] = React.useState("");
@@ -426,16 +411,7 @@ function getLatLngInput2(text){
                     followsUserLocation={true}
                     initialRegion={curentPosition}
                     style={styles.map}
-
-                >
-                    <MapViewDirections
-                        strokeWidth={3}
-                        strokeColor={Colors.GreenLignt.color}
-                        origin={origin}
-                        destination={destination}
-                        apikey={"AIzaSyDSbg654fWaJihkk3FIk52Je8viclmsYCU"}
                     />
-                </MapView>
                 {
                     isCommand &&
                     <View style={{flex:1}}>
@@ -455,6 +431,7 @@ function getLatLngInput2(text){
                                         setisActive1(false);
                                     }}
                                     onBlur={() => {
+                                        setisActive1(false);
                                         setListView1(false);
                                     }}
                                     onChangeText={(val) =>
@@ -476,8 +453,9 @@ function getLatLngInput2(text){
                                         setisActive2(false);
                                     }}
                                     onBlur={() => {
-                                        setListView2(false);
-                                        setisActive2(false);
+                                        setListView2(true);
+                                        setisActive2(true);
+                                        
                                     }}
                                     onChangeText={(val) =>
                                         setwhereYouGo(val)}

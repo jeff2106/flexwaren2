@@ -165,7 +165,7 @@ const Index: () => Node = ({navigation, route}) => {
           {Fr.ChooseSys}
         </Text>
         <Text
-        onPress={() => signOut()}
+        onPress={() => signOut(u_data)}
           style={[{fontSize:12}, Generalstyle.alignSelf, Colors.Green]}>
           Espace de {u_data?.u_data?.accountType}
         </Text>

@@ -297,7 +297,7 @@ if(Det.latitude == null){
                     {
                       resizeMode: "contain",
                       width: '100%',
-                      height:70,
+                      height:50,
                       overflow:'hidden',
                       alignSelf: "center",
                     },

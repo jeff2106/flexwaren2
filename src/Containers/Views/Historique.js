@@ -108,7 +108,7 @@ export default function App({navigation,route}) {
 
           {
             MyHistorique?.map((item,index) => 
-              <TouchableOpacity  onPress={onPress} onPressIn ={() => sethistoriqueSelected(item)} style={{backgroundColor:"#B0E9B3",height:'auto',width:'100%',padding:10,marginTop:10,borderRadius:10}}>
+              <TouchableOpacity key={index} onPress={onPress} onPressIn ={() => sethistoriqueSelected(item)} style={{backgroundColor:"#B0E9B3",height:'auto',width:'100%',padding:10,marginTop:10,borderRadius:10}}>
               <View style={{flexDirection:'row',justifyContent:'space-between'}}>
               <View>
                   <Text>Course de <Text style={{fontWeight:'bold'}}>{item?.date}</Text></Text>
@@ -126,7 +126,7 @@ export default function App({navigation,route}) {
                       padding: 5,
                       }}
                       >
-                      <Text style={{ color: "black" }}>998XDFS</Text>
+                      <Text style={{ color: "black" }}>{item?.driverData?.numberMatricles}</Text>
                       </View>
                       <Image style={[{resizeMode:'contain',width:80,alignSelf:'center'}]} source={Iconsimg.sysRaceCovImg}/>
                   </View>

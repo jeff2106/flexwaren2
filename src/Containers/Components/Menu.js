@@ -106,7 +106,7 @@ const Menu: () => Node = (props) => {
 
               <Text/>
               <Text/>
-              <Text onPress={() => signOut()} style={{color:'red',fontWeight:'bold',textAlign:'center',fontSize:20}}>Deconnexion</Text>
+              <Text onPress={() => signOut(u_data)} style={{color:'red',fontWeight:'bold',textAlign:'center',fontSize:20}}>Deconnexion</Text>
 
           </View>
         </View>
