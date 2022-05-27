@@ -36,13 +36,13 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string></string>
+	<string>Your authorization is required to have access to your gallery for the configuration of your profile</string>
 	<key>NSLocalizedDescription</key>
 	<string></string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Your authorization is required to have access to your gallery for the configuration of your profile</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string></string>
+	<string>Your authorization is required to have access to your gallery for the configuration of your profile</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your location is not needed. This request has popped up due to a 3rd party framework used by the app in a context that does NOT need you to reveal you location. Do be sure to check audit trail for the location queries on ios 15 or later.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
