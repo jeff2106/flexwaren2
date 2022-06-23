@@ -6,8 +6,8 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import type {Node} from 'react';
+import React from 'react'
+import type { Node } from 'react'
 import {
   SafeAreaView,
   ScrollView,
@@ -23,30 +23,28 @@ import {
   Pressable,
   ImageBackground,
   TextInput,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import Icons from 'react-native-vector-icons/AntDesign';
-import ImagePicker from 'react-native-image-crop-picker';
-import ImgToBase64 from 'react-native-image-base64-png';
-
+} from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
+import Icons from 'react-native-vector-icons/AntDesign'
+import ImagePicker from 'react-native-image-crop-picker'
+import ImgToBase64 from 'react-native-image-base64-png'
 
 //My Src Import
-import Colors from '../Utils/Colors.js';
-import Iconsimg from '../Utils/Img';
-import Fr from '../Utils/Fr';
-import Generalstyle from '../Utils/GeneralStyle';
+import Colors from '../Utils/Colors.js'
+import Iconsimg from '../Utils/Img'
+import Fr from '../Utils/Fr'
+import Generalstyle from '../Utils/GeneralStyle'
 
 //Get Reel Dimension of Screen[]
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width
+const windowHeight = Dimensions.get('window').height
 //End
 
-const PhotoInscription5: () => Node = ({navigation, route}) => {
-  
-  const { data, typeC } = route.params;
+const PhotoInscription5: () => Node = ({ navigation, route }) => {
+  const { data, typeC } = route.params
 
-  const [modalVisible, setModalVisible] = React.useState(false);
-  const [count, setcount] = React.useState(120);
+  const [modalVisible, setModalVisible] = React.useState(false)
+  const [count, setcount] = React.useState(120)
   function PickerImg() {
     ImagePicker.openPicker({
       width: 300,
@@ -55,16 +53,16 @@ const PhotoInscription5: () => Node = ({navigation, route}) => {
     })
       .then(image => {
         ImgToBase64.getBase64String(image.path)
-              .then(base64String => {
-                  data.push(base64String);
-                  navigation.navigate("PhotoInscription6",{
-                  data: data,
-                  typeC: typeC,
-               });
-              })
-              .catch(err => console.log(err));
+          .then(base64String => {
+            data.push(base64String)
+            navigation.navigate('PhotoInscription6', {
+              data: data,
+              typeC: typeC,
+            })
+          })
+          .catch(err => console.log(err))
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
   }
   function OpenCam() {
     ImagePicker.openCamera({
@@ -74,19 +72,19 @@ const PhotoInscription5: () => Node = ({navigation, route}) => {
     })
       .then(image => {
         ImgToBase64.getBase64String(image.path)
-              .then(base64String => {
-                  data.push(base64String);
-                  navigation.navigate("PhotoInscription6",{
-                  data: data,
-                  typeC: typeC,
-               });
-              })
-              .catch(err => console.log(err));
+          .then(base64String => {
+            data.push(base64String)
+            navigation.navigate('PhotoInscription6', {
+              data: data,
+              typeC: typeC,
+            })
+          })
+          .catch(err => console.log(err))
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
   }
   return (
-    <View style={[{height: windowHeight, flex: 1}]}>
+    <View style={[{ height: windowHeight, flex: 1 }]}>
       <View
         style={[
           Colors.GreenLignt_BG,
@@ -96,9 +94,10 @@ const PhotoInscription5: () => Node = ({navigation, route}) => {
             padding: 10,
             flexDirection: 'row',
           },
-        ]}>
+        ]}
+      >
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon name="arrow-back" size={35} style={[{color: 'white'}]} />
+          <Icon name="arrow-back" size={35} style={[{ color: 'white' }]} />
         </TouchableOpacity>
         <Text
           style={[
@@ -108,7 +107,8 @@ const PhotoInscription5: () => Node = ({navigation, route}) => {
               marginLeft: 20,
               fontWeight: 'bold',
             },
-          ]}>
+          ]}
+        >
           {Fr.TP}
         </Text>
       </View>
@@ -117,9 +117,10 @@ const PhotoInscription5: () => Node = ({navigation, route}) => {
           justifyContent: 'center',
           alignItems: 'center',
           paddingTop: 50,
-        }}>
+        }}
+      >
         <Image
-          source={{uri: `data:image/jpeg;base64,${data[7]}`}}
+          source={{ uri: `data:image/jpeg;base64,${data[7]}` }}
           style={[
             {
               resizeMode: 'contain',
@@ -129,8 +130,8 @@ const PhotoInscription5: () => Node = ({navigation, route}) => {
             },
           ]}
         />
-        <Text style={[{fontSize: 20, marginTop: 20, color: '#3DB24B'}]}>
-         {data[0]}
+        <Text style={[{ fontSize: 20, marginTop: 20, color: '#3DB24B' }]}>
+          {data[0]}
         </Text>
         <Text
           style={[
@@ -140,22 +141,24 @@ const PhotoInscription5: () => Node = ({navigation, route}) => {
               fontWeight: 'bold',
               textTransform: 'uppercase',
             },
-          ]}>
+          ]}
+        >
           {Fr.PP1.split(' ')[2]}{' '}
-          <Icons name="checkcircle" size={15} style={[{color: '#3DB24B'}]} />
+          <Icons name="checkcircle" size={15} style={[{ color: '#3DB24B' }]} />
         </Text>
-        <Text style={[{fontSize: 15, color: '#3DB24B', fontWeight: 'bold'}]}>
+        <Text style={[{ fontSize: 15, color: '#3DB24B', fontWeight: 'bold' }]}>
           {Fr.PP1}
-          <Icons name="checkcircle" size={15} style={[{color: '#3DB24B'}]} />
+          <Icons name="checkcircle" size={15} style={[{ color: '#3DB24B' }]} />
         </Text>
-        <Text style={[{fontSize: 15, color: '#3DB24B'}]}>
+        <Text style={[{ fontSize: 15, color: '#3DB24B' }]}>
           {typeC}
-          <Icons name="checkcircle" size={15} style={[{color: '#3DB24B'}]} />
+          <Icons name="checkcircle" size={15} style={[{ color: '#3DB24B' }]} />
         </Text>
         <Text
           style={[
-            {fontSize: 10, color: '#3DB24B', textAlign: 'center', width: 250},
-          ]}>
+            { fontSize: 10, color: '#3DB24B', textAlign: 'center', width: 250 },
+          ]}
+        >
           {Fr.PTXT}
         </Text>
       </View>
@@ -174,11 +177,12 @@ const PhotoInscription5: () => Node = ({navigation, route}) => {
             alignSelf: 'center',
             backgroundColor: '#3DB24B',
           },
-        ]}>
-        <Text style={{color: 'white', fontWeight: 'bold'}}>{Fr.SCP}</Text>
+        ]}
+      >
+        <Text style={{ color: 'white', fontWeight: 'bold' }}>{Fr.SCP}</Text>
       </TouchableOpacity>
     </View>
-  );
-};
+  )
+}
 
-export default PhotoInscription5;
+export default PhotoInscription5

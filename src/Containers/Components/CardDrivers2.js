@@ -44,7 +44,7 @@ const CardDrivers2: () => Node = props => {
     backgroundColor: '#3DB24B',
     width: windowWidth,
     height: windowHeight,
-  };
+  }
 
   return (
     <SafeAreaView>
@@ -70,7 +70,8 @@ const CardDrivers2: () => Node = props => {
         <View
           style={{
             flexDirection: 'row',
-          }}>
+          }}
+        >
           <View
             style={[
               {
@@ -79,52 +80,56 @@ const CardDrivers2: () => Node = props => {
                 padding: 5,
                 alignItems: 'center',
               },
-            ]}>
+            ]}
+          >
             <Image
-              source={{uri: `data:image/jpeg;base64,${props.item?.DriverData?.photoProfil}`}}
+              source={{
+                uri: `data:image/jpeg;base64,${props.userData?.photoProfil}`,
+              }}
               style={[
                 {
                   width: 60,
                   height: 60,
                   resizeMode: 'cover',
                   marginRight: 5,
-                  borderRadius:100
+                  borderRadius: 100,
                 },
                 Generalstyle.alignSelf,
               ]}
             />
             <View>
-              <Text style={[{fontWeight: 'bold', color: 'black'}]}>
+              <Text style={[{ fontWeight: 'bold', color: 'black' }]}>
                 {props?.item?.DriverData?.fullName}
               </Text>
-              <Text style={[{color: 'black'}]}>
+              <Text style={[{ color: 'black'}]}>
                 {props?.item?.DriverData?.carBrand}
               </Text>
-              <Text style={[{color: 'black'}]}>
+              <Text style={[{ color: 'black'}]}>
                 (225) {props?.item?.DriverData?.number}
               </Text>
             </View>
           </View>
-          <View style={[{justifyContent: 'space-around'}]}>
-            {props?.item?.state == "in progress" || props?.item?.state == "start"  && (
-              <TouchableOpacity
-                
-                style={[
-                  {
-                    height: windowHeight / 20,
-                    width: windowHeight / 6.7,
-                    borderRadius: 10,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  },
-                ]}>
-                <Text style={[{color: 'black'}]}>En cours</Text>
-              </TouchableOpacity>
-            ) }
+          <View style={[{ justifyContent: 'space-around'}]}>
+            {props?.item?.state === 'in progress' ||
+              (props?.item?.state == 'start' && (
+                <TouchableOpacity
+                  style={[
+                    {
+                      height: windowHeight / 20,
+                      width: windowHeight / 6.7,
+                      borderRadius: 10,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    },
+                  ]}
+                >
+                  <Text style={[{ color: 'black' }]}>En cours</Text>
+                </TouchableOpacity>
+              ))}
             {
-              props?.item?.state == 'end' && 
+              props?.item?.state == 'end' &&
               <TouchableOpacity
-                
+
                 style={[
                   {
                     height: windowHeight / 20,
@@ -140,12 +145,12 @@ const CardDrivers2: () => Node = props => {
                   size={20}
                   style={[Colors.GreenLignt]}
                 />
-              </TouchableOpacity> 
+              </TouchableOpacity>
             }
             {
-              props?.item?.state == "cancel" && 
+              props?.item?.state == "cancel" &&
               <TouchableOpacity
-                
+
                 style={[
                   {
                     height: windowHeight / 20,
@@ -169,11 +174,11 @@ const CardDrivers2: () => Node = props => {
         <View style={[{flexDirection: 'row', justifyContent: 'space-around'}]}>
           <Text style={[{color: 'black'}, Generalstyle.bold]}>
             Place :{' '}
-            {props?.item?.DriverData?.reservations } 
+            {props?.item?.DriverData?.reservations }
             / {props?.item?.seats}
           </Text>
           <Text style={[{color: 'black'}]}>
-            {Fr.Depart}/Destination : {props?.item?.whereAreYou}/{props?.item?.whereAreYouGoing} 
+            {Fr.Depart}/Destination : {props?.item?.whereAreYou}/{props?.item?.whereAreYouGoing}
           </Text>
         </View>
       </View>

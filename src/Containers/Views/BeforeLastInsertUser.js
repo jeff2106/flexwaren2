@@ -6,8 +6,8 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import type {Node} from 'react';
+import React from 'react'
+import type { Node } from 'react'
 import {
   SafeAreaView,
   ScrollView,
@@ -23,164 +23,150 @@ import {
   Pressable,
   ImageBackground,
   TextInput,
-  Alert
-} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import Icons from 'react-native-vector-icons/AntDesign';
-import ImagePicker from 'react-native-image-crop-picker';
+  Alert,
+} from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
+import Icons from 'react-native-vector-icons/AntDesign'
+import ImagePicker from 'react-native-image-crop-picker'
 
 //My Src Import
-import Colors from '../Utils/Colors.js';
-import Iconsimg from '../Utils/Img';
-import Fr from '../Utils/Fr';
-import Generalstyle from '../Utils/GeneralStyle';
+import Colors from '../Utils/Colors.js'
+import Iconsimg from '../Utils/Img'
+import Fr from '../Utils/Fr'
+import Generalstyle from '../Utils/GeneralStyle'
 
 //Get Reel Dimension of Screen[]
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width
+const windowHeight = Dimensions.get('window').height
 //End
 
-const BeforeLastInsertUser: () => Node = ({navigation, route}) => {
+const BeforeLastInsertUser: () => Node = ({ navigation, route }) => {
+  const { data, typeC } = route.params
 
-  const { data, typeC } = route.params;
+  const [isLoading, setisLoading] = React.useState(true)
 
-  const [modalVisible, setModalVisible] = React.useState(false);
-  const [count, setcount] = React.useState(120);
-  const [isLoading, setisLoading] = React.useState(true);
+  function insertUser() {
+    setisLoading(false)
 
+    if (typeC == Fr.same) {
+      var myHeaders = new Headers()
 
+      var formData = new FormData()
+      formData.append('fullName', data[0])
+      formData.append('email', data[1])
+      formData.append('password', data[2])
+      formData.append('birthDay', data[3])
+      formData.append('region', data[4])
+      formData.append('city', data[5])
+      formData.append('number', data[6])
+      formData.append('photoProfil', data[7])
+      formData.append('accountType', data[8])
+      formData.append('photoDrivingLicense', data[9])
+      formData.append('carBrand', data[10])
+      formData.append('model', data[11])
+      formData.append('year', data[12])
+      formData.append('numberMatricles', data[13])
 
-  function insertUser(){
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formData,
+        redirect: 'follow',
+      }
 
-    setisLoading(false);
-
-    if(typeC == Fr.same){
-          var myHeaders = new Headers();
-
-          var formData = new FormData();
-          formData.append("fullName", data[0]);
-          formData.append("email", data[1]);
-          formData.append("password", data[2]);
-          formData.append("birthDay", data[3]);
-          formData.append("region", data[4]);
-          formData.append("city", data[5]);
-          formData.append("number", data[6]);
-          formData.append("photoProfil", data[7]);
-          formData.append("accountType", data[8]);
-          formData.append("photoDrivingLicense", data[9]);
-          formData.append("carBrand", data[10]);
-          formData.append("model", data[11]);
-          formData.append("year", data[12]);
-          formData.append("numberMatricles", data[13]);
-
-          var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: formData,
-            redirect: 'follow'
-          };
-
-      fetch("https://prumad.com/API/index2.php?InsertUD", requestOptions)
+      fetch('https://prumad.com/API/index2.php?InsertUD', requestOptions)
         .then(response => response.json())
         .then(result => {
-          console.log(result);
-          if(result?.status == 200){
-             navigation.navigate('LastViewInsertUser', {
-                  u_data: result,
-                  typeC: typeC,
-                })
-           }else{
-            Alert.alert('Message',result?.messages)
-           }
-         
+          console.log(result)
+          if (result?.status == 200) {
+            navigation.navigate('LastViewInsertUser', {
+              u_data: result,
+              typeC: typeC,
+            })
+          } else {
+            Alert.alert('Message', result?.messages)
+          }
         })
-        .catch(error => console.log('error', error));
-    }else if (typeC == Fr.P){
-          var myHeaders = new Headers();
+        .catch(error => console.log('error', error))
+    } else if (typeC == Fr.P) {
+      var myHeaders = new Headers()
 
-          var formData = new FormData();
-          formData.append("fullName", data[0]);
-          formData.append("email", data[1]);
-          formData.append("password", data[2]);
-          formData.append("birthDay", data[3]);
-          formData.append("region", data[4]);
-          formData.append("city", data[5]);
-          formData.append("number", data[6]);
-          formData.append("photoProfil", data[7]);
-          formData.append("accountType", data[8]);
+      var formData = new FormData()
+      formData.append('fullName', data[0])
+      formData.append('email', data[1])
+      formData.append('password', data[2])
+      formData.append('birthDay', data[3])
+      formData.append('region', data[4])
+      formData.append('city', data[5])
+      formData.append('number', data[6])
+      formData.append('photoProfil', data[7])
+      formData.append('accountType', data[8])
 
-          var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: formData,
-            redirect: 'follow'
-          };
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formData,
+        redirect: 'follow',
+      }
 
-      fetch("https://prumad.com/API/index2.php?InsertUC", requestOptions)
+      fetch('https://prumad.com/API/index2.php?InsertUC', requestOptions)
         .then(response => response.json())
         .then(result => {
-          console.log(result);
-          if(result?.status == 200){
-             navigation.navigate('LastViewInsertUser', {
-                  u_data: result,
-                  typeC: typeC,
-                })
-           }else{
-            Alert.alert('Message',result?.messages)
-           }
-         
+          console.log(result)
+          if (result?.status == 200) {
+            navigation.navigate('LastViewInsertUser', {
+              u_data: result,
+              typeC: typeC,
+            })
+          } else {
+            Alert.alert('Message', result?.messages)
+          }
         })
-        .catch(error => console.log('error', error));
+        .catch(error => console.log('error', error))
+    } else {
+      var myHeaders = new Headers()
 
+      var formData = new FormData()
+      formData.append('fullName', data[0])
+      formData.append('email', data[1])
+      formData.append('password', data[2])
+      formData.append('birthDay', data[3])
+      formData.append('region', data[4])
+      formData.append('city', data[5])
+      formData.append('number', data[6])
+      formData.append('photoProfil', data[7])
+      formData.append('accountType', data[8])
+      formData.append('photoDrivingLicense', data[9])
+      formData.append('carBrand', data[10])
+      formData.append('model', data[11])
+      formData.append('year', data[12])
+      formData.append('numberMatricles', data[13])
 
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formData,
+        redirect: 'follow',
+      }
 
-    }else{
-          var myHeaders = new Headers();
-
-          var formData = new FormData();
-          formData.append("fullName", data[0]);
-          formData.append("email", data[1]);
-          formData.append("password", data[2]);
-          formData.append("birthDay", data[3]);
-          formData.append("region", data[4]);
-          formData.append("city", data[5]);
-          formData.append("number", data[6]);
-          formData.append("photoProfil", data[7]);
-          formData.append("accountType", data[8]);
-          formData.append("photoDrivingLicense", data[9]);
-          formData.append("carBrand", data[10]);
-          formData.append("model", data[11]);
-          formData.append("year", data[12]);
-          formData.append("numberMatricles", data[13]);
-
-          var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: formData,
-            redirect: 'follow'
-          };
-
-      fetch("https://prumad.com/API/index2.php?InsertUD", requestOptions)
+      fetch('https://prumad.com/API/index2.php?InsertUD', requestOptions)
         .then(response => response.json())
         .then(result => {
-           console.log(result);
-          if(result?.status == 200){
-             navigation.navigate('LastViewInsertUser', {
-                  u_data: result,
-                  typeC: typeC,
-                })
-           }else{
-            Alert.alert('Message',result?.messages)
-           }
-         
+          console.log(result)
+          if (result?.status == 200) {
+            navigation.navigate('LastViewInsertUser', {
+              u_data: result,
+              typeC: typeC,
+            })
+          } else {
+            Alert.alert('Message', result?.messages)
+          }
         })
-        .catch(error => console.log('error', error));
+        .catch(error => console.log('error', error))
     }
-
-
   }
   return (
-    <View style={[{height: windowHeight, flex: 1}]}>
+    <View style={[{ height: windowHeight, flex: 1 }]}>
       <View
         style={[
           Colors.GreenLignt_BG,
@@ -190,9 +176,10 @@ const BeforeLastInsertUser: () => Node = ({navigation, route}) => {
             padding: 10,
             flexDirection: 'row',
           },
-        ]}>
+        ]}
+      >
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon name="arrow-back" size={35} style={[{color: 'white'}]} />
+          <Icon name="arrow-back" size={35} style={[{ color: 'white' }]} />
         </TouchableOpacity>
         <Text
           style={[
@@ -202,7 +189,8 @@ const BeforeLastInsertUser: () => Node = ({navigation, route}) => {
               marginLeft: 20,
               fontWeight: 'bold',
             },
-          ]}>
+          ]}
+        >
           {Fr.TIS}
         </Text>
       </View>
@@ -211,9 +199,10 @@ const BeforeLastInsertUser: () => Node = ({navigation, route}) => {
           justifyContent: 'center',
           alignItems: 'center',
           paddingTop: 50,
-        }}>
+        }}
+      >
         <Image
-          source={{uri: `data:image/jpeg;base64,${data[7]}`}}
+          source={{ uri: `data:image/jpeg;base64,${data[7]}` }}
           style={[
             {
               resizeMode: 'contain',
@@ -223,7 +212,7 @@ const BeforeLastInsertUser: () => Node = ({navigation, route}) => {
             },
           ]}
         />
-        <Text style={[{fontSize: 20, marginTop: 20, color: '#3DB24B'}]}>
+        <Text style={[{ fontSize: 20, marginTop: 20, color: '#3DB24B' }]}>
           {data[0]}
         </Text>
         <Text
@@ -234,20 +223,20 @@ const BeforeLastInsertUser: () => Node = ({navigation, route}) => {
               fontWeight: 'bold',
               textTransform: 'uppercase',
             },
-          ]}>
+          ]}
+        >
           {Fr.PP1.split(' ')[2]}{' '}
-          <Icons name="checkcircle" size={15} style={[{color: '#3DB24B'}]} />
+          <Icons name="checkcircle" size={15} style={[{ color: '#3DB24B' }]} />
         </Text>
-        <Text style={[{fontSize: 15, color: '#3DB24B', fontWeight: 'bold'}]}>
+        <Text style={[{ fontSize: 15, color: '#3DB24B', fontWeight: 'bold' }]}>
           {Fr.PP1}{' '}
-          <Icons name="checkcircle" size={15} style={[{color: '#3DB24B'}]} />
+          <Icons name="checkcircle" size={15} style={[{ color: '#3DB24B' }]} />
         </Text>
-        <Text style={[{fontSize: 15, color: '#3DB24B'}]}>
+        <Text style={[{ fontSize: 15, color: '#3DB24B' }]}>
           {typeC}{' '}
-          <Icons name="checkcircle" size={15} style={[{color: '#3DB24B'}]} />
+          <Icons name="checkcircle" size={15} style={[{ color: '#3DB24B' }]} />
         </Text>
-        {
-          typeC != Fr.P && (
+        {typeC != Fr.P && (
           <View>
             <Text
               style={[
@@ -258,52 +247,57 @@ const BeforeLastInsertUser: () => Node = ({navigation, route}) => {
                   fontWeight: 'bold',
                   width: 250,
                 },
-              ]}>
+              ]}
+            >
               {Fr.PEV}{' '}
-              <Icons name="checkcircle" size={15} style={[{color: '#3DB24B'}]} />
-                </Text>
-                <Text
-                  style={[
-                    {
-                      fontSize: 15,
-                      color: '#3DB24B',
-                      textAlign: 'center',
-                      fontWeight: 'bold',
-                      width: 250,
-                    },
-                  ]}>
-                  {Fr.TPV}{' '}
-                  <Icons name="checkcircle" size={15} style={[{color: '#3DB24B'}]} />
+              <Icons
+                name="checkcircle"
+                size={15}
+                style={[{ color: '#3DB24B' }]}
+              />
+            </Text>
+            <Text
+              style={[
+                {
+                  fontSize: 15,
+                  color: '#3DB24B',
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                  width: 250,
+                },
+              ]}
+            >
+              {Fr.TPV}{' '}
+              <Icons
+                name="checkcircle"
+                size={15}
+                style={[{ color: '#3DB24B' }]}
+              />
             </Text>
           </View>
-          )
-        }
-        
-      </View> 
-        <TouchableOpacity
-          onPress={() =>
-            insertUser()
-            
-          }
-          style={[
-            {
-              height: 40,
-              position: 'absolute',
-              bottom: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginBottom: 10,
-              borderRadius: 40,
-              width: windowWidth / 1.2,
-              alignSelf: 'center',
-              backgroundColor: '#3DB24B',
-            },
-          ]}>
-          <Text style={{color: 'white', fontWeight: 'bold'}}>{Fr.TIS}</Text>
+        )}
+      </View>
+      <TouchableOpacity
+        onPress={() => insertUser()}
+        style={[
+          {
+            height: 40,
+            position: 'absolute',
+            bottom: 10,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: 10,
+            borderRadius: 40,
+            width: windowWidth / 1.2,
+            alignSelf: 'center',
+            backgroundColor: '#3DB24B',
+          },
+        ]}
+      >
+        <Text style={{ color: 'white', fontWeight: 'bold' }}>{Fr.TIS}</Text>
       </TouchableOpacity>
-            
     </View>
-  );
-};
+  )
+}
 
-export default BeforeLastInsertUser;
+export default BeforeLastInsertUser

@@ -8,6 +8,8 @@
 	<string>flexwaren</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -35,18 +37,20 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>hi we need your authorization to have access to your audio library for notifications</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Your authorization is required to have access to your gallery for the configuration of your profile</string>
 	<key>NSLocalizedDescription</key>
 	<string></string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Your authorization is required to have access to your gallery for the configuration of your profile</string>
+	<string>Hello, we need your agreement to have access to your location to be visible to drivers and also to customers.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Your authorization is required to have access to your gallery for the configuration of your profile</string>
+	<string>Hello, we need your agreement to have access to your location to be visible to drivers and also to customers.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your location is not needed. This request has popped up due to a 3rd party framework used by the app in a context that does NOT need you to reveal you location. Do be sure to check audit trail for the location queries on ios 15 or later.</string>
+	<string>Hello, we need your agreement to have access to your location to be visible to drivers and also to customers.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Photo Library Access </string>
+	<string>Hello, we need your agreement to have access to your Photo Library  for the configuration of your profile</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -88,5 +92,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>kTCCServiceMediaLibrary</key>
+	<string>hi we need your authorization to have access to your audio library for notifications</string>
 </dict>
 </plist>

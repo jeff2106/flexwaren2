@@ -1,4 +1,4 @@
- /**
+/**
  * Sample React Native LastViewInsertUser
  * https://github.com/facebo{Fr.VV}/react-native
  *
@@ -6,8 +6,8 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import type {Node} from 'react';
+import React from 'react'
+import type { Node } from 'react'
 import {
   SafeAreaView,
   ScrollView,
@@ -23,40 +23,33 @@ import {
   Pressable,
   ImageBackground,
   TextInput,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import Icons from 'react-native-vector-icons/AntDesign';
-import ImagePicker from 'react-native-image-crop-picker';
+} from 'react-native'
 
 //My Src Import
-import Colors from '../Utils/Colors.js';
-import Iconsimg from '../Utils/Img';
-import Fr from '../Utils/Fr';
-import Generalstyle from '../Utils/GeneralStyle';
-import { AuthContext } from '../Components/context';
+import Colors from '../Utils/Colors.js'
+import Iconsimg from '../Utils/Img'
+import Fr from '../Utils/Fr'
+import Generalstyle from '../Utils/GeneralStyle'
+import { AuthContext } from '../Components/context'
 
 //Get Reel Dimension of Screen[]
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width
+const windowHeight = Dimensions.get('window').height
 //End
 
-const LastViewInsertUser: () => Node = ({navigation, route}) => {
-  const isDarkMode = useColorScheme() === '#3DB24B';
-  const {u_data, typeC} = route.params;
+const LastViewInsertUser: () => Node = ({ navigation, route }) => {
+  const { u_data, typeC } = route.params
 
   const backgroundStyle = {
     backgroundColor: '#3DB24B',
     width: windowWidth,
     height: windowHeight,
-  };
+  }
 
-  const { signIn, signUp,signOut } = React.useContext(AuthContext);
-
-  const [modalVisible, setModalVisible] = React.useState(false);
-  const [count, setcount] = React.useState(120);
+  const { signIn, signUp, signOut } = React.useContext(AuthContext)
 
   return (
-    <View style={[{height: windowHeight, flex: 1}]}>
+    <View style={[{ height: windowHeight, flex: 1 }]}>
       <View
         style={[
           Colors.GreenLignt_BG,
@@ -66,9 +59,9 @@ const LastViewInsertUser: () => Node = ({navigation, route}) => {
             padding: 10,
             flexDirection: 'row',
           },
-        ]}>
-        <TouchableOpacity>
-        </TouchableOpacity>
+        ]}
+      >
+        <TouchableOpacity />
         <Text
           style={[
             {
@@ -76,9 +69,10 @@ const LastViewInsertUser: () => Node = ({navigation, route}) => {
               fontSize: 20,
               marginLeft: 20,
               fontWeight: 'bold',
-              textAlign:'center'
+              textAlign: 'center',
             },
-          ]}>
+          ]}
+        >
           {Fr.TIS}
         </Text>
       </View>
@@ -87,9 +81,12 @@ const LastViewInsertUser: () => Node = ({navigation, route}) => {
           justifyContent: 'center',
           alignItems: 'center',
           paddingTop: 50,
-        }}>
+        }}
+      >
         <Image
-          source={{uri: `data:image/jpeg;base64,${u_data?.u_data?.photoProfil}`}}
+          source={{
+            uri: `data:image/jpeg;base64,${u_data?.u_data?.photoProfil}`,
+          }}
           style={[
             {
               resizeMode: 'contain',
@@ -99,7 +96,7 @@ const LastViewInsertUser: () => Node = ({navigation, route}) => {
             },
           ]}
         />
-        <Text style={[{fontSize: 20, marginTop: 20, color: '#3DB24B'}]}>
+        <Text style={[{ fontSize: 20, marginTop: 20, color: '#3DB24B' }]}>
           {u_data?.fullName}
         </Text>
         <Image
@@ -112,13 +109,13 @@ const LastViewInsertUser: () => Node = ({navigation, route}) => {
             },
           ]}
         />
-        <Text style={[{fontSize: 20, marginTop: 20, color: '#3DB24B'}]}>
+        <Text style={[{ fontSize: 20, marginTop: 20, color: '#3DB24B' }]}>
           {Fr.good}
         </Text>
       </View>
       <TouchableOpacity
-        onPress={() =>
-          signUp(u_data,"password")
+        onPress={
+          () => signUp(u_data, 'password')
           /*
           navigation.navigate('Index', {
             u_data: u_data,
@@ -139,11 +136,12 @@ const LastViewInsertUser: () => Node = ({navigation, route}) => {
             alignSelf: 'center',
             backgroundColor: '#3DB24B',
           },
-        ]}>
-        <Text style={{color: 'white', fontWeight: 'bold'}}>{Fr.start}</Text>
+        ]}
+      >
+        <Text style={{ color: 'white', fontWeight: 'bold' }}>{Fr.start}</Text>
       </TouchableOpacity>
     </View>
-  );
-};
+  )
+}
 
-export default LastViewInsertUser;
+export default LastViewInsertUser

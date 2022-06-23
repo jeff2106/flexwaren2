@@ -135,7 +135,7 @@ if( LatLongLocationSelected?.lat && LatLongLocationSelected2?.lat ){
     );
   let PriceDisplay;
   const ConvertKM = geolib.convertDistance(KilometersCheck, 'km');
-  ConvertKM > 1 ? (PriceDisplay = ConvertKM * 210) : (PriceDisplay = ConvertKM * 0.210);
+  ConvertKM > 1 ? (PriceDisplay = ConvertKM * 250) : (PriceDisplay = ConvertKM * 0.250);
   KilometersSplit = ConvertKM?.toString()?.split('.')[0];
   PriceSplit = PriceDisplay?.toString()?.split('.')[0];
 }else{
@@ -154,7 +154,7 @@ function CreateOrders(){
    let price;
       const kT = geolib.convertDistance(Kilometers, 'km');
 
-      kT > 1 ? (price = kT * 210) : (price = kT * 0.210);
+      kT > 1 ? (price = kT * 250) : (price = kT * 0.250);
 
     let KTSPLIT = kT?.toString()?.split('.')[0];
     let PRICESPLIT = price?.toString()?.split('.')[0];
@@ -455,7 +455,7 @@ function getLatLngInput2(text){
                                     onBlur={() => {
                                         setListView2(true);
                                         setisActive2(true);
-                                        
+
                                     }}
                                     onChangeText={(val) =>
                                         setwhereYouGo(val)}

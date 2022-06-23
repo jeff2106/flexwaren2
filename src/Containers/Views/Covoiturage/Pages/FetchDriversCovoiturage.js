@@ -86,9 +86,9 @@ const FetchDriversCovoiturage: () => Node = ({ navigation, route }) => {
 
   const destination = { latitude: Det.latitude , longitude: Det.longitude };
 
-  
+
   React.useEffect(() => {
-    
+
     Geolocation.getCurrentPosition((info) => {
           const { longitude, latitude } = info.coords;
           setCurentPosition({
@@ -101,8 +101,8 @@ const FetchDriversCovoiturage: () => Node = ({ navigation, route }) => {
 
 
         });
-    
-    
+
+
   }, [curentPosition?.latitude]);
 
 //GET DetailsCourse
@@ -121,10 +121,10 @@ const FetchDriversCovoiturage: () => Node = ({ navigation, route }) => {
           setDet({latitude: parseFloat(response?.uidLat) ,longitude: parseFloat(response?.uidLng) });
         })
         .catch(error =>  console.log(error))
-      
+
       }, 10000);
       return () => clearInterval(interval);
-     
+
 
   },[Det.latitude]);
 
@@ -139,29 +139,29 @@ const FetchDriversCovoiturage: () => Node = ({ navigation, route }) => {
   channel.bind('raceCancel', function(data) {
 
   if(data?.PassagerID == u_data?.id){
-    
+
       console.log(data);
      navigation.navigate("AccueilCovoiturage",{u_data:u_data,timestamp:timestamp});
 
     }
-  
-}); 
+
+});
 
 channel.bind('GoRideNow', function(data) {
 
   if(data?.idRace == courseDetails?.id){
-    
+
       console.log(data);
      navigation.navigate("CourseStart",{curentPositionNext:curentPositionNext, u_data:u_data,timestamp:new Date().getTime(),courseDetails:courseDetails });
 
     }
-  
-});  
+
+});
 
 //console.log(Det.longitude);
 if(Det.latitude == null){
  return (
-      <View style={{flex:1,justifyContent:'center',alignItems:'center'}}> 
+      <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
         <ActivityIndicator size="large"/>
       </View>
       )
@@ -196,10 +196,10 @@ if(Det.latitude == null){
           destination={destination}
           apikey={"AIzaSyDSbg654fWaJihkk3FIk52Je8viclmsYCU"}
           onReady={result => {
-            const number = result.duration.toString();
-            const distance = result.distance.toString();
-            setHourse(number.split('.')[0]);
-            setKilometers(distance);
+            const number = result.duration.toString()
+            const distance = result.distance.toString()
+            setHourse(number.split('.')[0])
+            setKilometers(distance)
           }}
         />
         <MapView.Marker
@@ -216,7 +216,7 @@ if(Det.latitude == null){
 
           />
         </MapView.Marker>
-        
+
       </MapView>
 
       {isCommand && (
@@ -238,7 +238,7 @@ if(Det.latitude == null){
             style={{ justifyContent: "space-between", flexDirection: "row" }}
           >
             <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <Text 
+              <Text
                 style={[
                   { color: "black"},
                   Generalstyle.bold,
@@ -367,8 +367,8 @@ if(Det.latitude == null){
                   navigation.navigate('AccueilCovoiturage',{u_data: u_data,timestamp: timestamp});
                 })
                 .catch(error => console.log('error', error));
-            
-              
+
+
             }}
                 style={[
                   Generalstyle.shadow,
@@ -553,12 +553,12 @@ if(Det.latitude == null){
                       Contacter le conducteur
                     </Text>
                   </View>
-                </View> : 
+                </View> :
                 <TouchableOpacity onPress={() => setisDriverLicence(!isDriverLicence)} style={{overflow:'hidden',borderRadius:12,marginTop:10, width:windowWidth/1.17,alignItems:'center',height:windowHeight/3}}>
                 <Image style={{height:"100%",width:"100%",resizeMode:'cover'}} source={{uri: `data:image/jpeg;base64,${courseDetails?.driverData?.photoDrivingLicense}`}}/>
 
                 </TouchableOpacity> }
-                
+
 
                 <TouchableOpacity
                   onPress={() => setIsCommand(!isCommand)}
