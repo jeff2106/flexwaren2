@@ -127,7 +127,7 @@ def nativeArchitectures = project.getProperties().get("reactNativeDebugArchitect
 
 android {
     ndkVersion rootProject.ext.ndkVersion
-
+		compileSdkVersion 27
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {

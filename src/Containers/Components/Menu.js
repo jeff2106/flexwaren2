@@ -165,23 +165,6 @@ const Menu: () => Node = props => {
           </Text>
         </TouchableOpacity>
       )}
-      {u_data?.u_data?.accountType != Fr.C && (
-        <TouchableOpacity
-          onPress={() =>
-            props.navigation.navigate('Historique', {
-              u_dataV: u_data,
-              timestamp: new Date().getTime(),
-              isHistory: false,
-            })
-          }
-          style={styles.containItemNavigation}
-        >
-          <Icon size={30} color="black" name="history" />
-          <Text style={[styles.MenuProfilStyle, styles.textEquilibryMargin]}>
-            Mes courses
-          </Text>
-        </TouchableOpacity>
-      )}
       <View
         style={{ position: 'absolute', bottom: 10, width: windowWidth / 1.5 }}
       >

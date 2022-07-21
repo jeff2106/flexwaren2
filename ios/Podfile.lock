@@ -312,7 +312,7 @@ PODS:
     - React
   - react-native-maps (0.31.1):
     - React-Core
-  - react-native-netinfo (8.3.0):
+  - react-native-netinfo (8.3.1):
     - React-Core
   - react-native-notification-sounds (0.5.4):
     - React
@@ -728,7 +728,7 @@ SPEC CHECKSUMS:
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
   react-native-image-base64-png: c8be5f724c53eec4fb8c2f2c81993acf89db567f
   react-native-maps: 8b8bfada2c86205a7f5a07dd1f92f29b33ea83aa
-  react-native-netinfo: 3671b091c4843fda5e153612866ef4024b8f5d62
+  react-native-netinfo: 1a6035d3b9780221d407c277ebfb5722ace00658
   react-native-notification-sounds: f7f54517cdeb53d67fa8ccf4c3e9cadac23a1628
   react-native-safe-area-context: f98b0b16d1546d208fc293b4661e3f81a895afd9
   react-native-webview: 8ec7ddf9eb4ddcd92b32cee7907efec19a9ec7cb

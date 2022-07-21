@@ -360,7 +360,7 @@ const Courses: () => Node = ({ navigation, route }) => {
   }, [timestamp])
 
   return (
-    <View style={[{ flex: 1 }]}>
+    <View style={[{ flex: 1 , backgroundColor: 'white'}]}>
       <View
         style={[
           Colors.Green_BG,
@@ -422,9 +422,9 @@ const Courses: () => Node = ({ navigation, route }) => {
         </Text>
       </View>
 
-      <View style={{ height: 20 }} />
+      <View style={{ height: 20, backgroundColor:'white' }} />
 
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 , backgroundColor:'white'}}>
         {isLoading == false && Drivers?.length < 1 && (
           <View
             style={{

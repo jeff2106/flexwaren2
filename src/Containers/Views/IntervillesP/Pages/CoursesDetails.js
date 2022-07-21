@@ -123,7 +123,7 @@ const { DDetails,timestamp,u_data } = route.params
       .catch(error => console.log('error', error))
   }
   return (
-    <View style={[{ height: windowHeight, flex: 1 }]}>
+    <View style={[{ height: windowHeight, flex: 1 , backgroundColor: 'white'}]}>
       <View
         style={[
           Colors.Green_BG,

@@ -1,25 +1,17 @@
-import Toast from 'react-native-toast-notifications'
+import Toast from 'react-native-toast-message'
 
-export function ShowSucceed(messages) {
-    Toast.show(messages, {
-    type: 'success',
-    placement: 'top',
-    duration: 4000,
-    offset: 30,
-    animationType: 'zoom-in',
+const ShowToastSucceed = () => {
+  console.log('OOK')
+  Toast.show({
+    type: 'info',
+    text1: 'This is an info message',
   })
 }
-function ShowAlert(messages) {
-    Toast.show(messages, {
-    type: 'warning',
-    placement: 'top ',
-    duration: 4000,
-    offset: 30,
-    animationType: 'zoom-in',
+const ShowToastError = () => {
+  console.log('OOK')
+  Toast.show({
+    type: 'info',
+    text1: 'This is an info message',
   })
 }
-
-export default {
-  ShowSucceed,
-  ShowAlert,
-}
+export { ShowToastSucceed, ShowToastError }

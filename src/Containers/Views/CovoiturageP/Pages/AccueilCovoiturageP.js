@@ -42,25 +42,18 @@ import PushNotificationIOS from '../../../js'
 //My Src Import
 import Colors from '../../../Utils/Colors.js'
 import Iconsimg from '../../../Utils/Img'
-import Fr from '../../../Utils/Fr'
-import Generalstyle from '../../../Utils/GeneralStyle'
-import HeaderCov from '../../../Components/headerCov'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 import MapViewDirections from 'react-native-maps-directions'
 import Pusher from 'pusher-js/react-native'
 import NotificationSounds, {
   playSampleSound,
 } from 'react-native-notification-sounds'
-
-//Get Reel Dimension of Screen[]
-const windowWidth = Dimensions.get('window').width
-const windowHeight = Dimensions.get('window').height
+import { Pushers, ToastCustom } from '@/Containers/Utils'
 
 //End
 
 const AccueilCovoiturageP: () => Node = ({ navigation, route }) => {
   const { u_data, timestamp, Amount } = route.params
-  const [modalVisible, setModalVisible] = React.useState(false)
   const [CustomersAvailable, setCustomersAvailable] = React.useState(false)
   const [CustomersAvailableData, setCustomersAvailableData] = React.useState([])
   const [widthLoad, setwidthLoad] = React.useState(100)
@@ -69,9 +62,6 @@ const AccueilCovoiturageP: () => Node = ({ navigation, route }) => {
   const [TimeOutOrders, setTimeOutOrders] = React.useState(20)
   const [AlertShow, setAlertShow] = React.useState(0)
   const [CountCustomers, setCountCustomers] = React.useState(0)
-  const origin = { latitude: 37.78825, longitude: -122.4324 }
-  const destination = { latitude: 37.771707, longitude: -122.4053769 }
-  const GOOGLE_MAPS_APIKEY = 'AIzaSyDSbg654fWaJihkk3FIk52Je8viclmsYCU'
   const initialState = {
     latitude: 0,
     longitude: 0,
@@ -90,37 +80,65 @@ const AccueilCovoiturageP: () => Node = ({ navigation, route }) => {
   React.useEffect(() => {
     const GetCurrentPosition = setInterval(() => {
       Geolocation.getCurrentPosition(info => {
-        console.log("===> get driver",curentPosition.latitude)
         const { longitude, latitude } = info.coords
+        //console.log('=>',longitude, latitude)
+        coord(longitude, latitude)
         setCurentPosition({
           ...curentPosition,
           latitude,
           longitude,
         })
       })
-    }, 2000)
+    }, 3000)
     return () => clearInterval(GetCurrentPosition)
-  }, [curentPosition, curentPosition.latitude])
+  }, [curentPosition.latitude, timestamp])
+
+  function coord(lng, lat) {
+    let headersList = {
+      Accept: '*/*',
+      'Content-Type': 'application/json',
+    }
+
+    let bodyContent = JSON.stringify({
+      uid: u_data?.id,
+      lat: lng,
+      lng: lat,
+    })
+
+    fetch('https://api.prumad.com/_driver/drivermanage_data/usercoords/', {
+      method: 'POST',
+      body: bodyContent,
+      headers: headersList,
+    })
+      .then(function (response) {
+        return response.json()
+      })
+      .then(function (data) {
+        console.log(data)
+      })
+  }
 
   React.useEffect(() => {
     if (Online) {
-      console.log(curentPosition?.latitude)
-      var formdata = new FormData()
-      formdata.append('DriversLat', curentPosition?.latitude)
-
-      var requestOptions = {
-        method: 'POST',
-        body: formdata,
-        redirect: 'follow',
+      let headersList = {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
       }
 
-      fetch(
-        'https://prumad.com/API/index2.php?FindCustomersMaps',
-        requestOptions,
-      )
-        .then(response => response.json())
-        .then(result => {
-          console.log(result?.length)
+      let bodyContent = JSON.stringify({
+        DriversLat: curentPosition?.latitude,
+        DriversLng: curentPosition?.longitude,
+      })
+
+      fetch('https://api.prumad.com/_race/Race_covoiturage/RaceAvailable', {
+        method: 'POST',
+        body: bodyContent,
+        headers: headersList,
+      })
+        .then(function (response) {
+          return response.json()
+        })
+        .then(function (result) {
           if (result?.length > 0) {
             setCustomersAvailableData(result)
             setCustomersAvailable(!CustomersAvailable)
@@ -129,27 +147,8 @@ const AccueilCovoiturageP: () => Node = ({ navigation, route }) => {
             setCustomersAvailable(!CustomersAvailable)
           }
         })
-        .catch(error => console.log('error', error))
     }
   }, [Online, CourseEmie])
-
-  function PlaySound() {
-    NotificationSounds.getNotifications('ringtones').then(soundsList => {
-      console.warn('SOUNDS', JSON.stringify(soundsList))
-      /*
-      Play the notification sound.
-      pass the complete sound object.
-      This function can be used for playing the sample sound
-      */
-      if (CourseEmie == false) {
-        playSampleSound(soundsList[16])
-      }
-      setCourseEmie(!CourseEmie)
-
-      // if you want to stop any playing sound just call:
-      // stopSampleSound();
-    })
-  }
 
   React.useEffect(() => {
     if (CustomersAvailableData?.length > 0) {
@@ -161,12 +160,12 @@ const AccueilCovoiturageP: () => Node = ({ navigation, route }) => {
           return () => clearInterval(interval)
         } else {
           setCountCustomers(prev => prev + 1)
-          console.log()
           setwidthLoad(100)
         }
       } else {
         setCustomersAvailableData()
         setCustomersAvailable(!CustomersAvailable)
+        setAlertShow(0)
         setCountCustomers(0)
       }
     }
@@ -221,36 +220,6 @@ const AccueilCovoiturageP: () => Node = ({ navigation, route }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sendNotification = () => {
-    DeviceEventEmitter.emit('remoteNotificationReceived', {
-      remote: true,
-      aps: {
-        alert: { title: 'title', subtitle: 'subtitle', body: 'body' },
-        badge: 1,
-        sound: 'default',
-        category: 'REACT_NATIVE',
-        'content-available': 1,
-        'mutable-content': 1,
-      },
-    })
-  }
-
-  const sendSilentNotification = () => {
-    DeviceEventEmitter.emit('remoteNotificationReceived', {
-      remote: true,
-      aps: {
-        category: 'REACT_NATIVE',
-        'content-available': 1,
-      },
-    })
-  }
-
-  if (AlertShow == 1) {
-    const Time = setTimeout(() => {
-      setAlertShow(0)
-    }, 100)
-    clearTimeout(Time)
-  }
   const sendLocalNotification = message => {
     if (AlertShow == 1) {
       PushNotificationIOS.presentLocalNotification({
@@ -259,132 +228,6 @@ const AccueilCovoiturageP: () => Node = ({ navigation, route }) => {
         applicationIconBadgeNumber: 1,
       })
     }
-  }
-
-  const sendLocalNotificationWithSound = () => {
-    PushNotificationIOS.addNotificationRequest({
-      id: 'notificationWithSound',
-      title: 'Sample Title',
-      subtitle: 'Sample Subtitle',
-      body: 'Sample local notification with custom sound',
-      sound: 'customSound.wav',
-      badge: 1,
-    })
-  }
-
-  const scheduleLocalNotification = () => {
-    PushNotificationIOS.scheduleLocalNotification({
-      alertBody: 'Test Local Notification',
-      fireDate: new Date(new Date().valueOf() + 2000).toISOString(),
-    })
-  }
-
-  const addNotificationRequest = () => {
-    PushNotificationIOS.addNotificationRequest({
-      id: 'test',
-      title: 'title',
-      subtitle: 'subtitle',
-      body: 'body',
-      category: 'test',
-      threadId: 'thread-id',
-      fireDate: new Date(new Date().valueOf() + 2000),
-      repeats: true,
-      userInfo: {
-        image: 'https://www.github.com/Naturalclar.png',
-      },
-    })
-  }
-
-  const addCriticalNotificationRequest = () => {
-    PushNotificationIOS.addNotificationRequest({
-      id: 'critical',
-      title: 'Critical Alert',
-      subtitle: 'subtitle',
-      body: 'This is a critical alert',
-      category: 'test',
-      threadId: 'thread-id',
-      isCritical: true,
-      fireDate: new Date(new Date().valueOf() + 2000),
-      repeats: true,
-    })
-  }
-
-  const addMultipleRequests = () => {
-    PushNotificationIOS.addNotificationRequest({
-      id: 'test-1',
-      title: 'First',
-      subtitle: 'subtitle',
-      body: 'First Notification out of 3',
-      category: 'test',
-      threadId: 'thread-id',
-      fireDate: new Date(new Date().valueOf() + 10000),
-      repeats: true,
-    })
-
-    PushNotificationIOS.addNotificationRequest({
-      id: 'test-2',
-      title: 'Second',
-      subtitle: 'subtitle',
-      body: 'Second Notification out of 3',
-      category: 'test',
-      threadId: 'thread-id',
-      fireDate: new Date(new Date().valueOf() + 12000),
-      repeats: true,
-    })
-
-    PushNotificationIOS.addNotificationRequest({
-      id: 'test-3',
-      title: 'Third',
-      subtitle: 'subtitle',
-      body: 'Third Notification out of 3',
-      category: 'test',
-      threadId: 'thread-id',
-      fireDate: new Date(new Date().valueOf() + 14000),
-      repeats: true,
-    })
-  }
-
-  const getPendingNotificationRequests = () => {
-    PushNotificationIOS.getPendingNotificationRequests(requests => {
-      Alert.alert('Push Notification Received', JSON.stringify(requests), [
-        {
-          text: 'Dismiss',
-          onPress: null,
-        },
-      ])
-    })
-  }
-
-  const setNotificationCategories = async () => {
-    PushNotificationIOS.setNotificationCategories([
-      {
-        id: 'test',
-        actions: [
-          { id: 'open', title: 'Open', options: { foreground: true } },
-          {
-            id: 'ignore',
-            title: 'Desruptive',
-            options: { foreground: true, destructive: true },
-          },
-          {
-            id: 'text',
-            title: 'Text Input',
-            options: { foreground: true },
-            textInput: { buttonTitle: 'Send' },
-          },
-        ],
-      },
-    ])
-    Alert.alert(
-      'setNotificationCategories',
-      'Set notification category complete',
-      [
-        {
-          text: 'Dismiss',
-          onPress: null,
-        },
-      ],
-    )
   }
 
   const onRegistered = deviceToken => {
@@ -398,20 +241,7 @@ const AccueilCovoiturageP: () => Node = ({ navigation, route }) => {
   */
   }
 
-  const onRegistrationError = error => {
-    /*
-  Alert.alert(
-    'Failed To Register For Remote Push',
-    `Error (${error.code}): ${error.message}`,
-    [
-      {
-        text: 'Dismiss',
-        onPress: null,
-      },
-    ],
-  );
-  */
-  }
+  const onRegistrationError = error => {}
 
   const onRemoteNotification = notification => {
     const isClicked = notification.getData().userInteraction === 1
@@ -425,55 +255,10 @@ const AccueilCovoiturageP: () => Node = ({ navigation, route }) => {
     category: ${notification.getCategory()};\n
     content-available: ${notification.getContentAvailable()};\n
     Notification is clicked: ${String(isClicked)}.`
-    /*
-  if (notification.getTitle() == undefined) {
-    Alert.alert('Silent push notification Received', result, [
-      {
-        text: 'Send local push',
-        onPress: sendLocalNotification,
-      },
-    ]);
-  } else {
-    Alert.alert('Push Notification Received', result, [
-      {
-        text: 'Dismiss',
-        onPress: null,
-      },
-    ]);
-  }
-  */
   }
 
   const onLocalNotification = notification => {
     const isClicked = notification.getData().userInteraction === 1
-    /*
-  Alert.alert(
-    'Local Notification Received',
-    `Alert title:  ${notification.getTitle()},
-    Alert subtitle:  ${notification.getSubtitle()},
-    Alert message:  ${notification.getMessage()},
-    Badge: ${notification.getBadgeCount()},
-    Sound: ${notification.getSound()},
-    Thread Id:  ${notification.getThreadID()},
-    Action Id:  ${notification.getActionIdentifier()},
-    User Text:  ${notification.getUserText()},
-    Notification is clicked: ${String(isClicked)}.`,
-    [
-      {
-        text: 'Dismiss',
-        onPress: null,
-      },
-    ],
-  );
-
-
-  */
-  }
-
-  const showPermissions = () => {
-    PushNotificationIOS.checkPermissions(permissions => {
-      setPermissions({ permissions })
-    })
   }
 
   //
@@ -487,15 +272,35 @@ const AccueilCovoiturageP: () => Node = ({ navigation, route }) => {
   var channel = pusher.subscribe('ordersAdd')
   channel.bind('ordersAdd', function () {
     setCourseEmie(!CourseEmie)
-    setAlertShow(1)
-    sendLocalNotification('Une nouvelle course est disponibles')
+    setAlertShow(prev => prev + 1)
   })
+  if (AlertShow == 1) {
+    sendLocalNotification('Vous avez une nouvelle course')
+  }
+  Pushers('ordersAdd', 'ordersAdd')
 
   //Voir si l'utilisateur viens de s'inscrire//
 
   /* === Notifications ====*/
   return (
     <View style={styles.container}>
+      {curentPosition.latitude == 0 && (
+        <ToastCustom
+          messages={'Nous vous localisons...'}
+          textColor={'white'}
+          textSize={10}
+          backgroundColor={'#053706'}
+        />
+      )}
+      {AlertShow == 1 && (
+        <ToastCustom
+          messages={'Vous avez une nouvelle courses !'}
+          textColor={'white'}
+          textSize={10}
+          backgroundColor={'#053706'}
+        />
+      )}
+
       <TouchableOpacity
         style={[{ position: 'absolute', top: 10, zIndex: 4 }]}
         onPress={() => navigation.openDrawer()}
@@ -507,20 +312,16 @@ const AccueilCovoiturageP: () => Node = ({ navigation, route }) => {
         showsMyLocationButton={true}
         followsUserLocation={true}
         mapType="standard"
-        initialRegion={curentPosition}
+        initialRegion={{
+          latitude: Number(curentPosition.latitude),
+          longitude: Number(curentPosition.longitude),
+          latitudeDelta: 0.120864195044303443,
+          longitudeDelta: 0.1220142817690068,
+        }}
         style={styles.map}
-      >
-        <MapViewDirections
-          strokeWidth={3}
-          strokeColor={Colors.GreenLignt.color}
-          origin={origin}
-          destination={destination}
-          apikey={GOOGLE_MAPS_APIKEY}
-        />
-      </MapView>
+      />
 
       <TouchableOpacity
-        onPress={() => PlaySound()}
         style={{
           flexDirection: 'row',
           position: 'absolute',
@@ -669,14 +470,11 @@ const AccueilCovoiturageP: () => Node = ({ navigation, route }) => {
                 fontWeight: 'bold',
               }}
             >
-              {typeof CustomersAvailableData[CountCustomers]?.price ===
-              'undefined'
-                ? 0
-                : CustomersAvailableData[CountCustomers]?.price}{' '}
+              {CustomersAvailableData?.length > 0 &&
+                CustomersAvailableData[CountCustomers]?.price}{' '}
               XOF -{' '}
-              {typeof CustomersAvailableData[CountCustomers]?.Km === 'undefined'
-                ? 0
-                : CustomersAvailableData[CountCustomers]?.Km}{' '}
+              {CustomersAvailableData?.length > 0 &&
+                CustomersAvailableData[CountCustomers]?.Km}{' '}
               KM
             </Text>
             <View
@@ -690,7 +488,7 @@ const AccueilCovoiturageP: () => Node = ({ navigation, route }) => {
               <Image source={Iconsimg.sys_AcceptCustomers} />
               <Text style={{ color: 'black' }}>
                 {' '}
-                + {CustomersAvailableData?.length}
+                {CustomersAvailableData?.length}
               </Text>
             </View>
             <View style={{ flexDirection: 'row' }}>

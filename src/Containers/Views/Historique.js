@@ -75,21 +75,25 @@ export default function App({ navigation, route }) {
   }, [])
 
   function Historique() {
-    var formdata = new FormData()
-
-    var requestOptions = {
-      method: 'GET',
-      redirect: 'follow',
+    let headersList = {
+      Accept: '*/*',
+      'Content-Type': 'application/json',
     }
 
     fetch(
-      `https://prumad.com/API/index2.php?getHistoryCourse=${u_dataV?.u_data?.id}`,
-      requestOptions,
+      'https://api.prumad.com/_race/Race_covoiturage/HistoriqueCourse/' +
+        u_dataV?.u_data?.id,
+      {
+        method: 'GET',
+        headers: headersList,
+      },
     )
-      .then(response => response.json())
-      .then(result => {
-        console.log(result)
-        setMyHistorique(result)
+      .then(function (response) {
+        return response.json()
+      })
+      .then(function (data) {
+        console.log(data)
+        setMyHistorique(data)
       })
       .catch(error => console.log('error', error))
   }
@@ -128,7 +132,6 @@ export default function App({ navigation, route }) {
             <Text style={{ marginTop: 20, fontWeight: 'bold' }}>
               Liste en dessous
             </Text>
-
             {MyHistorique?.length < 1 && (
               <Text style={{ textAlign: 'center', marginTop: 50 }}>
                 Votre historique est vide !!!
@@ -158,7 +161,9 @@ export default function App({ navigation, route }) {
                   <View>
                     <Text>
                       Course de{' '}
-                      <Text style={{ fontWeight: 'bold' }}>{item?.date}</Text>
+                      <Text style={{ fontWeight: 'bold' }}>
+                        {item?.date.split('T')[0]}
+                      </Text>
                     </Text>
                     <Text>
                       {item?.state == 'close' && 'Annuler'}{' '}
@@ -223,11 +228,11 @@ export default function App({ navigation, route }) {
                     latitude:
                       historiqueSelected?.whereYouAreLat == null
                         ? defaultMaps?.longitude
-                        : parseFloat(historiqueSelected?.whereYouAreLat),
+                        : Number(historiqueSelected?.whereYouAreLat),
                     longitude:
                       historiqueSelected?.whereYouAreLng == null
                         ? defaultMaps?.latitude
-                        : parseFloat(historiqueSelected?.whereYouAreLng),
+                        : Number(historiqueSelected?.whereYouAreLng),
                     latitudeDelta: 0.000864195044303443,
                     longitudeDelta: 0.0000142817690068,
                   }}
@@ -237,14 +242,14 @@ export default function App({ navigation, route }) {
                     strokeWidth={3}
                     strokeColor={Colors.GreenLignt.color}
                     origin={{
-                      latitude: parseFloat(historiqueSelected?.whereYouAreLat),
-                      longitude: parseFloat(historiqueSelected?.whereYouAreLng),
+                      latitude: Number(historiqueSelected?.whereYouAreLat),
+                      longitude: Number(historiqueSelected?.whereYouAreLng),
                     }}
                     destination={{
-                      latitude: parseFloat(
+                      latitude: Number(
                         historiqueSelected?.whereYouGoingLat,
                       ),
-                      longitude: parseFloat(
+                      longitude: Number(
                         historiqueSelected?.whereYouGoingLng,
                       ),
                     }}
@@ -342,6 +347,7 @@ export default function App({ navigation, route }) {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     borderRadius: 5,
+                    marginTop:20,
                     width: 'auto',
                     flexDirection: 'row',
                     height: 50,

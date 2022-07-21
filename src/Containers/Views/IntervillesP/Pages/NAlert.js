@@ -185,6 +185,7 @@ const NAlert: () => Node = ({ navigation, route }) => {
           timestamp: new Date().getTime(),
         })
       })
+      .catch(r => console.log(r))
   }
 
   const [isDatePickerVisible, setDatePickerVisibility] = React.useState(false)
@@ -202,7 +203,7 @@ const NAlert: () => Node = ({ navigation, route }) => {
     setDateTimesHoursAlert(
       JSON.stringify(date).replaceAll('"', '').split('T')[1].split('.')[0],
     )
-    console.warn('A date has been picked: ', date)
+    console.warn('A date has been pickeds: ', date)
 
     hideDatePicker()
   }
@@ -397,10 +398,7 @@ const NAlert: () => Node = ({ navigation, route }) => {
         <View>
           {districtWAY != '' &&
           whereAreYouGoing != '' &&
-          districtWAYG != '' &&
-          seats != '' &&
-          price != '' &&
-          dateTimesAlert != '' ? (
+          districtWAYG != '' ? (
             <TouchableOpacity
               onPress={() => sendNewAlert()}
               style={[

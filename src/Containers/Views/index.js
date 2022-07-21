@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import type { Node } from 'react'
 import {
   SafeAreaView,
@@ -22,26 +22,16 @@ import {
   Modal,
   Pressable,
   ActivityIndicator,
+  Animated,
 } from 'react-native'
-import { ShowSucceed } from '../Utils/showMesssages'
+import NetInfo from '@react-native-community/netinfo'
 //My Src Import
 import Colors from '../Utils/Colors.js'
 import Iconsimg from '../Utils/Img'
 import Fr from '../Utils/Fr'
-import { PlaySound } from '../Utils/'
 import Generalstyle from '../Utils/GeneralStyle'
 import { AuthContext } from '../Components/context'
-//End
-
-/*
-loading//
-  useEffect(() => {
-    setTimeout(() => {
-  setIsLoading(false);
-    },1000)
-  },{})
-
-*/
+import Geolocation from '@react-native-community/geolocation'
 
 const Index: () => Node = ({ navigation, route }) => {
   const isDarkMode = useColorScheme() === '#3DB24B'
@@ -53,8 +43,51 @@ const Index: () => Node = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = React.useState(false)
   const [u_data, setdata] = React.useState(u_dataV)
   const [Amount, setAmount] = React.useState('')
-
   const { signOut } = React.useContext(AuthContext)
+  const initialState = {
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta: 0.120864195044303443,
+    longitudeDelta: 0.1220142817690068,
+  }
+  const [curentPosition, setCurentPosition] = React.useState(initialState)
+
+  React.useEffect(() => {
+    Geolocation.getCurrentPosition(info => {
+      const { longitude, latitude } = info.coords
+      coord(longitude, latitude)
+      setCurentPosition({
+        ...curentPosition,
+        latitude,
+        longitude,
+      })
+    })
+  }, [curentPosition.latitude, timestamp])
+
+  function coord(lng, lat) {
+    let headersList = {
+      Accept: '*/*',
+      'Content-Type': 'application/json',
+    }
+
+    let bodyContent = JSON.stringify({
+      uid: u_data?.u_data.id,
+      lat: lng,
+      lng: lat,
+    })
+
+    fetch('https://api.prumad.com/_driver/drivermanage_data/usercoords/', {
+      method: 'POST',
+      body: bodyContent,
+      headers: headersList,
+    })
+      .then(function (response) {
+        return response.json()
+      })
+      .then(function (data) {
+        console.log(data)
+      })
+  }
 
   //Time
   let date = new Date()
@@ -139,6 +172,7 @@ const Index: () => Node = ({ navigation, route }) => {
       </View>
     )
   }
+
   return (
     <SafeAreaView style={[backgroundStyle]}>
       <View style={[Generalstyle.miniCard, { marginTop: 30 }]}>
@@ -147,12 +181,7 @@ const Index: () => Node = ({ navigation, route }) => {
         >
           {Fr.ChooseSys}
         </Text>
-        <Text
-          onPress={() => /* signOut(u_data) */ {
-            PlaySound()
-          }}
-          style={[{ fontSize: 12 }, Generalstyle.alignSelf, Colors.Green]}
-        >
+        <Text style={[{ fontSize: 12 }, Generalstyle.alignSelf, Colors.Green]}>
           Espace de {u_data?.u_data?.accountType}
         </Text>
         {u_data?.u_data?.accountType == 'Conducteur' &&

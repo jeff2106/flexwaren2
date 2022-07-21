@@ -2,8 +2,9 @@ import Pusher from 'pusher-js/react-native'
 import { PlaySound } from '@/Containers/Utils/index'
 import React from 'react'
 
-async function Pushers(channel,event) {
+function Pushers(channel, event) {
   const [count, setCount] = React.useState(0)
+  const [value, setValue] = React.useState()
   // Enable pusher logging - don't include this in production
   Pusher.logToConsole = false
 
@@ -11,19 +12,24 @@ async function Pushers(channel,event) {
     cluster: 'mt1',
   })
 
-  var channel = pusher.subscribe('my-channel')
-  channel.bind('my-event', function (data) {
+  var channel = pusher.subscribe(channel)
+  channel.bind(event, function (data) {
     setCount(prev => prev + 1)
+    PlaySound()
     if (count == 1) {
-      //alert(JSON.stringify(data))
       PlaySound()
     }
-    return data
+    setValue(data)
   })
+
   const TimeOut = setInterval(() => {
     setCount(0)
   }, 0)
-  return clearInterval(TimeOut)
+
+  clearInterval(TimeOut)
+  function data() {
+    return value
+  }
 }
 
 export default Pushers

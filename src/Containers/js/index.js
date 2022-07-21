@@ -8,48 +8,48 @@
  * @flow
  */
 
-'use strict';
+'use strict'
 
-import {NativeEventEmitter, NativeModules} from 'react-native';
-import invariant from 'invariant';
+import { NativeEventEmitter, NativeModules } from 'react-native'
+import invariant from 'invariant'
 import type {
   NotificationAlert,
   NotificationRequest,
   NotificationCategory,
   NotificationAction,
-} from './types';
-const {RNCPushNotificationIOS} = NativeModules;
+} from './types'
+const { RNCPushNotificationIOS } = NativeModules
 
-const PushNotificationEmitter = new NativeEventEmitter(RNCPushNotificationIOS);
+const PushNotificationEmitter = new NativeEventEmitter(RNCPushNotificationIOS)
 
-const _notifHandlers = new Map();
+const _notifHandlers = new Map()
 
-const DEVICE_NOTIF_EVENT = 'remoteNotificationReceived';
-const NOTIF_REGISTER_EVENT = 'remoteNotificationsRegistered';
-const NOTIF_REGISTRATION_ERROR_EVENT = 'remoteNotificationRegistrationError';
-const DEVICE_LOCAL_NOTIF_EVENT = 'localNotificationReceived';
+const DEVICE_NOTIF_EVENT = 'remoteNotificationReceived'
+const NOTIF_REGISTER_EVENT = 'remoteNotificationsRegistered'
+const NOTIF_REGISTRATION_ERROR_EVENT = 'remoteNotificationRegistrationError'
+const DEVICE_LOCAL_NOTIF_EVENT = 'localNotificationReceived'
 
 export type {
   NotificationAlert,
   NotificationRequest,
   NotificationCategory,
   NotificationAction,
-};
+}
 
-export type ContentAvailable = 1 | null | void;
+export type ContentAvailable = 1 | null | void
 
 export type FetchResult = {
   NewData: string,
   NoData: string,
   ResultFailed: string,
-};
+}
 
 export type AuthorizationStatus = {
   UNAuthorizationStatusNotDetermined: 0,
   UNAuthorizationStatusDenied: 1,
   UNAuthorizationStatusAuthorized: 2,
   UNAuthorizationStatusProvisional: 3,
-};
+}
 
 /**
  * An event emitted by PushNotificationIOS.
@@ -76,7 +76,7 @@ export type PushNotificationEventName = $Keys<{
    * handler will be invoked with {message: string, code: number, details: any}.
    */
   registrationError: string,
-}>;
+}>
 
 /**
  *
@@ -86,47 +86,47 @@ export type PushNotificationEventName = $Keys<{
  * See https://reactnative.dev/docs/pushnotificationios.html
  */
 class PushNotificationIOS {
-  _data: Object;
-  _alert: string | NotificationAlert;
-  _title: string;
-  _subtitle: string;
-  _sound: string;
-  _category: string;
-  _contentAvailable: ContentAvailable;
-  _badgeCount: number;
-  _notificationId: string;
+  _data: Object
+  _alert: string | NotificationAlert
+  _title: string
+  _subtitle: string
+  _sound: string
+  _category: string
+  _contentAvailable: ContentAvailable
+  _badgeCount: number
+  _notificationId: string
   /**
    * The id of action the user has taken taken.
    */
-  _actionIdentifier: ?string;
+  _actionIdentifier: ?string
   /**
    * The text user has input if user responded with a text action.
    */
-  _userText: ?string;
-  _isRemote: boolean;
-  _remoteNotificationCompleteCallbackCalled: boolean;
-  _threadID: string;
-  _fireDate: string | Date;
+  _userText: ?string
+  _isRemote: boolean
+  _remoteNotificationCompleteCallbackCalled: boolean
+  _threadID: string
+  _fireDate: string | Date
 
   static FetchResult: FetchResult = {
     NewData: 'UIBackgroundFetchResultNewData',
     NoData: 'UIBackgroundFetchResultNoData',
     ResultFailed: 'UIBackgroundFetchResultFailed',
-  };
+  }
 
   static AuthorizationStatus: AuthorizationStatus = {
     UNAuthorizationStatusNotDetermined: 0,
     UNAuthorizationStatusDenied: 1,
     UNAuthorizationStatusAuthorized: 2,
     UNAuthorizationStatusProvisional: 3,
-  };
+  }
 
   /**
    * Schedules the localNotification for immediate presentation.
    * @deprecated use `addNotificationRequest` instead
    */
   static presentLocalNotification(details: Object) {
-    RNCPushNotificationIOS.presentLocalNotification(details);
+    RNCPushNotificationIOS.presentLocalNotification(details)
   }
 
   /**
@@ -134,7 +134,7 @@ class PushNotificationIOS {
    * @deprecated use `addNotificationRequest` instead
    */
   static scheduleLocalNotification(details: Object) {
-    RNCPushNotificationIOS.scheduleLocalNotification(details);
+    RNCPushNotificationIOS.scheduleLocalNotification(details)
   }
 
   /**
@@ -144,14 +144,14 @@ class PushNotificationIOS {
   static addNotificationRequest(request: NotificationRequest) {
     const handledRequest =
       request.fireDate instanceof Date
-        ? {...request, fireDate: request.fireDate.toISOString()}
-        : request;
+        ? { ...request, fireDate: request.fireDate.toISOString() }
+        : request
     const finalRequest = {
       ...handledRequest,
       repeatsComponent: request.repeatsComponent || {},
-    };
+    }
 
-    RNCPushNotificationIOS.addNotificationRequest(finalRequest);
+    RNCPushNotificationIOS.addNotificationRequest(finalRequest)
   }
 
   /**
@@ -159,7 +159,7 @@ class PushNotificationIOS {
    * Used to set specific actions for notifications that contains specified category
    */
   static setNotificationCategories(categories: NotificationCategory[]) {
-    RNCPushNotificationIOS.setNotificationCategories(categories);
+    RNCPushNotificationIOS.setNotificationCategories(categories)
   }
 
   /**
@@ -171,8 +171,8 @@ class PushNotificationIOS {
     invariant(
       RNCPushNotificationIOS,
       'PushNotificationManager is not available.',
-    );
-    RNCPushNotificationIOS.cancelAllLocalNotifications();
+    )
+    RNCPushNotificationIOS.cancelAllLocalNotifications()
   }
 
   /**
@@ -182,8 +182,8 @@ class PushNotificationIOS {
     invariant(
       RNCPushNotificationIOS,
       'PushNotificationManager is not available.',
-    );
-    RNCPushNotificationIOS.removeAllPendingNotificationRequests();
+    )
+    RNCPushNotificationIOS.removeAllPendingNotificationRequests()
   }
 
   /**
@@ -193,8 +193,8 @@ class PushNotificationIOS {
     invariant(
       RNCPushNotificationIOS,
       'PushNotificationManager is not available.',
-    );
-    RNCPushNotificationIOS.removePendingNotificationRequests(identifiers);
+    )
+    RNCPushNotificationIOS.removePendingNotificationRequests(identifiers)
   }
 
   /**
@@ -206,8 +206,8 @@ class PushNotificationIOS {
     invariant(
       RNCPushNotificationIOS,
       'PushNotificationManager is not available.',
-    );
-    RNCPushNotificationIOS.removeAllDeliveredNotifications();
+    )
+    RNCPushNotificationIOS.removeAllDeliveredNotifications()
   }
 
   /**
@@ -221,8 +221,8 @@ class PushNotificationIOS {
     invariant(
       RNCPushNotificationIOS,
       'PushNotificationManager is not available.',
-    );
-    RNCPushNotificationIOS.getDeliveredNotifications(callback);
+    )
+    RNCPushNotificationIOS.getDeliveredNotifications(callback)
   }
 
   /**
@@ -234,8 +234,8 @@ class PushNotificationIOS {
     invariant(
       RNCPushNotificationIOS,
       'PushNotificationManager is not available.',
-    );
-    RNCPushNotificationIOS.removeDeliveredNotifications(identifiers);
+    )
+    RNCPushNotificationIOS.removeDeliveredNotifications(identifiers)
   }
 
   /**
@@ -247,8 +247,8 @@ class PushNotificationIOS {
     invariant(
       RNCPushNotificationIOS,
       'PushNotificationManager is not available.',
-    );
-    RNCPushNotificationIOS.setApplicationIconBadgeNumber(number);
+    )
+    RNCPushNotificationIOS.setApplicationIconBadgeNumber(number)
   }
 
   /**
@@ -260,8 +260,8 @@ class PushNotificationIOS {
     invariant(
       RNCPushNotificationIOS,
       'PushNotificationManager is not available.',
-    );
-    RNCPushNotificationIOS.getApplicationIconBadgeNumber(callback);
+    )
+    RNCPushNotificationIOS.getApplicationIconBadgeNumber(callback)
   }
 
   /**
@@ -273,8 +273,8 @@ class PushNotificationIOS {
     invariant(
       RNCPushNotificationIOS,
       'PushNotificationManager is not available.',
-    );
-    RNCPushNotificationIOS.cancelLocalNotifications(userInfo);
+    )
+    RNCPushNotificationIOS.cancelLocalNotifications(userInfo)
   }
 
   /**
@@ -285,8 +285,8 @@ class PushNotificationIOS {
     invariant(
       RNCPushNotificationIOS,
       'PushNotificationManager is not available.',
-    );
-    RNCPushNotificationIOS.getScheduledLocalNotifications(callback);
+    )
+    RNCPushNotificationIOS.getScheduledLocalNotifications(callback)
   }
 
   /**
@@ -298,8 +298,8 @@ class PushNotificationIOS {
     invariant(
       RNCPushNotificationIOS,
       'PushNotificationManager is not available.',
-    );
-    RNCPushNotificationIOS.getPendingNotificationRequests(callback);
+    )
+    RNCPushNotificationIOS.getPendingNotificationRequests(callback)
   }
 
   /**
@@ -315,38 +315,38 @@ class PushNotificationIOS {
         type === 'registrationError' ||
         type === 'localNotification',
       'PushNotificationIOS only supports `notification`, `register`, `registrationError`, and `localNotification` events',
-    );
-    let listener;
+    )
+    let listener
     if (type === 'notification') {
       listener = PushNotificationEmitter.addListener(
         DEVICE_NOTIF_EVENT,
-        (notifData) => {
-          handler(new PushNotificationIOS(notifData));
+        notifData => {
+          handler(new PushNotificationIOS(notifData))
         },
-      );
+      )
     } else if (type === 'localNotification') {
       listener = PushNotificationEmitter.addListener(
         DEVICE_LOCAL_NOTIF_EVENT,
-        (notifData) => {
-          handler(new PushNotificationIOS(notifData));
+        notifData => {
+          handler(new PushNotificationIOS(notifData))
         },
-      );
+      )
     } else if (type === 'register') {
       listener = PushNotificationEmitter.addListener(
         NOTIF_REGISTER_EVENT,
-        (registrationInfo) => {
-          handler(registrationInfo.deviceToken);
+        registrationInfo => {
+          handler(registrationInfo.deviceToken)
         },
-      );
+      )
     } else if (type === 'registrationError') {
       listener = PushNotificationEmitter.addListener(
         NOTIF_REGISTRATION_ERROR_EVENT,
-        (errorInfo) => {
-          handler(errorInfo);
+        errorInfo => {
+          handler(errorInfo)
         },
-      );
+      )
     }
-    _notifHandlers.set(type, listener);
+    _notifHandlers.set(type, listener)
   }
 
   /**
@@ -362,13 +362,13 @@ class PushNotificationIOS {
         type === 'registrationError' ||
         type === 'localNotification',
       'PushNotificationIOS only supports `notification`, `register`, `registrationError`, and `localNotification` events',
-    );
-    const listener = _notifHandlers.get(type);
+    )
+    const listener = _notifHandlers.get(type)
     if (!listener) {
-      return;
+      return
     }
-    listener.remove();
-    _notifHandlers.delete(type);
+    listener.remove()
+    _notifHandlers.delete(type)
   }
 
   /**
@@ -394,20 +394,20 @@ class PushNotificationIOS {
       alert: true,
       badge: true,
       sound: true,
-    };
+    }
     if (permissions) {
       requestedPermissions = {
         alert: !!permissions.alert,
         badge: !!permissions.badge,
         sound: !!permissions.sound,
         critical: !!permissions.critical,
-      };
+      }
     }
     invariant(
       RNCPushNotificationIOS,
       'PushNotificationManager is not available.',
-    );
-    return RNCPushNotificationIOS.requestPermissions(requestedPermissions);
+    )
+    return RNCPushNotificationIOS.requestPermissions(requestedPermissions)
   }
 
   /**
@@ -419,8 +419,8 @@ class PushNotificationIOS {
     invariant(
       RNCPushNotificationIOS,
       'PushNotificationManager is not available.',
-    );
-    RNCPushNotificationIOS.abandonPermissions();
+    )
+    RNCPushNotificationIOS.abandonPermissions()
   }
 
   /**
@@ -430,12 +430,12 @@ class PushNotificationIOS {
    * See https://reactnative.dev/docs/pushnotificationios.html#checkpermissions
    */
   static checkPermissions(callback: Function) {
-    invariant(typeof callback === 'function', 'Must provide a valid callback');
+    invariant(typeof callback === 'function', 'Must provide a valid callback')
     invariant(
       RNCPushNotificationIOS,
       'PushNotificationManager is not available.',
-    );
-    RNCPushNotificationIOS.checkPermissions(callback);
+    )
+    RNCPushNotificationIOS.checkPermissions(callback)
   }
 
   /**
@@ -448,12 +448,12 @@ class PushNotificationIOS {
     invariant(
       RNCPushNotificationIOS,
       'PushNotificationManager is not available.',
-    );
+    )
     return RNCPushNotificationIOS.getInitialNotification().then(
-      (notification) => {
-        return notification && new PushNotificationIOS(notification);
+      notification => {
+        return notification && new PushNotificationIOS(notification)
       },
-    );
+    )
   }
 
   /**
@@ -463,49 +463,49 @@ class PushNotificationIOS {
    *
    */
   constructor(nativeNotif: Object) {
-    this._data = {};
-    this._remoteNotificationCompleteCallbackCalled = false;
-    this._isRemote = nativeNotif.remote;
+    this._data = {}
+    this._remoteNotificationCompleteCallbackCalled = false
+    this._isRemote = nativeNotif.remote
     if (this._isRemote) {
-      this._notificationId = nativeNotif.notificationId;
+      this._notificationId = nativeNotif.notificationId
     }
 
-    this._actionIdentifier = nativeNotif.actionIdentifier;
-    this._userText = nativeNotif.userText;
+    this._actionIdentifier = nativeNotif.actionIdentifier
+    this._userText = nativeNotif.userText
     if (nativeNotif.remote) {
       // Extract data from Apple's `aps` dict as defined:
       // https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/ApplePushService.html
-      Object.keys(nativeNotif).forEach((notifKey) => {
-        const notifVal = nativeNotif[notifKey];
+      Object.keys(nativeNotif).forEach(notifKey => {
+        const notifVal = nativeNotif[notifKey]
 
         if (notifKey === 'aps') {
-          this._alert = notifVal.alert;
-          this._title = notifVal?.alertTitle;
-          this._subtitle = notifVal?.subtitle;
-          this._sound = notifVal.sound;
-          this._badgeCount = notifVal.badge;
-          this._category = notifVal.category;
-          this._contentAvailable = notifVal['content-available'];
-          this._threadID = notifVal['thread-id'];
-          this._fireDate = notifVal.fireDate;
+          this._alert = notifVal.alert
+          this._title = notifVal?.alertTitle
+          this._subtitle = notifVal?.subtitle
+          this._sound = notifVal.sound
+          this._badgeCount = notifVal.badge
+          this._category = notifVal.category
+          this._contentAvailable = notifVal['content-available']
+          this._threadID = notifVal['thread-id']
+          this._fireDate = notifVal.fireDate
         } else {
-          this._data[notifKey] = notifVal;
+          this._data[notifKey] = notifVal
         }
-      });
+      })
     } else {
       // Local notifications aren't being sent down with `aps` dict.
       // TODO: remove applicationIconBadgeNumber on next major version
       this._badgeCount =
-        nativeNotif.badge || nativeNotif.applicationIconBadgeNumber;
+        nativeNotif.badge || nativeNotif.applicationIconBadgeNumber
       // TODO: remove soundName on next major version
-      this._sound = nativeNotif.sound || nativeNotif.soundName;
-      this._alert = nativeNotif.body;
-      this._title = nativeNotif?.title;
-      this._subtitle = nativeNotif?.subtitle;
-      this._threadID = nativeNotif['thread-id'];
-      this._data = nativeNotif.userInfo;
-      this._category = nativeNotif.category;
-      this._fireDate = nativeNotif.fireDate;
+      this._sound = nativeNotif.sound || nativeNotif.soundName
+      this._alert = nativeNotif.body
+      this._title = nativeNotif?.title
+      this._subtitle = nativeNotif?.subtitle
+      this._threadID = nativeNotif['thread-id']
+      this._data = nativeNotif.userInfo
+      this._category = nativeNotif.category
+      this._fireDate = nativeNotif.fireDate
     }
   }
 
@@ -521,18 +521,18 @@ class PushNotificationIOS {
       !this._notificationId ||
       this._remoteNotificationCompleteCallbackCalled
     ) {
-      return;
+      return
     }
-    this._remoteNotificationCompleteCallbackCalled = true;
+    this._remoteNotificationCompleteCallbackCalled = true
 
     invariant(
       RNCPushNotificationIOS,
       'PushNotificationManager is not available.',
-    );
+    )
     RNCPushNotificationIOS.onFinishRemoteNotification(
       this._notificationId,
       fetchResult,
-    );
+    )
   }
 
   /**
@@ -540,9 +540,9 @@ class PushNotificationIOS {
    */
   getMessage(): ?string | ?Object {
     if (typeof this._alert === 'object') {
-      return this._alert?.body;
+      return this._alert?.body
     }
-    return this._alert;
+    return this._alert
   }
 
   /**
@@ -551,7 +551,7 @@ class PushNotificationIOS {
    * See https://reactnative.dev/docs/pushnotificationios.html#getsound
    */
   getSound(): ?string {
-    return this._sound;
+    return this._sound
   }
 
   /**
@@ -560,7 +560,7 @@ class PushNotificationIOS {
    * See https://reactnative.dev/docs/pushnotificationios.html#getcategory
    */
   getCategory(): ?string {
-    return this._category;
+    return this._category
   }
 
   /**
@@ -569,7 +569,7 @@ class PushNotificationIOS {
    * See https://reactnative.dev/docs/pushnotificationios.html#getalert
    */
   getAlert(): ?string | ?Object {
-    return this._alert;
+    return this._alert
   }
 
   /**
@@ -578,9 +578,9 @@ class PushNotificationIOS {
    */
   getTitle(): ?string | ?Object {
     if (typeof this._alert === 'object') {
-      return this._alert?.title;
+      return this._alert?.title
     }
-    return this._title;
+    return this._title
   }
 
   /**
@@ -589,9 +589,9 @@ class PushNotificationIOS {
    */
   getSubtitle(): ?string | ?Object {
     if (typeof this._alert === 'object') {
-      return this._alert?.subtitle;
+      return this._alert?.subtitle
     }
-    return this._subtitle;
+    return this._subtitle
   }
 
   /**
@@ -600,7 +600,7 @@ class PushNotificationIOS {
    * See https://reactnative.dev/docs/pushnotificationios.html#getcontentavailable
    */
   getContentAvailable(): ContentAvailable {
-    return this._contentAvailable;
+    return this._contentAvailable
   }
 
   /**
@@ -609,7 +609,7 @@ class PushNotificationIOS {
    * See https://reactnative.dev/docs/pushnotificationios.html#getbadgecount
    */
   getBadgeCount(): ?number {
-    return this._badgeCount;
+    return this._badgeCount
   }
 
   /**
@@ -618,7 +618,7 @@ class PushNotificationIOS {
    * See https://reactnative.dev/docs/pushnotificationios.html#getdata
    */
   getData(): ?Object {
-    return this._data;
+    return this._data
   }
 
   /**
@@ -627,22 +627,22 @@ class PushNotificationIOS {
    * See https://reactnative.dev/docs/pushnotificationios.html#getthreadid
    */
   getThreadID(): ?string {
-    return this._threadID;
+    return this._threadID
   }
 
   /**
    * Get's the action id of the notification action user has taken.
    */
   getActionIdentifier(): ?string {
-    return this._actionIdentifier;
+    return this._actionIdentifier
   }
 
   /**
    * Gets the text user has inputed if user has taken the text action response.
    */
   getUserText(): ?string {
-    return this._userText;
+    return this._userText
   }
 }
 
-export default PushNotificationIOS;
+export default PushNotificationIOS

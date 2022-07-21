@@ -14,6 +14,9 @@ import PushNotification from 'react-native-push-notification'
 import Pusher from 'pusher-js/react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import navigationRef from '../Navigators/utils'
+import NetInfo from '@react-native-community/netinfo'
+import { ToastCustom } from '@/Containers/Utils'
+
 //Views
 //Screen Import//
 import Menu from '../Containers/Components/Menu'
@@ -87,28 +90,15 @@ import PaimentPICov from '../Containers/Views/CovoiturageP/Pages/PaimentPICov'
 //CODE PROMO//
 import PCodesTravailleurs from '../Containers/Views/PromosCodes/PCodes.paiment.travailleurs'
 import PCodesCovoiturages from '../Containers/Views/PromosCodes/PCodes.paiment.covoiturage'
-import {Pushers} from "@/Containers/Utils";
+import { Pushers } from '@/Containers/Utils'
 
-//
-
-/*
-<Drawer.Navigator screenOptions={{
-      drawerStyle: {
-      backgroundColor: 'white',
-      },
-      headerShown: false,
-      swipeEdgeWidth: 0
-    }}>
-      <Drawer.Screen name="FirstView" component={FirstView}  />
-
-    </Drawer.Navigator>
-*/
 const Tab = createBottomTabNavigator()
 const MainSctack = createStackNavigator()
 const Drawer = createDrawerNavigator()
 // @refresh reset
 const MainNavigator = () => {
   const [u_dataV, setU_data] = React.useState(null)
+  const [networkStatut, setNetworkStatut] = React.useState()
   const initialLoginState = {
     isLoading: true,
     u_data: null,
@@ -123,7 +113,7 @@ const MainNavigator = () => {
     })
 
     var channel = pusher.subscribe('FlexCars')
-    channel.bind(
+    return channel.bind(
       u_dataV?.u_data?.accountType == 'Passagers' ? 'Passagers' : 'Conducteur',
       function (data) {
         console.log(JSON.stringify(data))
@@ -292,7 +282,7 @@ const MainNavigator = () => {
   )
 
   React.useEffect(() => {
-    setTimeout(async () => {
+    const setUser = setTimeout(async () => {
       try {
         const value = await AsyncStorage.getItem('@u_data')
         if (value !== null) {
@@ -308,9 +298,8 @@ const MainNavigator = () => {
         console.log(e)
       }
     }, 1000)
-    //alert('ok');
+    return setUser
   }, [])
-  Pushers()
   if (loginState?.isLoading) {
     console.log(loginState)
     return (
@@ -342,9 +331,9 @@ const MainNavigator = () => {
           ],
         )
       }
-      console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA])
     })
     .catch(() => console.log('non'))
+
   return (
     <AuthContext.Provider value={authContext} ref={navigationRef}>
       {loginState?.userToken === null ? (

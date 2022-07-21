@@ -100,7 +100,6 @@ const NAlertT: () => Node = ({ navigation, route }) => {
         return response.json()
       })
       .then(function (result) {
-        console.log(result)
         Alert.alert('Message', "Votre alerte viens d'etre créer ")
         navigation.navigate('CoursesT', {
           u_data: u_data,
